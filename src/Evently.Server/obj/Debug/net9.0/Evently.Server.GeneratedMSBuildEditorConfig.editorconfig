@@ -1,0 +1,57 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Evently.Server
+build_property.RootNamespace = Evently.Server
+build_property.ProjectDir = C:\Users\eugen\Codes\Evently\src\Evently.Server\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\eugen\Codes\Evently\src\Evently.Server
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/eugen/Codes/Evently/src/Evently.Server/Common/Adapters/Blazor/BlazorApp.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tbW9uXEFkYXB0ZXJzXEJsYXpvclxCbGF6b3JBcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eugen/Codes/Evently/src/Evently.Server/Common/Adapters/Blazor/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tbW9uXEFkYXB0ZXJzXEJsYXpvclxSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eugen/Codes/Evently/src/Evently.Server/Features/Emails/Views/AttendeeTicket.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcRW1haWxzXFZpZXdzXEF0dGVuZGVlVGlja2V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eugen/Codes/Evently/src/Evently.Server/Features/Emails/Views/Components/BaseComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcRW1haWxzXFZpZXdzXENvbXBvbmVudHNcQmFzZUNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eugen/Codes/Evently/src/Evently.Server/Features/Emails/Views/Components/Button.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcRW1haWxzXFZpZXdzXENvbXBvbmVudHNcQnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eugen/Codes/Evently/src/Evently.Server/Features/Emails/Views/Components/Container.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcRW1haWxzXFZpZXdzXENvbXBvbmVudHNcQ29udGFpbmVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eugen/Codes/Evently/src/Evently.Server/Features/Emails/Views/Components/Table.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcRW1haWxzXFZpZXdzXENvbXBvbmVudHNcVGFibGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 

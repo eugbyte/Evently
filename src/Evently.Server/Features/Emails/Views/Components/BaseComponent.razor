@@ -1,0 +1,8 @@
+﻿@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Attributes { get; set; } = new();
+
+    [Parameter] public string Style { get; set; } = "";
+}

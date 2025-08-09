@@ -1,0 +1,9 @@
+﻿@inherits BaseComponent;
+
+<a href="@Href" @attributes="Attributes" style="@Style" target="_blank">
+    <span>@ChildContent</span>
+</a>
+
+@code {
+    [Parameter] public string Href { get; set; } = string.Empty;
+}

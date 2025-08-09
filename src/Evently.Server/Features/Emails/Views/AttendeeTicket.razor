@@ -1,0 +1,96 @@
+﻿@using Evently.Server.Domains.Entities
+@using Evently.Server.Features.Emails.Views.Components
+@inject NavigationManager Navigator
+@inject IWebHostEnvironment Env
+
+<html lang="en" dir="ltr">
+<head>
+    <title>ExpoConnect</title>
+
+    <style>
+        @@media print {
+            .print-ticket {
+                width: 360px;
+                margin-top: 10rem;
+                border: 1px solid #0d6efd !important;
+            }
+
+            .print-ticket-header {
+                background: none !important;
+                color: black !important;
+                border: 1px solid #0d6efd !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<Container>
+    <p>Your booking has been confirmed.</p>
+    <Table
+        Style="width: 100%; margin-top: 10px; text-align: center; border-top-left-radius: 1rem; 
+        border-top-right-radius: 1rem; background-color: #0d6efd; padding: 1.5rem; color: white; 
+        height: 40px; border: 1px solid #0d6efd;"
+        class="print-ticket-header">
+        <tr>
+            <td>
+                <span style="font-size: 1rem; padding: 1.5rem;">Regular Ticket</span>
+            </td>
+        </tr>
+    </Table>
+    <Table Style="padding: 1rem; text-align: center; border: 1px solid #0d6efd; width: 100%; color: black;">
+        <tr>
+            <td>
+                <a href="@_baseUri/exhibitions/@Gathering.GatheringId">@Gathering.Name</a>
+            </td>
+        </tr>
+        <tr>
+            <td>@Day, @StartDate | @StartTime - @EndTime</td>
+        </tr>
+        <tr>
+            <td>@Gathering.Location</td>
+        </tr>
+        <tr style="margin-top: 1rem; font-size: 2.5rem;">
+            <td>@Member.Name</td>
+        </tr>
+        <tr>
+            <td>@Member.Role, @Member.Company</td>
+        </tr>
+        <tr style="text-align: center; font-size: 1.75rem; color: #0d6efd;">
+            <td>ATTENDEE</td>
+        </tr>
+        <tr>
+            <td>
+                <img alt="qrcode" src="@QrCodeUrl" width="200px" height="200px"/>
+            </td>
+        </tr>
+        <tr>
+            <td>@Booking.BookingId</td>
+        </tr>
+    </Table>
+
+</Container>
+
+</body>
+</html>
+
+@code {
+    [Parameter] [EditorRequired] public Booking Booking { get; set; } = new();
+    [Parameter] [EditorRequired] public Gathering Gathering { get; set; } = new();
+    [Parameter] [EditorRequired] public Member Member { get; set; } = new();
+    [Parameter] [EditorRequired] public string QrCodeUrl { get; set; } = string.Empty;
+    [Parameter] public string Classes { get; set; } = string.Empty;
+
+    protected override void OnAfterRender(bool firstRender) {
+        if (firstRender) {
+            _baseUri = (Env.IsDevelopment() ? "https://localhost:5000/" : Navigator.BaseUri).TrimEnd('/');
+        }
+    }
+
+    private string Day => Gathering.Start.DayOfWeek.ToString();
+    private string StartTime => Gathering.Start.ToString("HH:mm");
+    private string EndTime => Gathering.End.ToString("HH:mm");
+    private string StartDate => Gathering.Start.ToString("d MMM yyyy");
+    private string _baseUri = string.Empty;
+
+
+}

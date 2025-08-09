@@ -1,0 +1,134 @@
+﻿using Evently.Server.Common.Extensions;
+using Evently.Server.Domains.Entities;
+using Evently.Server.Domains.Interfaces;
+using Evently.Server.Domains.Models;
+using Evently.Server.Features.Auths.Services;
+using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using System.Globalization;
+
+namespace Evently.Server.Features.Gatherings;
+
+[ApiController]
+[Route("api/v1/[controller]")]
+public sealed class GatheringsController(
+	IGatheringService gatheringService,
+	IFileStorageService imageStorageService,
+	IValidator<Gathering> validator) : ControllerBase {
+	[HttpGet("{gatheringId:long}", Name = "GetGathering")]
+	public async Task<ActionResult<Gathering>> GetGathering(long gatheringId) {
+		Gathering? customer = await gatheringService.GetGathering(gatheringId);
+		if (customer is null) {
+			return NotFound();
+		}
+
+		return Ok(customer);
+	}
+
+	[HttpGet("", Name = "GetGatherings")]
+	public async Task<ActionResult<List<Gathering>>> GetGatherings(long? guestUserId,
+		long? hostUserId, string? exhibitionName,
+		DateTimeOffset? start, DateTimeOffset? end, int? offset, int? limit) {
+		PageResult<Gathering> result = await gatheringService.GetGatherings(guestUserId,
+			hostUserId,
+			exhibitionName,
+			start,
+			end,
+			offset,
+			limit);
+		List<Gathering> exhibitions = result.Items;
+		int total = result.TotalCount;
+		HttpContext.Response.Headers.Append("Access-Control-Expose-Headers", "X-Total-Count");
+		HttpContext.Response.Headers.Append("X-Total-Count", value: total.ToString(CultureInfo.InvariantCulture));
+		return Ok(exhibitions);
+	}
+
+	[HttpGet("{gatheringId:long}/AttendeeTopics")]
+	public async Task<ActionResult<Dictionary<string, int>>> GetAttendeeTopicDetails(long gatheringId, int? offset,
+		int? limit) {
+		Dictionary<string, int> topicFreq = await gatheringService.GetCategoryCount(gatheringId, offset, limit);
+		return Ok(topicFreq);
+	}
+
+
+	[HttpPost("", Name = "CreateGathering")]
+	public async Task<ActionResult<Gathering>> CreateGathering(GatheringDto gatheringDto) {
+		gatheringDto = gatheringDto with { GatheringId = 0 };
+		ValidationResult validationResult = await validator.ValidateAsync(gatheringDto.ToGathering());
+		if (!validationResult.IsValid) {
+			return BadRequest(validationResult.Errors);
+		}
+
+		AuthenticateResult authenticationResult =
+			await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
+		if (!authenticationResult.Succeeded) {
+			return Unauthorized();
+		}
+
+		Gathering gathering = await gatheringService.CreateGathering(gatheringDto);
+		return Ok(gathering);
+	}
+
+	[HttpPut("{gatheringId:long}", Name = "UpdateGathering")]
+	public async Task<ActionResult> UpdateGathering(long gatheringId, [FromBody] GatheringDto gatheringDto) {
+		Gathering? exhibition = await gatheringService.GetGathering(gatheringId);
+		if (exhibition is null) {
+			return NotFound();
+		}
+
+		ValidationResult result = await validator.ValidateAsync(gatheringDto.ToGathering());
+		if (!result.IsValid) {
+			return BadRequest(result.Errors);
+		}
+
+		if (!await this.IsResourceOwner(exhibition.Member?.Id)) {
+			return Forbid();
+		}
+
+		exhibition = await gatheringService.UpdateGathering(gatheringId, gatheringDto);
+		return Ok(exhibition);
+	}
+
+	[HttpDelete("{gatheringId:long}", Name = "DeleteGathering")]
+	public async Task<ActionResult<Gathering>> DeleteGathering(long gatheringId) {
+		Gathering? exhibition = await gatheringService.GetGathering(gatheringId);
+		if (exhibition is null) {
+			return NotFound();
+		}
+
+		if (!await this.IsResourceOwner(exhibition.Member?.Id)) {
+			return Forbid();
+		}
+
+		await gatheringService.DeleteGathering(gatheringId);
+		return NoContent();
+	}
+
+	[HttpPost("{gatheringId:long}/images", Name = "UploadImages")]
+	public async Task<IActionResult> UploadCoverImage(long gatheringId, [FromForm] IFormFile? coverImg) {
+		Gathering? exhibition = await gatheringService.GetGathering(gatheringId);
+		if (exhibition is null) {
+			return NotFound();
+		}
+
+		if (coverImg is not null) {
+			string fileName = $"gatherings/{gatheringId}/cover-image{Path.GetExtension(coverImg.FileName)}";
+			BinaryData binaryData = await coverImg.ToBinaryData();
+
+			Uri uri = await imageStorageService.UploadFile(fileName,
+				binaryData,
+				mimeType: MimeTypes.GetMimeType(coverImg.FileName));
+			exhibition.CoverSrc = uri.AbsoluteUri;
+		}
+
+		exhibition = await gatheringService.UpdateGathering(gatheringId, gatheringDto: exhibition.ToGatheringDto());
+
+		return Ok(new {
+			coverUri = exhibition.CoverSrc,
+		});
+	}
+}
