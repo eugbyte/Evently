@@ -25,8 +25,6 @@ using BlazorHtmlRenderer=Microsoft.AspNetCore.Components.Web.HtmlRenderer;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager config = builder.Configuration;
 
-bool isHeroku = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DYNO"));
-
 ILoggerFactory logFactory = LoggerFactory.Create((logBuilder) => {
 	logBuilder.AddSimpleConsole((opts) => opts.ColorBehavior = LoggerColorBehavior.Disabled);
 });
@@ -58,7 +56,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IAuthorizationHandler, SameUserAuthorizationHandler>();
 builder.Services.AddHealthChecks()
 	.AddDbContextCheck<AppDbContext>();
-builder.Services.AddSingleton<IFileStorageService, ImageStorageService>();
+builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
 builder.Services.AddTransient<IBookingService, BookingService>();
 
 // MediaRenderer relies on BlazorHtmlRenderer

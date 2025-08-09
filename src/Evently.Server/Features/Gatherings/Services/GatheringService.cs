@@ -24,8 +24,6 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 		int? offset,
 		int? limit) {
 		IQueryable<Gathering> query = db.Gatherings
-			.AsNoTracking()
-			.AsSplitQuery()
 			.Where((gathering) => name == null || EF.Functions.ILike(gathering.Name, $"%{name}%"))
 			.Where((gathering) =>
 				guestUserId == null || gathering.BookingEvents.Any((be) => be.MemberId == guestUserId))
@@ -75,7 +73,9 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 	}
 
 	public async Task DeleteGathering(long gatheringId) {
-		Gathering gathering = await db.Gatherings.SingleAsync((gathering) => gathering.GatheringId == gatheringId);
+		Gathering gathering = await db.Gatherings
+			.AsTracking()
+			.SingleAsync((gathering) => gathering.GatheringId == gatheringId);
 		db.Remove(gathering);
 		await db.SaveChangesAsync();
 	}

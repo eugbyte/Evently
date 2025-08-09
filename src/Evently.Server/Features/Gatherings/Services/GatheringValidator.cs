@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Evently.Server.Features.Gatherings.Services;
 
-public class GatheringValidator : AbstractValidator<Gathering> {
+public sealed class GatheringValidator : AbstractValidator<Gathering> {
 	public GatheringValidator() {
 		RuleFor((exhibition) => exhibition.Name).NotEmpty().WithMessage("Name is required.");
 		RuleFor((exhibition) => exhibition.Description).NotEmpty().WithMessage("Description is required.");

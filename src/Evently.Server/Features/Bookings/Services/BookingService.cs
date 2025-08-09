@@ -26,7 +26,6 @@ public sealed class BookingService(
 		DateTime? checkInStart, DateTime? checkInEnd,
 		bool? isCancelled, int? offset, int? limit) {
 		IQueryable<Booking> query = db.Bookings
-			.AsSplitQuery()
 			.Where((b) => guestMemberId == null || b.MemberId == guestMemberId)
 			.Where((b) => hostMemberId == null || b.GatheringId == hostMemberId)
 			.Where((c) => checkInStart == null || checkInStart <= c.CheckInDateTime)

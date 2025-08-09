@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 namespace Evently.Server.Features.FileStorage.Services;
 
 // Copied from https://tinyurl.com/5pam66xn
-public sealed class ImageStorageService(IOptions<Settings> settings) : IFileStorageService {
+public sealed class FileStorageService(IOptions<Settings> settings) : IFileStorageService {
 	private const string ContainerName = "evently-images";
 
 	private readonly BlobServiceClient _blobServiceClient =

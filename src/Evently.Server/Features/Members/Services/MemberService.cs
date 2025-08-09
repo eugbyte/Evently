@@ -67,9 +67,9 @@ public sealed class MemberService(AppDbContext db) : IMemberService {
 	}
 
 	public async Task<Member> DeleteUser(long memberId) {
-		Member member = await db.Members.AsTracking()
-			.Where((attendee) => attendee.Id == memberId)
-			.SingleAsync();
+		Member member = await db.Members
+			.AsTracking()
+			.SingleAsync((member) => member.Id == memberId);
 		db.Remove(member);
 		return member;
 	}

@@ -29,7 +29,4 @@ public sealed class CategoryService(AppDbContext db) : ICategoryService {
 			TotalCount = totalCount,
 		};
 	}
-	public async Task<bool> Exists(long topicId) {
-		return await db.Categories.AnyAsync((t) => t.CategoryId == topicId);
-	}
 }

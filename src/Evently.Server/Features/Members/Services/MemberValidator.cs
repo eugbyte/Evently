@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Evently.Server.Features.Members.Services;
 
-public class MemberValidator : AbstractValidator<Member> {
+public sealed class MemberValidator : AbstractValidator<Member> {
 	public MemberValidator() {
 		RuleFor((attendee) => attendee.Name).NotEmpty().WithMessage("Name is required.");
 		RuleFor((attendee) => attendee.Email).NotEmpty().WithMessage("Email is required.");
