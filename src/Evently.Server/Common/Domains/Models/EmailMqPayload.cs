@@ -1,3 +1,3 @@
-﻿namespace Evently.Server.Domains.Models;
+﻿namespace Evently.Server.Common.Domains.Models;
 
 public record EmailMqPayload(string EmailAddress, string Html);

@@ -1,7 +1,7 @@
-﻿using Evently.Server.Common.Extensions;
-using Evently.Server.Domains.Entities;
-using Evently.Server.Domains.Interfaces;
-using Evently.Server.Domains.Models;
+﻿using Evently.Server.Common.Domains.Entities;
+using Evently.Server.Common.Domains.Interfaces;
+using Evently.Server.Common.Domains.Models;
+using Evently.Server.Common.Extensions;
 using Evently.Server.Features.Auths.Services;
 using FluentValidation;
 using FluentValidation.Results;

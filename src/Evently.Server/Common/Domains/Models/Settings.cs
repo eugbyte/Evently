@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Evently.Server.Domains.Models;
+namespace Evently.Server.Common.Domains.Models;
 
 public sealed class Settings {
 	public ConnectionStringsSettings ConnectionStrings { get; init; } = new();

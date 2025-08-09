@@ -1,5 +1,4 @@
-﻿using Evently.Server.Domains.Models;
-using Microsoft.AspNetCore.HttpOverrides;
+﻿using Evently.Server.Common.Domains.Models;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
 

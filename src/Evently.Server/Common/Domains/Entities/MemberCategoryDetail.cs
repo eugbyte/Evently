@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Evently.Server.Domains.Entities;
+namespace Evently.Server.Common.Domains.Entities;
 
 [PrimaryKey(propertyName: nameof(MemberId), nameof(CategoryId))]
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]

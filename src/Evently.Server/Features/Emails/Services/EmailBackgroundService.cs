@@ -1,11 +1,11 @@
-﻿using Evently.Server.Domains.Interfaces;
-using Evently.Server.Domains.Models;
+﻿using Evently.Server.Common.Domains.Interfaces;
+using Evently.Server.Common.Domains.Models;
 using System.Threading.Channels;
 using LoggerExtension=Evently.Server.Common.Extensions.LoggerExtension;
 
 namespace Evently.Server.Features.Emails.Services;
 
-public class EmailBackgroundService(
+public sealed class EmailBackgroundService(
 	ChannelReader<EmailMqPayload> reader,
 	IEmailer emailer,
 	ILogger<EmailBackgroundService> logger) : BackgroundService {

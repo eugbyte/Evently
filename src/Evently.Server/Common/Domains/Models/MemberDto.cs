@@ -1,4 +1,4 @@
-﻿namespace Evently.Server.Domains.Models;
+﻿namespace Evently.Server.Common.Domains.Models;
 
 public sealed record MemberDto(
 	long MemberId,

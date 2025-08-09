@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Evently.Server.Domains.Interfaces;
+namespace Evently.Server.Common.Domains.Interfaces;
 
 public interface IMediaRenderer {
 	Task<string> RenderComponentHtml<T>(Dictionary<string, object?> dictionary) where T : IComponent;

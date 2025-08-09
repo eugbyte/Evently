@@ -1,4 +1,4 @@
-using Evently.Server.Domains.Entities;
+using Evently.Server.Common.Domains.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Evently.Server.Domains.Interfaces;
+namespace Evently.Server.Common.Domains.Interfaces;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 public interface IFileStorageService {

@@ -1,13 +1,12 @@
 ﻿using Evently.Server.Common.Adapters.Data;
-using Evently.Server.Domains.Entities;
-using Evently.Server.Domains.Interfaces;
-using Evently.Server.Domains.Models;
+using Evently.Server.Common.Domains.Entities;
+using Evently.Server.Common.Domains.Interfaces;
+using Evently.Server.Common.Domains.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Evently.Server.Features.Categories.Services;
 
 public sealed class CategoryService(AppDbContext db) : ICategoryService {
-
 	public async Task<Category> CreateCategory(Category category) {
 		await db.Categories.AddAsync(category);
 		await db.SaveChangesAsync();

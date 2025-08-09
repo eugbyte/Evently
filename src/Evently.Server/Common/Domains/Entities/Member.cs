@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Evently.Server.Domains.Entities;
+namespace Evently.Server.Common.Domains.Entities;
 
 [Index(nameof(Email), IsUnique = true)]
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]

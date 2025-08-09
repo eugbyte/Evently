@@ -1,5 +1,5 @@
-using Evently.Server.Domains.Interfaces;
-using Evently.Server.Domains.Models;
+using Evently.Server.Common.Domains.Interfaces;
+using Evently.Server.Common.Domains.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Channels;
 

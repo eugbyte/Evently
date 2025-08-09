@@ -1,4 +1,4 @@
-namespace Evently.Server.Domains.Interfaces;
+namespace Evently.Server.Common.Domains.Interfaces;
 
 public interface IEmailer {
 	// senderEmail: Either actual Sender email or email of the third party that IEmailer sends on behalf of.

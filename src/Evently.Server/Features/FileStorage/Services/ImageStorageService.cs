@@ -1,8 +1,8 @@
 ﻿using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Evently.Server.Domains.Interfaces;
-using Evently.Server.Domains.Models;
+using Evently.Server.Common.Domains.Interfaces;
+using Evently.Server.Common.Domains.Models;
 using Microsoft.Extensions.Options;
 
 namespace Evently.Server.Features.FileStorage.Services;

@@ -1,7 +1,7 @@
-﻿using Evently.Server.Domains.Entities;
-using Evently.Server.Domains.Models;
+﻿using Evently.Server.Common.Domains.Entities;
+using Evently.Server.Common.Domains.Models;
 
-namespace Evently.Server.Domains.Interfaces;
+namespace Evently.Server.Common.Domains.Interfaces;
 
 public interface ICategoryService {
 	Task<PageResult<Category>> GetCategories(long? memberId, bool? approved);

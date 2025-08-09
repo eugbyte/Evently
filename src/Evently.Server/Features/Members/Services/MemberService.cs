@@ -1,8 +1,8 @@
 using Evently.Server.Common.Adapters.Data;
+using Evently.Server.Common.Domains.Entities;
+using Evently.Server.Common.Domains.Interfaces;
+using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
-using Evently.Server.Domains.Entities;
-using Evently.Server.Domains.Interfaces;
-using Evently.Server.Domains.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Evently.Server.Features.Members.Services;

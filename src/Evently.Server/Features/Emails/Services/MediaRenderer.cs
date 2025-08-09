@@ -1,4 +1,4 @@
-﻿using Evently.Server.Domains.Interfaces;
+﻿using Evently.Server.Common.Domains.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web.HtmlRendering;
 using PdfSharp;
@@ -9,7 +9,7 @@ using BlazorHtmlRenderer=Microsoft.AspNetCore.Components.Web.HtmlRenderer;
 
 namespace Evently.Server.Features.Emails.Services;
 
-public class MediaRenderer(BlazorHtmlRenderer htmlRenderer) : IMediaRenderer {
+public sealed class MediaRenderer(BlazorHtmlRenderer htmlRenderer) : IMediaRenderer {
 	public async Task<string> RenderComponentHtml<T>(Dictionary<string, object?> dictionary) where T : IComponent {
 		string html = await htmlRenderer.Dispatcher.InvokeAsync(async () => {
 			ParameterView parameters = ParameterView.FromDictionary(dictionary);

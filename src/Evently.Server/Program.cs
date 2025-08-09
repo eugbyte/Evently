@@ -1,9 +1,9 @@
 using Evently.Server.Common.Adapters.Blazor;
 using Evently.Server.Common.Adapters.Data;
+using Evently.Server.Common.Domains.Entities;
+using Evently.Server.Common.Domains.Interfaces;
+using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
-using Evently.Server.Domains.Entities;
-using Evently.Server.Domains.Interfaces;
-using Evently.Server.Domains.Models;
 using Evently.Server.Features.Auths.Services;
 using Evently.Server.Features.Bookings.Services;
 using Evently.Server.Features.Categories.Services;
