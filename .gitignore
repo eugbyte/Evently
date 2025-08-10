@@ -430,3 +430,8 @@ src/emailpaywall.client/.svelte-kit
 # Visual Studio
 .vs
 .idea
+
+
+# Rider
+.rider.*
+src/emailpaywall.client/obj
