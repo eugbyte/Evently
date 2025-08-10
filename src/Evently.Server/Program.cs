@@ -98,6 +98,7 @@ builder.Services.AddAuthentication()
 			return Task.CompletedTask;
 		};
 	});
+
 builder.Services.AddAuthorizationBuilder()
 	.AddPolicy(SameUserRequirement.PolicyName,
 		configurePolicy: (policy) =>
