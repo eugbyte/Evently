@@ -20,9 +20,7 @@ public sealed class CategoryService(AppDbContext db) : ICategoryService {
 			.Where((topic) => approved == null || topic.Approved == approved);
 
 		int totalCount = await query.CountAsync();
-
-		List<Category> topics = await query
-			.ToListAsync();
+		List<Category> topics = await query.ToListAsync();
 
 		return new PageResult<Category> {
 			Items = topics,

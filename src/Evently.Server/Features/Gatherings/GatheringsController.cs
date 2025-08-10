@@ -2,7 +2,7 @@
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
-using Evently.Server.Features.Auths.Services;
+using Evently.Server.Features.Accounts.Services;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
@@ -46,14 +46,6 @@ public sealed class GatheringsController(
 		HttpContext.Response.Headers.Append("X-Total-Count", value: total.ToString(CultureInfo.InvariantCulture));
 		return Ok(exhibitions);
 	}
-
-	[HttpGet("{gatheringId:long}/AttendeeTopics")]
-	public async Task<ActionResult<Dictionary<string, int>>> GetAttendeeTopicDetails(long gatheringId, int? offset,
-		int? limit) {
-		Dictionary<string, int> topicFreq = await gatheringService.GetCategoryCount(gatheringId, offset, limit);
-		return Ok(topicFreq);
-	}
-
 
 	[HttpPost("", Name = "CreateGathering")]
 	public async Task<ActionResult<Gathering>> CreateGathering(GatheringDto gatheringDto) {
@@ -110,8 +102,8 @@ public sealed class GatheringsController(
 
 	[HttpPost("{gatheringId:long}/images", Name = "UploadImages")]
 	public async Task<IActionResult> UploadCoverImage(long gatheringId, [FromForm] IFormFile? coverImg) {
-		Gathering? exhibition = await gatheringService.GetGathering(gatheringId);
-		if (exhibition is null) {
+		Gathering? gathering = await gatheringService.GetGathering(gatheringId);
+		if (gathering is null) {
 			return NotFound();
 		}
 
@@ -122,13 +114,12 @@ public sealed class GatheringsController(
 			Uri uri = await imageStorageService.UploadFile(fileName,
 				binaryData,
 				mimeType: MimeTypes.GetMimeType(coverImg.FileName));
-			exhibition.CoverSrc = uri.AbsoluteUri;
+			gathering.CoverSrc = uri.AbsoluteUri;
 		}
 
-		exhibition = await gatheringService.UpdateGathering(gatheringId, gatheringDto: exhibition.ToGatheringDto());
-
+		gathering = await gatheringService.UpdateGathering(gatheringId, gatheringDto: gathering.ToGatheringDto());
 		return Ok(new {
-			coverUri = exhibition.CoverSrc,
+			coverUri = gathering.CoverSrc,
 		});
 	}
 }

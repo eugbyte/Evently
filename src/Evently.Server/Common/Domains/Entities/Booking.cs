@@ -19,8 +19,6 @@ public class Booking {
 	public long GatheringId { get; set; }
 	public Gathering? Gathering { get; set; }
 
-	[StringLength(100)] public string Hash { get; set; } = string.Empty;
-
 	public DateTimeOffset RegistrationDateTime { get; set; }
 	public DateTimeOffset? CheckInDateTime { get; set; }
 	public DateTimeOffset? CheckoutDateTime { get; set; }

@@ -9,22 +9,22 @@ namespace Evently.Server.Features.Bookings;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public sealed class BookingsController(IBookingService bookingService, ChannelWriter<EmailMqPayload> writer)
+public sealed class BookingsController(IBookingService bookingService, ChannelWriter<string> emailQueue)
 	: ControllerBase {
 	[HttpGet("{bookingId}", Name = "GetBooking")]
 	public async Task<ActionResult<Booking>> GetBooking(string bookingId) {
-		Booking? bookingEvent = await bookingService.GetBooking(bookingId);
-		if (bookingEvent is null) {
+		Booking? booking = await bookingService.GetBooking(bookingId);
+		if (booking is null) {
 			return NotFound();
 		}
 
-		return Ok(bookingEvent);
+		return Ok(booking);
 	}
 
-	[HttpGet("{bookingId}/preview-emailed-ticket", Name = "PreviewEmailedTicket")]
-	public async Task<ActionResult> PreviewEmailedTicket(string bookingId) {
-		string html = await bookingService.RenderMemberTicket(bookingId);
-		return Content(html, "text/html");
+	[HttpGet("{bookingId}/preview", Name = "GetBooking")]
+	public async Task<ActionResult<Booking>> PreviewBooking(string bookingId) {
+		string html = await bookingService.RenderTicket(bookingId);
+		return Content(html);
 	}
 
 	[HttpGet("", Name = "GetBookings")]
@@ -53,16 +53,7 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 	[HttpPost("", Name = "CreateBooking")]
 	public async Task<ActionResult<Booking>> CreateBooking([FromBody] BookingDto bookingDto) {
 		Booking booking = await bookingService.CreateBooking(bookingDto);
-		string bookingEventId = booking.BookingId;
-		Booking?
-			eagerBooking = await bookingService.GetBooking(bookingEventId); // eagerly load the attendee property
-		if (eagerBooking?.Member is null) {
-			return NotFound($"Attendee with bookingId {bookingEventId} not found");
-		}
-
-		Member member = eagerBooking.Member;
-		string html = await bookingService.RenderMemberTicket(bookingEventId);
-		await writer.WriteAsync(new EmailMqPayload(member.Email, html));
+		await emailQueue.WriteAsync(booking.BookingId);
 		return Ok(booking);
 	}
 

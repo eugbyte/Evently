@@ -11,9 +11,9 @@ using System.Text.Json;
 namespace Evently.Server.Features.Bookings.Services;
 
 public sealed class BookingService(
-	AppDbContext db,
+	IMediaRenderer mediaRenderer,
 	IFileStorageService fileStorageService,
-	IMediaRenderer mediaRenderer)
+	AppDbContext db)
 	: IBookingService {
 	public async Task<Booking?> GetBooking(string bookingId) {
 		return await db.Bookings
@@ -78,21 +78,15 @@ public sealed class BookingService(
 		return current;
 	}
 
-	public async Task<string> RenderMemberTicket(string bookingId) {
-		Booking? bookingEvent = await db.Bookings.FindAsync(bookingId);
-		if (bookingEvent is null) {
-			throw new KeyNotFoundException($"BookingEvent with id: {bookingId} not found");
-		}
-
-		Member? attendee = await db.Members.FindAsync(bookingEvent.MemberId);
-		Gathering? gathering = await db.Gatherings.FindAsync(bookingEvent.GatheringId);
-		if (gathering is null || attendee is null) {
-			throw new KeyNotFoundException($"Attendee or Exhibition with id: {bookingId} not found");
+	public async Task<string> RenderTicket(string bookingId) {
+		Booking? booking = await GetBooking(bookingId);
+		if (booking?.Member is null || booking.Gathering is null) {
+			throw new KeyNotFoundException($"Booking with id: {bookingId} not found or related member or gathering is null");
 		}
 
 		string qrData = JsonSerializer.Serialize(new { bookingEventId = bookingId });
 		BinaryData binaryData = mediaRenderer.RenderQr(qrData);
-		string fileName = $"booking-events/{bookingId}/qrcode.png";
+		string fileName = $"bookings/{bookingId}/qrcode.png";
 
 		Uri uri;
 		bool isFileExists = await fileStorageService.IsFileExists(fileName);
@@ -103,12 +97,10 @@ public sealed class BookingService(
 		}
 
 		Dictionary<string, object?> props = new() {
-			{ "BookingEvent", bookingEvent },
-			{ "Attendee", attendee },
-			{ "Gathering", gathering },
+			{ "Booking", booking },
 			{ "QrCodeUrl", uri.AbsoluteUri },
 		};
 
-		return await mediaRenderer.RenderComponentHtml<AttendeeTicket>(props);
+		return await mediaRenderer.RenderComponentHtml<Ticket>(props);
 	}
 }

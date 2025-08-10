@@ -1,20 +1,28 @@
 ﻿using Evently.Server.Common.Domains.Exceptions;
 using Evently.Server.Common.Domains.Interfaces;
+using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 
-namespace Evently.Server.Features.Auths;
+namespace Evently.Server.Features.Accounts;
 
+// Based on https://tinyurl.com/26arz8vk
 [ApiController]
 [Route("api/v1/[controller]")]
-public sealed class AuthsController(
+public sealed class AccountController(
 	IAccountsService accountService,
-	ILogger<AuthsController> logger) : ControllerBase {
+	ILogger<AccountController> logger) : ControllerBase {
+
+	private readonly Dictionary<string, string> _authSchemes = new() {
+		{ "Google", GoogleDefaults.AuthenticationScheme },
+		{ "Microsoft", MicrosoftAccountDefaults.AuthenticationScheme },
+	};
+
 	[HttpGet("account", Name = "Get Account")]
 	public async Task<ActionResult> GetAccount() {
 		AuthenticateResult result = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
@@ -31,12 +39,11 @@ public sealed class AuthsController(
 		return Ok(new Account(
 			user.Id,
 			Email: user.Email ?? "",
-			UserName: user.UserName ?? "",
-			PhoneNumber: user.PhoneNumber ?? ""));
+			UserName: user.UserName ?? ""));
 	}
 
-	[HttpPost("external/logout")]
-	public async Task<ActionResult> Logout([FromQuery] string? redirectUrl = "") {
+	[HttpPost("logout")]
+	public async Task<ActionResult> Logout(string? redirectUrl = "") {
 		// Sign out of an external identity provider (if used)
 		AuthenticationProperties authProps = new() {
 			RedirectUri = redirectUrl,
@@ -52,10 +59,10 @@ public sealed class AuthsController(
 		return Ok(new { redirectUrl });
 	}
 
-	[HttpGet("google/login")]
-	public IActionResult GoogleLogin([FromQuery] string? originUrl = "") {
+	[HttpGet("{provider}/login")]
+	public IActionResult Login(string provider, string? originUrl = "") {
 		Uri rootUri = Request.RootUri();
-		string uri = Url.Action("GoogleCallback", "Auths") ?? "";
+		string uri = Url.Action("Callback", "Account") ?? "";
 		UriBuilder combined = new(rootUri) {
 			Path = uri,
 			Query = $"originUrl={originUrl}",
@@ -66,11 +73,11 @@ public sealed class AuthsController(
 			RedirectUri = combined.Uri.AbsoluteUri,
 			IsPersistent = true,
 		};
-		return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+		return Challenge(properties, _authSchemes.GetValueOrDefault(provider) ?? "");
 	}
 
-	[HttpGet("google/callback")]
-	public async Task<ActionResult<int>> GoogleCallback([FromQuery] string originUrl = "") {
+	[HttpGet("{provider}/callback")]
+	public async Task<ActionResult<int>> Callback(string provider, [FromQuery] string originUrl = "") {
 		AuthenticateResult result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
 		if (!result.Succeeded || result.Principal is null) {
@@ -79,13 +86,10 @@ public sealed class AuthsController(
 
 		ClaimsPrincipal claimsPrincipal = result.Principal;
 		if (claimsPrincipal == null) {
-			throw new ExternalLoginProviderException("Google", "ClaimsPrincipal is null");
+			throw new ExternalLoginProviderException(provider, "ClaimsPrincipal is null");
 		}
 
-		await accountService.ExternalLogin(claimsPrincipal, "Google");
+		await accountService.ExternalLogin(claimsPrincipal, loginProvider: _authSchemes.GetValueOrDefault(provider) ?? "");
 		return Redirect(originUrl);
 	}
-
-	[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Local")]
-	private sealed record Account(string IdentityUserId, string Email, string UserName, string PhoneNumber);
 }

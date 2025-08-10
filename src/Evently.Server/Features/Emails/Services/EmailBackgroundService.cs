@@ -1,21 +1,33 @@
-﻿using Evently.Server.Common.Domains.Interfaces;
-using Evently.Server.Common.Domains.Models;
+﻿using Evently.Server.Common.Domains.Entities;
+using Evently.Server.Common.Domains.Interfaces;
 using System.Threading.Channels;
 using LoggerExtension=Evently.Server.Common.Extensions.LoggerExtension;
 
 namespace Evently.Server.Features.Emails.Services;
 
 public sealed class EmailBackgroundService(
-	ChannelReader<EmailMqPayload> reader,
-	IEmailer emailer,
+	IServiceScopeFactory scopeFactory,
+	ChannelReader<string> reader,
+	IEmailerAdapter emailerAdapter,
 	ILogger<EmailBackgroundService> logger) : BackgroundService {
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
 		while (await reader.WaitToReadAsync(stoppingToken)) {
 			try {
-				EmailMqPayload info = await reader.ReadAsync(stoppingToken);
-				(string email, string html) = info;
-				await emailer.SendEmailAsync("noreply@expoconnect.id", email, "Test QR ticket", html);
-				LoggerExtension.LogSuccessEmail(logger, email);
+				string bookingId = await reader.ReadAsync(stoppingToken);
+
+				using IServiceScope scope = scopeFactory.CreateScope();
+				IBookingService bookingService = scope.ServiceProvider.GetRequiredService<IBookingService>();
+
+				Booking? booking = await bookingService.GetBooking(bookingId);
+				if (booking?.Member is null) {
+					continue;
+				}
+
+				string html = await bookingService.RenderTicket(bookingId);
+				Member member = booking.Member;
+
+				await emailerAdapter.SendEmailAsync("noreply@expoconnect.id", member.Email, "Test QR ticket", html);
+				LoggerExtension.LogSuccessEmail(logger, member.Email);
 			} catch (Exception ex) {
 				logger.LogError("email error: {}", ex.Message);
 			}

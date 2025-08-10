@@ -79,22 +79,4 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 		db.Remove(gathering);
 		await db.SaveChangesAsync();
 	}
-
-	public async Task<Dictionary<string, int>> GetCategoryCount(long gatheringId, int? offset, int? limit) {
-		HashSet<long> attendeeIds = await db.Bookings
-			.Where(booking => booking.GatheringId == gatheringId)
-			.Select(booking => booking.MemberId)
-			.ToHashSetAsync();
-
-		Dictionary<string, int> groupedResult = await db.MemberCategoryDetails
-			.Where((detail) => attendeeIds.Contains(detail.MemberId))
-			.Include((detail) => detail.Category)
-			.GroupBy((detail) => detail.CategoryId)
-			.Select((grp) => new { TopicName = grp.First().Category!.CategoryName, Count = grp.Count() })
-			.OrderByDescending((grp) => grp.Count)
-			.Skip(offset ?? 0)
-			.Take(limit ?? int.MaxValue)
-			.ToDictionaryAsync(keySelector: (grp) => grp.TopicName, elementSelector: (grp) => grp.Count);
-		return groupedResult;
-	}
 }

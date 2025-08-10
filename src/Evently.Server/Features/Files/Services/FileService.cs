@@ -5,10 +5,10 @@ using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Microsoft.Extensions.Options;
 
-namespace Evently.Server.Features.FileStorage.Services;
+namespace Evently.Server.Features.Files.Services;
 
-// Copied from https://tinyurl.com/5pam66xn
-public sealed class FileStorageService(IOptions<Settings> settings) : IFileStorageService {
+// Based on https://tinyurl.com/5pam66xn
+public sealed class FileService(IOptions<Settings> settings) : IFileStorageService {
 	private const string ContainerName = "evently-images";
 
 	private readonly BlobServiceClient _blobServiceClient =

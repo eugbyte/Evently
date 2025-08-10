@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
-namespace Evently.Server.Features.Auths.Services;
+namespace Evently.Server.Features.Accounts.Services;
 
-public sealed partial class AccountsService(UserManager<IdentityUser> userManager) : IAccountsService {
+// Based on https://tinyurl.com/4u4r7ywy
+public sealed partial class AccountService(UserManager<IdentityUser> userManager) : IAccountsService {
 	public async Task<IdentityUser> ExternalLogin(ClaimsPrincipal claimsPrincipal, string loginProvider) {
 		string providerKey = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
 		UserLoginInfo info = new(loginProvider, providerKey, loginProvider);
@@ -18,7 +19,11 @@ public sealed partial class AccountsService(UserManager<IdentityUser> userManage
 	}
 
 	public async Task<IdentityUser?> FindByClaimsPrincipalAsync(ClaimsPrincipal claimsPrincipal) {
-		return await userManager.FindByClaimsPrincipalAsync(claimsPrincipal);
+		string loginProvider = claimsPrincipal.Identity?.AuthenticationType ?? string.Empty;
+		string providerKey = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+
+		IdentityUser? user = await userManager.GetUserAsync(claimsPrincipal);
+		return user ?? await userManager.FindByLoginAsync(loginProvider, providerKey);
 	}
 
 	private async Task<IdentityUser> CreateExternalUser(ClaimsPrincipal claimsPrincipal, string loginProvider) {

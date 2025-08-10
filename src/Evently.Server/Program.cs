@@ -4,11 +4,11 @@ using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
-using Evently.Server.Features.Auths.Services;
+using Evently.Server.Features.Accounts.Services;
 using Evently.Server.Features.Bookings.Services;
 using Evently.Server.Features.Categories.Services;
 using Evently.Server.Features.Emails.Services;
-using Evently.Server.Features.FileStorage.Services;
+using Evently.Server.Features.Files.Services;
 using Evently.Server.Features.Gatherings.Services;
 using Evently.Server.Features.Members.Services;
 using FluentValidation;
@@ -19,8 +19,9 @@ using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
 using System.Threading.Channels;
-using AccountsService=Evently.Server.Features.Auths.Services.AccountsService;
+using AccountService=Evently.Server.Features.Accounts.Services.AccountService;
 using BlazorHtmlRenderer=Microsoft.AspNetCore.Components.Web.HtmlRenderer;
+using BookingId=string;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager config = builder.Configuration;
@@ -51,12 +52,12 @@ builder.Services.AddOpenApi();
 builder.Services.AddTransient<IMemberService, MemberService>();
 builder.Services.AddTransient<IGatheringService, GatheringService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
-builder.Services.AddTransient<IAccountsService, AccountsService>();
+builder.Services.AddTransient<IAccountsService, AccountService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddTransient<IAuthorizationHandler, SameUserAuthorizationHandler>();
+builder.Services.AddTransient<IAuthorizationHandler, SameAccountAuthorizationHandler>();
 builder.Services.AddHealthChecks()
 	.AddDbContextCheck<AppDbContext>();
-builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
+builder.Services.AddSingleton<IFileStorageService, FileService>();
 builder.Services.AddTransient<IBookingService, BookingService>();
 
 // MediaRenderer relies on BlazorHtmlRenderer
@@ -64,10 +65,10 @@ builder.Services.AddScoped<BlazorHtmlRenderer>();
 builder.Services.AddScoped<IMediaRenderer, MediaRenderer>();
 
 // singleton background service have indirect dependencies on the channel, emailService and mediaRenderer
-Channel<EmailMqPayload> channel = Channel.CreateBounded<EmailMqPayload>(100); // Set capacity to 100
+Channel<BookingId> channel = Channel.CreateUnbounded<BookingId>();
 builder.Services.AddSingleton(channel.Reader);
 builder.Services.AddSingleton(channel.Writer);
-builder.Services.AddSingleton<IEmailer, Emailer>();
+builder.Services.AddSingleton<IEmailerAdapter, EmailAdapter>();
 builder.Services.AddHostedService<EmailBackgroundService>();
 
 

@@ -5,24 +5,24 @@ namespace Evently.Server.Features.Members.Services;
 
 public sealed class MemberValidator : AbstractValidator<Member> {
 	public MemberValidator() {
-		RuleFor((attendee) => attendee.Name).NotEmpty().WithMessage("Name is required.");
-		RuleFor((attendee) => attendee.Email).NotEmpty().WithMessage("Email is required.");
-		RuleForEach((attendee) => attendee.BookingEvents).Custom((value, context) => {
+		RuleFor((member) => member.Name).NotEmpty().WithMessage("Name is required.");
+		RuleFor((member) => member.Email).NotEmpty().WithMessage("Email is required.");
+		RuleForEach((member) => member.BookingEvents).Custom((value, context) => {
 			if (value.MemberId == 0) {
-				context.AddFailure("AttendeeId is required.");
+				context.AddFailure("MemberId is required.");
 			}
 
 			if (string.IsNullOrEmpty(value.BookingId)) {
-				context.AddFailure("BookingEventId is required.");
+				context.AddFailure("BookingId is required.");
 			}
 		});
-		RuleForEach((attendee) => attendee.MemberCategoryDetails).Custom((value, context) => {
+		RuleForEach((member) => member.MemberCategoryDetails).Custom((value, context) => {
 			if (value.MemberId == 0) {
-				context.AddFailure("AttendeeId is required.");
+				context.AddFailure("MemberId is required.");
 			}
 
 			if (value.CategoryId == 0) {
-				context.AddFailure("TopicId is required.");
+				context.AddFailure("CategoryId is required.");
 			}
 		});
 	}

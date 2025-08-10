@@ -75,8 +75,6 @@
 
 @code {
     [Parameter] [EditorRequired] public Booking Booking { get; set; } = new();
-    [Parameter] [EditorRequired] public Gathering Gathering { get; set; } = new();
-    [Parameter] [EditorRequired] public Member Member { get; set; } = new();
     [Parameter] [EditorRequired] public string QrCodeUrl { get; set; } = string.Empty;
     [Parameter] public string Classes { get; set; } = string.Empty;
 
@@ -91,6 +89,8 @@
     private string EndTime => Gathering.End.ToString("HH:mm");
     private string StartDate => Gathering.Start.ToString("d MMM yyyy");
     private string _baseUri = string.Empty;
+    private Gathering Gathering => Booking.Gathering ?? new Gathering();
+    private Member Member => Booking.Member ?? new Member();
 
 
 }

@@ -2,7 +2,7 @@ using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
-using Evently.Server.Features.Auths.Services;
+using Evently.Server.Features.Accounts.Services;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
@@ -16,8 +16,8 @@ namespace Evently.Server.Features.Members;
 [Route("api/v1/[controller]")]
 public sealed class MembersController(IMemberService memberService, IValidator<Member> validator)
 	: ControllerBase {
-	[HttpGet("{memberId:long}", Name = "GetAttendee")]
-	public async Task<ActionResult<Member>> GetAttendee(long memberId) {
+	[HttpGet("{memberId:long}", Name = "GetMember")]
+	public async Task<ActionResult<Member>> GetMember(long memberId) {
 		Member? attendee = await memberService.GetMember(memberId);
 		if (attendee is null) {
 			return NotFound();
@@ -26,8 +26,8 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 		return Ok(attendee);
 	}
 
-	[HttpGet("", Name = "GetAttendees")]
-	public async Task<ActionResult<Member>> GetAttendees(string? company, int? offset,
+	[HttpGet("", Name = "GetMembers")]
+	public async Task<ActionResult<Member>> GetMembers(string? company, int? offset,
 		int? limit) {
 		PageResult<Member> result = await memberService.GetMembers(company, offset, limit);
 		List<Member> attendees = result.Items;
@@ -37,8 +37,8 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 		return Ok(attendees);
 	}
 
-	[HttpPost("", Name = "CreateAttendee")]
-	public async Task<ActionResult<Member>> CreateAttendee(MemberDto memberDto) {
+	[HttpPost("", Name = "CreateMember")]
+	public async Task<ActionResult<Member>> CreateMember(MemberDto memberDto) {
 		memberDto = memberDto with { MemberId = 0 };
 		ValidationResult result = await validator.ValidateAsync(memberDto.ToMember());
 		if (!result.IsValid) {
@@ -54,8 +54,8 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 		return Ok(member);
 	}
 
-	[HttpPut("{memberId:long}", Name = "UpdateAttendee")]
-	public async Task<ActionResult<Member>> UpdateAttendee(long memberId, [FromBody] MemberDto memberDto) {
+	[HttpPut("{memberId:long}", Name = "UpdateMember")]
+	public async Task<ActionResult<Member>> UpdateMember(long memberId, [FromBody] MemberDto memberDto) {
 		Member? attendee = await memberService.GetMember(memberId);
 		if (attendee is null) {
 			return NotFound();

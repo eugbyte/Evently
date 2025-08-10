@@ -13,5 +13,5 @@ public interface IBookingService {
 	Task<Booking> CreateBooking(BookingDto bookingDto);
 	Task<Booking> UpdateBooking(string bookingId, BookingDto bookingDto);
 	Task<bool> Exists(string bookingId);
-	Task<string> RenderMemberTicket(string bookingId);
+	Task<string> RenderTicket(string bookingId);
 }

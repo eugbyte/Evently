@@ -15,5 +15,4 @@ public interface IGatheringService {
 	Task<Gathering> CreateGathering(GatheringDto gatheringDto);
 	Task<Gathering> UpdateGathering(long gatheringId, GatheringDto gatheringDto);
 	Task DeleteGathering(long gatheringId);
-	Task<Dictionary<string, int>> GetCategoryCount(long gatheringId, int? offset, int? limit);
 }
