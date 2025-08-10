@@ -19,8 +19,8 @@ public sealed class AccountController(
 	ILogger<AccountController> logger) : ControllerBase {
 
 	private readonly Dictionary<string, string> _authSchemes = new() {
-		{ "Google", GoogleDefaults.AuthenticationScheme },
-		{ "Microsoft", MicrosoftAccountDefaults.AuthenticationScheme },
+		{ "google", GoogleDefaults.AuthenticationScheme },
+		{ "microsoft", MicrosoftAccountDefaults.AuthenticationScheme },
 	};
 
 	[HttpGet("account", Name = "Get Account")]
