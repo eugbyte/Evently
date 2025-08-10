@@ -21,7 +21,7 @@ public static class AccountExtensions {
 		AuthorizationResult authorizationResult =
 			await authorizationService.AuthorizeAsync(principal,
 				resourceIdentityUserId,
-				SameUserRequirement.PolicyName);
+				SameAccountRequirement.PolicyName);
 		return authorizationResult.Succeeded;
 	}
 }

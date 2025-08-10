@@ -5,11 +5,11 @@ using System.Security.Claims;
 namespace Evently.Server.Features.Accounts.Services;
 
 // Based on https://tinyurl.com/5cxw9vmu
-public sealed class SameAccountAuthorizationHandler(UserManager<IdentityUser> userManager)
-	: AuthorizationHandler<SameUserRequirement, string> {
+public sealed class AccountAuthorizationHandler(UserManager<IdentityUser> userManager)
+	: AuthorizationHandler<SameAccountRequirement, string> {
 	protected override async Task HandleRequirementAsync(
 		AuthorizationHandlerContext context,
-		SameUserRequirement requirement,
+		SameAccountRequirement requirement,
 		string? identityUserId) {
 		ClaimsPrincipal principal = context.User;
 		IdentityUser? user = await FindByClaimsPrincipalAsync(userManager, principal);
@@ -30,6 +30,6 @@ public sealed class SameAccountAuthorizationHandler(UserManager<IdentityUser> us
 	}
 }
 
-public class SameUserRequirement : IAuthorizationRequirement {
-	public const string PolicyName = "SameUserPolicy";
+public class SameAccountRequirement : IAuthorizationRequirement {
+	public const string PolicyName = "SameAccountPolicy";
 }

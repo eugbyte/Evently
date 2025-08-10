@@ -54,7 +54,7 @@ builder.Services.AddTransient<IGatheringService, GatheringService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IAccountsService, AccountService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddTransient<IAuthorizationHandler, SameAccountAuthorizationHandler>();
+builder.Services.AddTransient<IAuthorizationHandler, AccountAuthorizationHandler>();
 builder.Services.AddHealthChecks()
 	.AddDbContextCheck<AppDbContext>();
 builder.Services.AddSingleton<IFileStorageService, FileService>();
@@ -101,9 +101,9 @@ builder.Services.AddAuthentication()
 	});
 
 builder.Services.AddAuthorizationBuilder()
-	.AddPolicy(SameUserRequirement.PolicyName,
+	.AddPolicy(SameAccountRequirement.PolicyName,
 		configurePolicy: (policy) =>
-			policy.Requirements.Add(new SameUserRequirement()));
+			policy.Requirements.Add(new SameAccountRequirement()));
 
 // Add razor pages support to render Blazor files
 builder.Services.AddRazorComponents()
