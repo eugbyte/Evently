@@ -1,7 +1,7 @@
 ﻿using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using System.Threading.Channels;
-using LoggerExtension=Evently.Server.Common.Extensions.LoggerExtension;
+using LoggerExtension = Evently.Server.Common.Extensions.LoggerExtension;
 
 namespace Evently.Server.Features.Emails.Services;
 

@@ -3,7 +3,7 @@ using Evently.Server.Common.Domains.Models;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using LoggerExtension=Evently.Server.Common.Extensions.LoggerExtension;
+using LoggerExtension = Evently.Server.Common.Extensions.LoggerExtension;
 
 namespace Evently.Server.Features.Emails.Services;
 

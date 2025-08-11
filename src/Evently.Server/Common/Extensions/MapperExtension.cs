@@ -53,6 +53,7 @@ public static class MapperExtension {
 		};
 		return gathering;
 	}
+
 	public static GatheringDto ToGatheringDto(this Gathering gathering) {
 		GatheringDto dto = new(
 			gathering.GatheringId,

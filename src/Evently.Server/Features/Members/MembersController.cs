@@ -18,12 +18,12 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 	: ControllerBase {
 	[HttpGet("{memberId:long}", Name = "GetMember")]
 	public async Task<ActionResult<Member>> GetMember(long memberId) {
-		Member? attendee = await memberService.GetMember(memberId);
-		if (attendee is null) {
+		Member? member = await memberService.GetMember(memberId);
+		if (member is null) {
 			return NotFound();
 		}
 
-		return Ok(attendee);
+		return Ok(member);
 	}
 
 	[HttpGet("", Name = "GetMembers")]
@@ -56,8 +56,8 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 
 	[HttpPut("{memberId:long}", Name = "UpdateMember")]
 	public async Task<ActionResult<Member>> UpdateMember(long memberId, [FromBody] MemberDto memberDto) {
-		Member? attendee = await memberService.GetMember(memberId);
-		if (attendee is null) {
+		Member? member = await memberService.GetMember(memberId);
+		if (member is null) {
 			return NotFound();
 		}
 
@@ -66,11 +66,11 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 			return BadRequest(result.Errors);
 		}
 
-		if (!await this.IsResourceOwner(attendee.Id)) {
+		if (!await this.IsResourceOwner(member.Id)) {
 			return Forbid();
 		}
 
-		attendee = await memberService.UpdateMember(memberId, memberDto);
-		return Ok(attendee);
+		member = await memberService.UpdateMember(memberId, memberDto);
+		return Ok(member);
 	}
 }

@@ -78,8 +78,10 @@
     [Parameter] [EditorRequired] public string QrCodeUrl { get; set; } = string.Empty;
     [Parameter] public string Classes { get; set; } = string.Empty;
 
-    protected override void OnAfterRender(bool firstRender) {
-        if (firstRender) {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
             _baseUri = (Env.IsDevelopment() ? "https://localhost:5000/" : Navigator.BaseUri).TrimEnd('/');
         }
     }

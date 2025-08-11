@@ -15,14 +15,14 @@ public sealed class MemberService(AppDbContext db) : IMemberService {
 
 		int totalCount = await query.CountAsync();
 
-		List<Member> attendees = await query
+		List<Member> members = await query
 			.OrderBy((attendee) => attendee.Id)
 			.Skip(offset ?? 0)
 			.Take(limit ?? int.MaxValue)
 			.ToListAsync();
 
 		return new PageResult<Member> {
-			Items = attendees,
+			Items = members,
 			TotalCount = totalCount,
 		};
 	}

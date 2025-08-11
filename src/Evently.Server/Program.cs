@@ -19,9 +19,9 @@ using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
 using System.Threading.Channels;
-using AccountService=Evently.Server.Features.Accounts.Services.AccountService;
-using BlazorHtmlRenderer=Microsoft.AspNetCore.Components.Web.HtmlRenderer;
-using BookingId=string;
+using AccountService = Evently.Server.Features.Accounts.Services.AccountService;
+using BlazorHtmlRenderer = Microsoft.AspNetCore.Components.Web.HtmlRenderer;
+using BookingId = string;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager config = builder.Configuration;
@@ -40,7 +40,8 @@ string? dbConnStr = builder.Configuration.GetConnectionString("WebApiDatabase");
 logger.LogValue("dbConnStr", dbConnStr);
 builder.Services.AddDbContext<AppDbContext>((options) => {
 	options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-	options.UseNpgsql(dbConnStr, npgsqlOptionsAction: pgOpt => pgOpt.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+	options.UseNpgsql(dbConnStr,
+		npgsqlOptionsAction: pgOpt => pgOpt.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
 });
 
 // Add services to the container.
@@ -75,6 +76,7 @@ builder.Services.AddHostedService<EmailBackgroundService>();
 // Fluent validation dependency injection without automatic registration
 builder.Services.AddScoped<IValidator<Member>, MemberValidator>();
 builder.Services.AddScoped<IValidator<Gathering>, GatheringValidator>();
+builder.Services.AddScoped<IValidator<Booking>, BookingValidator>();
 
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 	.AddEntityFrameworkStores<AppDbContext>();

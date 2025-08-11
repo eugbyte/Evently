@@ -8,8 +8,7 @@ namespace Evently.Server.Common.Domains.Entities;
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class MemberCategoryDetail {
-	[ForeignKey("Member")]
-	public long MemberId { get; set; }
+	[ForeignKey("Member")] public long MemberId { get; set; }
 	public long CategoryId { get; set; }
 
 	public Member? Member { get; set; }

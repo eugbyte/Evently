@@ -17,30 +17,10 @@ namespace Evently.Server.Features.Accounts;
 public sealed class AccountController(
 	IAccountsService accountService,
 	ILogger<AccountController> logger) : ControllerBase {
-
 	private readonly Dictionary<string, string> _authSchemes = new() {
 		{ "google", GoogleDefaults.AuthenticationScheme },
 		{ "microsoft", MicrosoftAccountDefaults.AuthenticationScheme },
 	};
-
-	[HttpGet("account", Name = "Get Account")]
-	public async Task<ActionResult> GetAccount() {
-		AuthenticateResult result = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
-		if (!result.Succeeded) {
-			return Unauthorized();
-		}
-
-		ClaimsPrincipal principal = result.Principal ?? new ClaimsPrincipal();
-		IdentityUser? user = await accountService.FindByClaimsPrincipalAsync(principal);
-		if (user is null) {
-			return NotFound(new { message = "User not found" });
-		}
-
-		return Ok(new Account(
-			user.Id,
-			Email: user.Email ?? "",
-			UserName: user.UserName ?? ""));
-	}
 
 	[HttpPost("logout")]
 	public async Task<ActionResult> Logout(string? redirectUrl = "") {
@@ -89,7 +69,8 @@ public sealed class AccountController(
 			throw new ExternalLoginProviderException(provider, "ClaimsPrincipal is null");
 		}
 
-		await accountService.ExternalLogin(claimsPrincipal, loginProvider: _authSchemes.GetValueOrDefault(provider) ?? "");
+		await accountService.ExternalLogin(claimsPrincipal,
+			loginProvider: _authSchemes.GetValueOrDefault(provider) ?? "");
 		return Redirect(originUrl);
 	}
 }

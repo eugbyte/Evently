@@ -13,15 +13,14 @@ public class Gathering {
 
 	[StringLength(10_000)] public string Description { get; set; } = string.Empty;
 
-	public DateTimeOffset Start { get; set; }
-	public DateTimeOffset End { get; set; }
+	public DateTimeOffset Start { get; set; }  = DateTimeOffset.UtcNow;
+	public DateTimeOffset End { get; set; } = DateTimeOffset.UtcNow;
 
 	[StringLength(100)] public string Location { get; set; } = string.Empty;
 
 	[StringLength(1000)] public string? CoverSrc { get; set; } = string.Empty;
 
-	[ForeignKey("Member")]
-	public long MemberId { get; set; }
+	[ForeignKey("Member")] public long MemberId { get; set; }
 	public Member? Member { get; set; }
 
 	public List<Booking> BookingEvents { get; set; } = [];

@@ -5,7 +5,7 @@ using PdfSharp;
 using PdfSharp.Pdf;
 using QRCoder;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
-using BlazorHtmlRenderer=Microsoft.AspNetCore.Components.Web.HtmlRenderer;
+using BlazorHtmlRenderer = Microsoft.AspNetCore.Components.Web.HtmlRenderer;
 
 namespace Evently.Server.Features.Emails.Services;
 

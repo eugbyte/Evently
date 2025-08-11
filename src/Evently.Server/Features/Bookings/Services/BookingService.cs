@@ -81,7 +81,8 @@ public sealed class BookingService(
 	public async Task<string> RenderTicket(string bookingId) {
 		Booking? booking = await GetBooking(bookingId);
 		if (booking?.Member is null || booking.Gathering is null) {
-			throw new KeyNotFoundException($"Booking with id: {bookingId} not found or related member or gathering is null");
+			throw new KeyNotFoundException(
+				$"Booking with id: {bookingId} not found or related member or gathering is null");
 		}
 
 		string qrData = JsonSerializer.Serialize(new { bookingEventId = bookingId });

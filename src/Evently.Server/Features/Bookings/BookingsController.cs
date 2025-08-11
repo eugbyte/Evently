@@ -1,6 +1,9 @@
 using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
+using Evently.Server.Common.Extensions;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Threading.Channels;
@@ -9,7 +12,7 @@ namespace Evently.Server.Features.Bookings;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public sealed class BookingsController(IBookingService bookingService, ChannelWriter<string> emailQueue)
+public sealed class BookingsController(IBookingService bookingService, ChannelWriter<string> emailQueue, IValidator<Booking> validator)
 	: ControllerBase {
 	[HttpGet("{bookingId}", Name = "GetBooking")]
 	public async Task<ActionResult<Booking>> GetBooking(string bookingId) {
@@ -21,7 +24,7 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 		return Ok(booking);
 	}
 
-	[HttpGet("{bookingId}/preview", Name = "GetBooking")]
+	[HttpGet("{bookingId}/preview", Name = "PreviewBooking")]
 	public async Task<ActionResult<Booking>> PreviewBooking(string bookingId) {
 		string html = await bookingService.RenderTicket(bookingId);
 		return Content(html);
@@ -52,6 +55,11 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 
 	[HttpPost("", Name = "CreateBooking")]
 	public async Task<ActionResult<Booking>> CreateBooking([FromBody] BookingDto bookingDto) {
+		ValidationResult validationResult = await validator.ValidateAsync(bookingDto.ToBooking());
+		if (!validationResult.IsValid) {
+			return BadRequest(validationResult.Errors);
+		}
+		
 		Booking booking = await bookingService.CreateBooking(bookingDto);
 		await emailQueue.WriteAsync(booking.BookingId);
 		return Ok(booking);
@@ -60,6 +68,11 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 	[HttpPut("{bookingId}", Name = "UpdateBooking")]
 	public async Task<ActionResult> UpdateBooking(string bookingId,
 		[FromBody] BookingDto bookingDto) {
+		ValidationResult validationResult = await validator.ValidateAsync(bookingDto.ToBooking());
+		if (!validationResult.IsValid) {
+			return BadRequest(validationResult.Errors);
+		}
+		
 		bool isExist = await bookingService.Exists(bookingId);
 		if (!isExist) {
 			return NotFound();
