@@ -19,9 +19,9 @@ using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
 using System.Threading.Channels;
-using AccountService = Evently.Server.Features.Accounts.Services.AccountService;
-using BlazorHtmlRenderer = Microsoft.AspNetCore.Components.Web.HtmlRenderer;
-using BookingId = string;
+using AccountService=Evently.Server.Features.Accounts.Services.AccountService;
+using BlazorHtmlRenderer=Microsoft.AspNetCore.Components.Web.HtmlRenderer;
+using BookingId=string;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager config = builder.Configuration;

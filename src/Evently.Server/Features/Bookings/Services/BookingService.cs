@@ -22,12 +22,12 @@ public sealed class BookingService(
 			.FirstOrDefaultAsync((be) => be.BookingId == bookingId);
 	}
 
-	public async Task<PageResult<Booking>> GetBookings(long? guestMemberId, long? hostMemberId,
+	public async Task<PageResult<Booking>> GetBookings(long? guestId, long? organiserId,
 		DateTime? checkInStart, DateTime? checkInEnd,
 		bool? isCancelled, int? offset, int? limit) {
 		IQueryable<Booking> query = db.Bookings
-			.Where((b) => guestMemberId == null || b.MemberId == guestMemberId)
-			.Where((b) => hostMemberId == null || b.GatheringId == hostMemberId)
+			.Where((b) => guestId == null || b.MemberId == guestId)
+			.Where((b) => organiserId == null || b.GatheringId == organiserId)
 			.Where((c) => checkInStart == null || checkInStart <= c.CheckInDateTime)
 			.Where((b) => checkInEnd == null || b.CheckInDateTime <= checkInEnd)
 			.Where((b) => isCancelled == null || b.CancellationDateTime.HasValue == isCancelled)
@@ -52,16 +52,16 @@ public sealed class BookingService(
 		return await db.Bookings.AnyAsync(b => b.BookingId == bookingId);
 	}
 
-	public async Task<Booking> CreateBooking(BookingDto bookingDto) {
-		Booking booking = bookingDto.ToBooking();
+	public async Task<Booking> CreateBooking(BookingReqDto bookingReqDto) {
+		Booking booking = bookingReqDto.ToBooking();
 		booking.BookingId = $"book_{await Nanoid.GenerateAsync(size: 10)}";
 		await db.Bookings.AddAsync(booking);
 		await db.SaveChangesAsync();
 		return booking;
 	}
 
-	public async Task<Booking> UpdateBooking(string bookingId, BookingDto bookingDto) {
-		Booking booking = bookingDto.ToBooking();
+	public async Task<Booking> UpdateBooking(string bookingId, BookingReqDto bookingReqDto) {
+		Booking booking = bookingReqDto.ToBooking();
 
 		Booking current = await db.Bookings.AsTracking()
 			                  .FirstOrDefaultAsync((be) => be.BookingId == bookingId)

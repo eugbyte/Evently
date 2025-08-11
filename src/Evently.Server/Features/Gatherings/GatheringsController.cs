@@ -48,9 +48,9 @@ public sealed class GatheringsController(
 	}
 
 	[HttpPost("", Name = "CreateGathering")]
-	public async Task<ActionResult<Gathering>> CreateGathering(GatheringDto gatheringDto) {
-		gatheringDto = gatheringDto with { GatheringId = 0 };
-		ValidationResult validationResult = await validator.ValidateAsync(gatheringDto.ToGathering());
+	public async Task<ActionResult<Gathering>> CreateGathering(GatheringReqDto gatheringReqDto) {
+		gatheringReqDto = gatheringReqDto with { GatheringId = 0 };
+		ValidationResult validationResult = await validator.ValidateAsync(gatheringReqDto.ToGathering());
 		if (!validationResult.IsValid) {
 			return BadRequest(validationResult.Errors);
 		}
@@ -61,27 +61,27 @@ public sealed class GatheringsController(
 			return Unauthorized();
 		}
 
-		Gathering gathering = await gatheringService.CreateGathering(gatheringDto);
+		Gathering gathering = await gatheringService.CreateGathering(gatheringReqDto);
 		return Ok(gathering);
 	}
 
 	[HttpPut("{gatheringId:long}", Name = "UpdateGathering")]
-	public async Task<ActionResult> UpdateGathering(long gatheringId, [FromBody] GatheringDto gatheringDto) {
+	public async Task<ActionResult> UpdateGathering(long gatheringId, [FromBody] GatheringReqDto gatheringReqDto) {
 		Gathering? exhibition = await gatheringService.GetGathering(gatheringId);
 		if (exhibition is null) {
 			return NotFound();
 		}
 
-		ValidationResult result = await validator.ValidateAsync(gatheringDto.ToGathering());
+		ValidationResult result = await validator.ValidateAsync(gatheringReqDto.ToGathering());
 		if (!result.IsValid) {
 			return BadRequest(result.Errors);
 		}
 
-		if (!await this.IsResourceOwner(exhibition.Member?.Id)) {
+		if (!await this.IsResourceOwner(exhibition.Member?.MemberId)) {
 			return Forbid();
 		}
 
-		exhibition = await gatheringService.UpdateGathering(gatheringId, gatheringDto);
+		exhibition = await gatheringService.UpdateGathering(gatheringId, gatheringReqDto);
 		return Ok(exhibition);
 	}
 
@@ -92,7 +92,7 @@ public sealed class GatheringsController(
 			return NotFound();
 		}
 
-		if (!await this.IsResourceOwner(exhibition.Member?.Id)) {
+		if (!await this.IsResourceOwner(exhibition.Member?.MemberId)) {
 			return Forbid();
 		}
 
@@ -117,7 +117,7 @@ public sealed class GatheringsController(
 			gathering.CoverSrc = uri.AbsoluteUri;
 		}
 
-		gathering = await gatheringService.UpdateGathering(gatheringId, gatheringDto: gathering.ToGatheringDto());
+		gathering = await gatheringService.UpdateGathering(gatheringId, gatheringReqDto: gathering.ToGatheringDto());
 		return Ok(new {
 			coverUri = gathering.CoverSrc,
 		});

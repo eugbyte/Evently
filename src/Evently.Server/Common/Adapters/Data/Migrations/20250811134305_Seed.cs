@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class Seed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,39 +63,6 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.CategoryId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Members",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Phone = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Company = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Role = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Objective = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    AdSource = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    LogoSrc = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    UserName = table.Column<string>(type: "text", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "text", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "text", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Members", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,6 +172,28 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Members",
+                columns: table => new
+                {
+                    MemberId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Phone = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    LogoSrc = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    IdentityUserId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Members", x => x.MemberId);
+                    table.ForeignKey(
+                        name: "FK_Members_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Gatherings",
                 columns: table => new
                 {
@@ -216,40 +205,16 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Location = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     CoverSrc = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    MemberId = table.Column<long>(type: "bigint", nullable: false)
+                    OrganiserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Gatherings", x => x.GatheringId);
                     table.ForeignKey(
-                        name: "FK_Gatherings_Members_MemberId",
-                        column: x => x.MemberId,
+                        name: "FK_Gatherings_Members_OrganiserId",
+                        column: x => x.OrganiserId,
                         principalTable: "Members",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MemberCategoryDetails",
-                columns: table => new
-                {
-                    MemberId = table.Column<long>(type: "bigint", nullable: false),
-                    CategoryId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MemberCategoryDetails", x => new { x.MemberId, x.CategoryId });
-                    table.ForeignKey(
-                        name: "FK_MemberCategoryDetails_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MemberCategoryDetails_Members_MemberId",
-                        column: x => x.MemberId,
-                        principalTable: "Members",
-                        principalColumn: "Id",
+                        principalColumn: "MemberId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -278,9 +243,43 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                         name: "FK_Bookings_Members_MemberId",
                         column: x => x.MemberId,
                         principalTable: "Members",
-                        principalColumn: "Id",
+                        principalColumn: "MemberId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "MemberCategoryDetails",
+                columns: table => new
+                {
+                    GatheringId = table.Column<long>(type: "bigint", nullable: false),
+                    CategoryId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MemberCategoryDetails", x => new { x.GatheringId, x.CategoryId });
+                    table.ForeignKey(
+                        name: "FK_MemberCategoryDetails_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MemberCategoryDetails_Gatherings_GatheringId",
+                        column: x => x.GatheringId,
+                        principalTable: "Gatherings",
+                        principalColumn: "GatheringId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "Approved", "CategoryName" },
+                values: new object[] { 1L, false, "Information Technology" });
+
+            migrationBuilder.InsertData(
+                table: "Members",
+                columns: new[] { "MemberId", "Email", "IdentityUserId", "LogoSrc", "Name", "Phone" },
+                values: new object[] { 1L, "john.doe@gmail.com", null, "", "John Doe", "088888888" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -330,9 +329,9 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 column: "MemberId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Gatherings_MemberId",
+                name: "IX_Gatherings_OrganiserId",
                 table: "Gatherings",
-                column: "MemberId");
+                column: "OrganiserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MemberCategoryDetails_CategoryId",
@@ -344,6 +343,11 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 table: "Members",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Members_IdentityUserId",
+                table: "Members",
+                column: "IdentityUserId");
         }
 
         /// <inheritdoc />
@@ -374,16 +378,16 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Gatherings");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Members");
 
             migrationBuilder.DropTable(
-                name: "Members");
+                name: "AspNetUsers");
         }
     }
 }

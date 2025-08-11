@@ -9,6 +9,7 @@ namespace Evently.Server.Common.Domains.Entities;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class Booking {
 	[Key]
+	[DatabaseGenerated(DatabaseGeneratedOption.None)]
 	[StringLength(50)]
 	public string BookingId { get; set; } = $"book_{Nanoid.Generate(size: 10)}";
 

@@ -4,80 +4,66 @@ using Evently.Server.Common.Domains.Models;
 namespace Evently.Server.Common.Extensions;
 
 public static class MapperExtension {
-	public static MemberDto ToMemberDto(this Member member) {
-		MemberDto dto = new(
-			member.Id,
+	public static MemberReqDto ToMemberDto(this Member member) {
+		MemberReqDto reqDto = new(
+			member.MemberId,
 			member.Name,
-			Email: member.Email ?? "",
+			member.Email,
 			member.Phone,
-			member.Company,
-			member.Role,
-			member.Objective,
-			member.AdSource,
-			member.LogoSrc,
-			AttendeeTopicDetails: member.MemberCategoryDetails
-				.Select((detail) => new MemberCategoryDetailDto(detail.MemberId, detail.CategoryId)).ToList()
+			member.LogoSrc
 		);
-		return dto;
+		return reqDto;
 	}
 
-	public static Member ToMember(this MemberDto memberDto) {
+	public static Member ToMember(this MemberReqDto memberReqDto) {
 		Member member = new() {
-			Id = memberDto.MemberId,
-			Name = memberDto.Name,
-			Email = memberDto.Email,
-			Phone = memberDto.Phone,
-			Company = memberDto.Company,
-			Role = memberDto.Role,
-			Objective = memberDto.Objective,
-			AdSource = memberDto.AdSource,
-			LogoSrc = memberDto.LogoSrc,
-			MemberCategoryDetails = memberDto.AttendeeTopicDetails.Select((dto) => new MemberCategoryDetail {
-				MemberId = dto.MemberId,
-				CategoryId = dto.CategoryId,
-			}).ToList(),
+			MemberId = memberReqDto.MemberId,
+			Name = memberReqDto.Name,
+			Email = memberReqDto.Email,
+			Phone = memberReqDto.Phone,
+			LogoSrc = memberReqDto.LogoSrc,
 		};
 		return member;
 	}
 
-	public static Gathering ToGathering(this GatheringDto gatheringDto) {
+	public static Gathering ToGathering(this GatheringReqDto gatheringReqDto) {
 		Gathering gathering = new() {
-			GatheringId = gatheringDto.GatheringId,
-			Name = gatheringDto.Name,
-			Description = gatheringDto.Description,
-			Start = gatheringDto.Start,
-			End = gatheringDto.End,
-			Location = gatheringDto.Location,
-			MemberId = gatheringDto.EventOrganiserId,
-			CoverSrc = gatheringDto.CoverSrc,
+			GatheringId = gatheringReqDto.GatheringId,
+			Name = gatheringReqDto.Name,
+			Description = gatheringReqDto.Description,
+			Start = gatheringReqDto.Start,
+			End = gatheringReqDto.End,
+			Location = gatheringReqDto.Location,
+			OrganiserId = gatheringReqDto.EventOrganiserId,
+			CoverSrc = gatheringReqDto.CoverSrc,
 		};
 		return gathering;
 	}
 
-	public static GatheringDto ToGatheringDto(this Gathering gathering) {
-		GatheringDto dto = new(
+	public static GatheringReqDto ToGatheringDto(this Gathering gathering) {
+		GatheringReqDto reqDto = new(
 			gathering.GatheringId,
 			gathering.Name,
 			gathering.Description,
 			gathering.Start,
 			gathering.End,
 			gathering.Location,
-			gathering.MemberId,
+			gathering.OrganiserId,
 			gathering.CoverSrc
 		);
-		return dto;
+		return reqDto;
 	}
 
 
-	public static Booking ToBooking(this BookingDto bookingDto) {
+	public static Booking ToBooking(this BookingReqDto bookingReqDto) {
 		return new Booking {
-			BookingId = bookingDto.BookingId,
-			MemberId = bookingDto.AttendeeId,
-			GatheringId = bookingDto.ExhibitionId,
-			RegistrationDateTime = bookingDto.RegistrationDateTime,
-			CheckInDateTime = bookingDto.CheckInDateTime,
-			CheckoutDateTime = bookingDto.CheckoutDateTime,
-			CancellationDateTime = bookingDto.CancellationDateTime,
+			BookingId = bookingReqDto.BookingId,
+			MemberId = bookingReqDto.AttendeeId,
+			GatheringId = bookingReqDto.ExhibitionId,
+			RegistrationDateTime = bookingReqDto.RegistrationDateTime,
+			CheckInDateTime = bookingReqDto.CheckInDateTime,
+			CheckoutDateTime = bookingReqDto.CheckoutDateTime,
+			CancellationDateTime = bookingReqDto.CancellationDateTime,
 		};
 	}
 }

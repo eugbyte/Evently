@@ -6,9 +6,9 @@ namespace Evently.Server.Common.Domains.Interfaces;
 
 public interface IMemberService {
 	Task<Member?> GetMember(long memberId);
-	Task<PageResult<Member>> GetMembers(string? company, int? offset, int? limit);
-	Task<Member> CreateMember(MemberDto memberDto);
-	Task<Member> UpdateMember(long memberId, MemberDto memberDto);
+	Task<PageResult<Member>> GetMembers(string? name, int? offset, int? limit);
+	Task<Member> CreateMember(MemberReqDto memberReqDto);
+	Task<Member> UpdateMember(long memberId, MemberReqDto memberReqDto);
 
 	[SuppressMessage("ReSharper", "UnusedMethodReturnValue.Global")]
 	[SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]

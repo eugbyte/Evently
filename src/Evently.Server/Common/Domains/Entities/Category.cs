@@ -11,5 +11,5 @@ public class Category {
 	[StringLength(100)] public string CategoryName { get; set; } = string.Empty;
 	public bool Approved { get; set; }
 
-	public List<MemberCategoryDetail> MemberCategoryDetails { get; set; } = [];
+	public List<GatheringCategoryDetail> GatheringCategoryDetails { get; set; } = [];
 }

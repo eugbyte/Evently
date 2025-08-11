@@ -1,6 +1,6 @@
 ﻿namespace Evently.Server.Common.Domains.Models;
 
-public record BookingDto(
+public sealed record BookingReqDto(
 	string BookingId,
 	long AttendeeId,
 	long ExhibitionId,

@@ -9,17 +9,35 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 	public DbSet<Member> Members { get; set; }
 	public DbSet<Booking> Bookings { get; set; }
 	public DbSet<Gathering> Gatherings { get; set; }
-	public DbSet<MemberCategoryDetail> MemberCategoryDetails { get; set; }
+	public DbSet<GatheringCategoryDetail> MemberCategoryDetails { get; set; }
 	public DbSet<Category> Categories { get; set; }
 	public DbSet<IdentityUser> IdentityUsers { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder builder) {
 		base.OnModelCreating(builder);
-		
+
 		Category category1 = new() {
 			CategoryId = 1,
 			CategoryName = "Information Technology",
 		};
 		builder.Entity<Category>().HasData(category1);
+
+		Member member = new() {
+			MemberId = 1,
+			Name = "John Doe",
+			Email = "john.doe@gmail.com",
+			Phone = "088888888",
+		};
+		builder.Entity<Member>().HasData(member);
+
+		Gathering gathering = new() {
+			GatheringId = 1,
+			Name = "The Great Fair",
+			Description = "Meet and Greet",
+			OrganiserId = 1,
+			Start = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+			End = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+		};
+		builder.Entity<Gathering>().HasData(gathering);
 	}
 }

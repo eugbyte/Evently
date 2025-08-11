@@ -22,6 +22,25 @@ public sealed class AccountController(
 		{ "microsoft", MicrosoftAccountDefaults.AuthenticationScheme },
 	};
 
+	[HttpGet("account", Name = "GetAccount from Cookie")]
+	public async Task<ActionResult> GetAccount() {
+		AuthenticateResult result = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
+		if (!result.Succeeded) {
+			return Unauthorized();
+		}
+
+		ClaimsPrincipal principal = result.Principal ?? new ClaimsPrincipal();
+		IdentityUser? user = await accountService.FindByClaimsPrincipalAsync(principal);
+		if (user is null) {
+			return NotFound(new { message = "User not found" });
+		}
+
+		return Ok(new AccountDto(
+			user.Id,
+			Email: user.Email ?? "",
+			Username: user.UserName ?? ""));
+	}
+
 	[HttpPost("logout")]
 	public async Task<ActionResult> Logout(string? redirectUrl = "") {
 		// Sign out of an external identity provider (if used)

@@ -52,9 +52,6 @@
         <tr style="margin-top: 1rem; font-size: 2.5rem;">
             <td>@Member.Name</td>
         </tr>
-        <tr>
-            <td>@Member.Role, @Member.Company</td>
-        </tr>
         <tr style="text-align: center; font-size: 1.75rem; color: #0d6efd;">
             <td>ATTENDEE</td>
         </tr>
@@ -78,10 +75,8 @@
     [Parameter] [EditorRequired] public string QrCodeUrl { get; set; } = string.Empty;
     [Parameter] public string Classes { get; set; } = string.Empty;
 
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
+    protected override void OnAfterRender(bool firstRender) {
+        if (firstRender) {
             _baseUri = (Env.IsDevelopment() ? "https://localhost:5000/" : Navigator.BaseUri).TrimEnd('/');
         }
     }

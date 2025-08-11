@@ -12,7 +12,7 @@ public interface IGatheringService {
 		int? offset,
 		int? limit);
 
-	Task<Gathering> CreateGathering(GatheringDto gatheringDto);
-	Task<Gathering> UpdateGathering(long gatheringId, GatheringDto gatheringDto);
+	Task<Gathering> CreateGathering(GatheringReqDto gatheringReqDto);
+	Task<Gathering> UpdateGathering(long gatheringId, GatheringReqDto gatheringReqDto);
 	Task DeleteGathering(long gatheringId);
 }

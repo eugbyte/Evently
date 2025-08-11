@@ -11,7 +11,7 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 	public async Task<Gathering?> GetGathering(long gatheringId) {
 		return await db.Gatherings
 			.Include((gathering) => gathering.Member)
-			.Include(gathering => gathering.BookingEvents)
+			.Include(gathering => gathering.Bookings)
 			.FirstOrDefaultAsync((gathering) => gathering.GatheringId == gatheringId);
 	}
 
@@ -26,12 +26,12 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 		IQueryable<Gathering> query = db.Gatherings
 			.Where((gathering) => name == null || EF.Functions.ILike(gathering.Name, $"%{name}%"))
 			.Where((gathering) =>
-				guestUserId == null || gathering.BookingEvents.Any((be) => be.MemberId == guestUserId))
+				guestUserId == null || gathering.Bookings.Any((be) => be.MemberId == guestUserId))
 			.Where((gathering) => startDate == null || gathering.End >= startDate)
 			.Where((gathering) => endDate == null || gathering.Start <= endDate)
-			.Where((gathering) => hostUserId == null || gathering.MemberId == hostUserId)
+			.Where((gathering) => hostUserId == null || gathering.OrganiserId == hostUserId)
 			.Include((gathering) => gathering.Member)
-			.Include((gathering) => gathering.BookingEvents);
+			.Include((gathering) => gathering.Bookings);
 
 		int totalCount = await query.CountAsync();
 
@@ -48,15 +48,15 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 		};
 	}
 
-	public async Task<Gathering> CreateGathering(GatheringDto gatheringDto) {
-		Gathering gathering = gatheringDto.ToGathering();
+	public async Task<Gathering> CreateGathering(GatheringReqDto gatheringReqDto) {
+		Gathering gathering = gatheringReqDto.ToGathering();
 		db.Gatherings.Add(gathering);
 		await db.SaveChangesAsync();
 		return gathering;
 	}
 
-	public async Task<Gathering> UpdateGathering(long gatheringId, GatheringDto gatheringDto) {
-		Gathering gathering = gatheringDto.ToGathering();
+	public async Task<Gathering> UpdateGathering(long gatheringId, GatheringReqDto gatheringReqDto) {
+		Gathering gathering = gatheringReqDto.ToGathering();
 		Gathering current = await db.Gatherings.AsTracking()
 			                    .FirstOrDefaultAsync((ex) => ex.GatheringId == gatheringId)
 		                    ?? throw new KeyNotFoundException($"{gatheringId} not found");
