@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.2752196">
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.2125207">
+  <Target Name="InstallWithPnpm" BeforeTargets="BeforeBuild">
+    <Exec Command="pnpm install"/>
+  </Target>
   <PropertyGroup>
-    <StartupCommand>npm run dev</StartupCommand>
+    <ShouldRunNpmInstall>false</ShouldRunNpmInstall>
+    <StartupCommand>pnpm run dev</StartupCommand>
     <JavaScriptTestRoot>src\</JavaScriptTestRoot>
     <JavaScriptTestFramework>Vitest</JavaScriptTestFramework>
     <!-- Allows the build (or compile) script located on package.json to run on Build -->
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <!-- Must include BuildCommand - weird bug with msft where if wwwroot folder contains exisiting files, npm run build will not automatically run if <BuildCommand /> is excluded. -->
+    <BuildCommand>pnpm run build</BuildCommand>
+    <PublishCommand>pnpm run build</PublishCommand>
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
