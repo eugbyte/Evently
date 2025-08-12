@@ -1,11 +1,11 @@
 import "./App.css";
 import { Route, Switch } from "wouter";
-import { HealthcheckPage } from "./features/healthcheck/healthcheck-page.tsx";
+import { HealthCheckPage } from "./features";
 
 function App() {
 	return (
 		<Switch>
-			<Route path="/healthcheck" component={HealthcheckPage} />
+			<Route path="/healthcheck" component={HealthCheckPage} />
 			<Route>
 				<p>Home</p>
 			</Route>

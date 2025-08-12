@@ -11,10 +11,14 @@
     <PackageJsonScriptsFmt Condition="$(PackageJsonScriptsFmt) == ''">eslint . &amp;&amp; prettier --write .</PackageJsonScriptsFmt>
     <PackageJsonScriptsPreview Condition="$(PackageJsonScriptsPreview) == ''">vite preview</PackageJsonScriptsPreview>
     <PackageJsonDependenciesTailwindcssVite Condition="$(PackageJsonDependenciesTailwindcssVite) == ''">^4.1.11</PackageJsonDependenciesTailwindcssVite>
+    <PackageJsonDependenciesTanstackReactQuery Condition="$(PackageJsonDependenciesTanstackReactQuery) == ''">^5.84.2</PackageJsonDependenciesTanstackReactQuery>
     <PackageJsonDependenciesDaisyui Condition="$(PackageJsonDependenciesDaisyui) == ''">^5.0.50</PackageJsonDependenciesDaisyui>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^19.1.1</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^19.1.1</PackageJsonDependenciesReactDom>
+    <PackageJsonDependenciesReflectMetadata Condition="$(PackageJsonDependenciesReflectMetadata) == ''">^0.2.2</PackageJsonDependenciesReflectMetadata>
     <PackageJsonDependenciesTailwindcss Condition="$(PackageJsonDependenciesTailwindcss) == ''">^4.1.11</PackageJsonDependenciesTailwindcss>
+    <PackageJsonDependenciesTypedi Condition="$(PackageJsonDependenciesTypedi) == ''">^0.10.0</PackageJsonDependenciesTypedi>
+    <PackageJsonDependenciesWouter Condition="$(PackageJsonDependenciesWouter) == ''">^3.7.1</PackageJsonDependenciesWouter>
     <PackageJsonDevdependenciesEslintJs Condition="$(PackageJsonDevdependenciesEslintJs) == ''">^9.32.0</PackageJsonDevdependenciesEslintJs>
     <PackageJsonDevdependenciesTypesNode Condition="$(PackageJsonDevdependenciesTypesNode) == ''">^22</PackageJsonDevdependenciesTypesNode>
     <PackageJsonDevdependenciesTypesReact Condition="$(PackageJsonDevdependenciesTypesReact) == ''">^19.1.9</PackageJsonDevdependenciesTypesReact>
