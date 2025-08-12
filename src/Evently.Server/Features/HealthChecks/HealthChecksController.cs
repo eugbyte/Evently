@@ -11,7 +11,7 @@ public sealed class HealthChecksController(HealthCheckService healthCheckService
 		{ HealthStatus.Unhealthy, "Unhealthy" },
 		{ HealthStatus.Degraded, "Degraded" },
 	};
-	
+
 	[HttpGet(Name = "HealthCheck")]
 	public async Task<ActionResult> GetHealthcheck() {
 		HealthReport healthReport = await healthCheckService.CheckHealthAsync();

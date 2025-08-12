@@ -35,11 +35,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 			Name = "The Great Fair",
 			Description = "Meet and Greet",
 			OrganiserId = 1,
-			Start = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
-			End = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+			Start = new DateTimeOffset(year: 2025, month: 1, day: 1, hour: 0, minute: 0, second: 0, TimeSpan.Zero),
+			End = new DateTimeOffset(year: 2025, month: 1, day: 1, hour: 0, minute: 0, second: 0, TimeSpan.Zero),
 		};
 		builder.Entity<Gathering>().HasData(gathering);
-		
+
 		GatheringCategoryDetail gatheringCategoryDetail = new() {
 			GatheringId = 1,
 			CategoryId = 1,
