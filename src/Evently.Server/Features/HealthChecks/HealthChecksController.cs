@@ -16,8 +16,9 @@ public sealed class HealthChecksController(HealthCheckService healthCheckService
 	public async Task<ActionResult> GetHealthcheck() {
 		HealthReport healthReport = await healthCheckService.CheckHealthAsync();
 
-		List<string> statuses = healthReport.Entries.Select(pair => $"{pair.Key}: {_statuses[pair.Value.Status]}").ToList();
-		statuses = ["Server: Healthy", ..statuses];
+		Dictionary<string, string> statuses = healthReport.Entries
+			.ToDictionary(key => key.Key, value => _statuses[value.Value.Status]);
+		statuses["Server"] = "Healthy"; 
 		return Ok(statuses);
 	}
 }

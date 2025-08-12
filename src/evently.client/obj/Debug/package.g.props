@@ -12,6 +12,8 @@
     <PackageJsonScriptsPreview Condition="$(PackageJsonScriptsPreview) == ''">vite preview</PackageJsonScriptsPreview>
     <PackageJsonDependenciesTailwindcssVite Condition="$(PackageJsonDependenciesTailwindcssVite) == ''">^4.1.11</PackageJsonDependenciesTailwindcssVite>
     <PackageJsonDependenciesTanstackReactQuery Condition="$(PackageJsonDependenciesTanstackReactQuery) == ''">^5.84.2</PackageJsonDependenciesTanstackReactQuery>
+    <PackageJsonDependenciesTanstackReactRouter Condition="$(PackageJsonDependenciesTanstackReactRouter) == ''">^1.131.7</PackageJsonDependenciesTanstackReactRouter>
+    <PackageJsonDependenciesTanstackReactRouterDevtools Condition="$(PackageJsonDependenciesTanstackReactRouterDevtools) == ''">^1.131.7</PackageJsonDependenciesTanstackReactRouterDevtools>
     <PackageJsonDependenciesDaisyui Condition="$(PackageJsonDependenciesDaisyui) == ''">^5.0.50</PackageJsonDependenciesDaisyui>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^19.1.1</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^19.1.1</PackageJsonDependenciesReactDom>
@@ -20,6 +22,7 @@
     <PackageJsonDependenciesTypedi Condition="$(PackageJsonDependenciesTypedi) == ''">^0.10.0</PackageJsonDependenciesTypedi>
     <PackageJsonDependenciesWouter Condition="$(PackageJsonDependenciesWouter) == ''">^3.7.1</PackageJsonDependenciesWouter>
     <PackageJsonDevdependenciesEslintJs Condition="$(PackageJsonDevdependenciesEslintJs) == ''">^9.32.0</PackageJsonDevdependenciesEslintJs>
+    <PackageJsonDevdependenciesTanstackRouterPlugin Condition="$(PackageJsonDevdependenciesTanstackRouterPlugin) == ''">^1.131.7</PackageJsonDevdependenciesTanstackRouterPlugin>
     <PackageJsonDevdependenciesTypesNode Condition="$(PackageJsonDevdependenciesTypesNode) == ''">^22</PackageJsonDevdependenciesTypesNode>
     <PackageJsonDevdependenciesTypesReact Condition="$(PackageJsonDevdependenciesTypesReact) == ''">^19.1.9</PackageJsonDevdependenciesTypesReact>
     <PackageJsonDevdependenciesTypesReactDom Condition="$(PackageJsonDevdependenciesTypesReactDom) == ''">^19.1.7</PackageJsonDevdependenciesTypesReactDom>

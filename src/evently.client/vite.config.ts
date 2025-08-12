@@ -5,6 +5,7 @@ import { env } from "process";
 import { generatePem, getBackendUrl, type KeyCertPair } from "./aspnetcore-https.ts";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
 const keyCert: KeyCertPair = generatePem();
 const { key, cert } = keyCert;
@@ -13,7 +14,15 @@ console.log({ backendUrl });
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [tailwindcss(), react()],
+	plugins: [
+		tailwindcss(),
+		// Please make sure that '@tanstack/router-plugin' is passed before '@vitejs/plugin-react'
+		tanstackRouter({
+			target: "react",
+			autoCodeSplitting: true
+		}),
+		react()
+	],
 	resolve: {
 		alias: {
 			"~": fileURLToPath(new URL("./src", import.meta.url))

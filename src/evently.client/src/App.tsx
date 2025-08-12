@@ -1,16 +1,16 @@
 import "./App.css";
-import { Route, Switch } from "wouter";
-import { HealthCheckPage } from "./features";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen.ts";
+import type { JSX } from "react";
 
-function App() {
-	return (
-		<Switch>
-			<Route path="/healthcheck" component={HealthCheckPage} />
-			<Route>
-				<p>Home</p>
-			</Route>
-		</Switch>
-	);
+declare module "@tanstack/react-router" {
+	interface Register {
+		router: typeof router;
+	}
 }
 
-export default App;
+const router = createRouter({ routeTree });
+
+export function App(): JSX.Element {
+	return <RouterProvider router={router} />;
+}
