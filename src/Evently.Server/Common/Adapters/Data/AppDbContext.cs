@@ -9,7 +9,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 	public DbSet<Member> Members { get; set; }
 	public DbSet<Booking> Bookings { get; set; }
 	public DbSet<Gathering> Gatherings { get; set; }
-	public DbSet<GatheringCategoryDetail> MemberCategoryDetails { get; set; }
+	public DbSet<GatheringCategoryDetail> GatheringCategoryDetails { get; set; }
 	public DbSet<Category> Categories { get; set; }
 	public DbSet<IdentityUser> IdentityUsers { get; set; }
 
@@ -39,5 +39,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 			End = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
 		};
 		builder.Entity<Gathering>().HasData(gathering);
+		
+		GatheringCategoryDetail gatheringCategoryDetail = new() {
+			GatheringId = 1,
+			CategoryId = 1,
+		};
+		builder.Entity<GatheringCategoryDetail>().HasData(gatheringCategoryDetail);
 	}
 }

@@ -281,6 +281,11 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 columns: new[] { "MemberId", "Email", "IdentityUserId", "LogoSrc", "Name", "Phone" },
                 values: new object[] { 1L, "john.doe@gmail.com", null, "", "John Doe", "088888888" });
 
+            migrationBuilder.InsertData(
+                table: "Gatherings",
+                columns: new[] { "GatheringId", "CoverSrc", "Description", "End", "Location", "Name", "OrganiserId", "Start" },
+                values: new object[] { 1L, "", "Meet and Greet", new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "", "The Great Fair", 1L, new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)) });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

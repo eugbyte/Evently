@@ -3,6 +3,7 @@ using System;
 using Evently.Server.Common.Adapters.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250811233821_Seed2")]
+    partial class Seed2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,13 +156,6 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("GatheringCategoryDetails");
-
-                    b.HasData(
-                        new
-                        {
-                            GatheringId = 1L,
-                            CategoryId = 1L
-                        });
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Member", b =>

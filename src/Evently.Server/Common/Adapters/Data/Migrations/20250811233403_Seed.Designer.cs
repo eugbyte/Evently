@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250811134305_Seed")]
+    [Migration("20250811233403_Seed")]
     partial class Seed
     {
         /// <inheritdoc />
@@ -128,6 +128,19 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.HasIndex("OrganiserId");
 
                     b.ToTable("Gatherings");
+
+                    b.HasData(
+                        new
+                        {
+                            GatheringId = 1L,
+                            CoverSrc = "",
+                            Description = "Meet and Greet",
+                            End = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "",
+                            Name = "The Great Fair",
+                            OrganiserId = 1L,
+                            Start = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        });
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.GatheringCategoryDetail", b =>

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250811134604_Seed2")]
-    partial class Seed2
+    [Migration("20250811234152_Seed3")]
+    partial class Seed3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,7 +155,14 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("MemberCategoryDetails");
+                    b.ToTable("GatheringCategoryDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            GatheringId = 1L,
+                            CategoryId = 1L
+                        });
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Member", b =>

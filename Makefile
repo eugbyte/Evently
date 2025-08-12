@@ -5,7 +5,7 @@ test:
 	dotnet test ./tests/Evently.Server.Test/VisualPatron.Server.Test.csproj
 	
 add-migration:
-	dotnet ef migrations add Seed2 --project=src/Evently.Server --context=AppDbContext --output-dir=Common/Adapters/Data/Migrations
+	dotnet ef migrations add Seed3 --project=src/Evently.Server --context=AppDbContext --output-dir=Common/Adapters/Data/Migrations
 
 update-migration:
 	dotnet ef database update --project=src/Evently.Server --context=AppDbContext
