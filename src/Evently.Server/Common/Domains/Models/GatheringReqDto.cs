@@ -1,6 +1,6 @@
 namespace Evently.Server.Common.Domains.Models;
 
-public sealed record GatheringDto(
+public sealed record GatheringReqDto(
 	long GatheringId,
 	string Name,
 	string Description,

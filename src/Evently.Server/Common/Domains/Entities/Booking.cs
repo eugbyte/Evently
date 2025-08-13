@@ -12,14 +12,14 @@ public class Booking {
 	[DatabaseGenerated(DatabaseGeneratedOption.None)]
 	[StringLength(50)]
 	public string BookingId { get; set; } = $"book_{Nanoid.Generate(size: 10)}";
-	[ForeignKey("Member")]
-	public long MemberId { get; set; }
+
+	[ForeignKey("Member")] public long MemberId { get; set; }
 	public Member? Member { get; set; }
 
 	public long GatheringId { get; set; }
 	public Gathering? Gathering { get; set; }
 
-	public DateTimeOffset RegistrationDateTime { get; set; }
+	public DateTimeOffset RegistrationDateTime { get; set; } = DateTimeOffset.UtcNow;
 	public DateTimeOffset? CheckInDateTime { get; set; }
 	public DateTimeOffset? CheckoutDateTime { get; set; }
 	public DateTimeOffset? CancellationDateTime { get; set; }

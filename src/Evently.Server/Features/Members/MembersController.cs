@@ -18,18 +18,18 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 	: ControllerBase {
 	[HttpGet("{memberId:long}", Name = "GetMember")]
 	public async Task<ActionResult<Member>> GetMember(long memberId) {
-		Member? attendee = await memberService.GetMember(memberId);
-		if (attendee is null) {
+		Member? member = await memberService.GetMember(memberId);
+		if (member is null) {
 			return NotFound();
 		}
 
-		return Ok(attendee);
+		return Ok(member);
 	}
 
 	[HttpGet("", Name = "GetMembers")]
-	public async Task<ActionResult<Member>> GetMembers(string? company, int? offset,
+	public async Task<ActionResult<Member>> GetMembers(string? name, int? offset,
 		int? limit) {
-		PageResult<Member> result = await memberService.GetMembers(company, offset, limit);
+		PageResult<Member> result = await memberService.GetMembers(name, offset, limit);
 		List<Member> attendees = result.Items;
 		int total = result.TotalCount;
 		HttpContext.Response.Headers.Append("Access-Control-Expose-Headers", "X-Total-Count");
@@ -38,9 +38,9 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 	}
 
 	[HttpPost("", Name = "CreateMember")]
-	public async Task<ActionResult<Member>> CreateMember(MemberDto memberDto) {
-		memberDto = memberDto with { MemberId = 0 };
-		ValidationResult result = await validator.ValidateAsync(memberDto.ToMember());
+	public async Task<ActionResult<Member>> CreateMember(MemberReqDto memberReqDto) {
+		memberReqDto = memberReqDto with { MemberId = 0 };
+		ValidationResult result = await validator.ValidateAsync(memberReqDto.ToMember());
 		if (!result.IsValid) {
 			return BadRequest(result.Errors);
 		}
@@ -50,27 +50,27 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 			return Unauthorized();
 		}
 
-		Member member = await memberService.CreateMember(memberDto);
+		Member member = await memberService.CreateMember(memberReqDto);
 		return Ok(member);
 	}
 
 	[HttpPut("{memberId:long}", Name = "UpdateMember")]
-	public async Task<ActionResult<Member>> UpdateMember(long memberId, [FromBody] MemberDto memberDto) {
-		Member? attendee = await memberService.GetMember(memberId);
-		if (attendee is null) {
+	public async Task<ActionResult<Member>> UpdateMember(long memberId, [FromBody] MemberReqDto memberReqDto) {
+		Member? member = await memberService.GetMember(memberId);
+		if (member is null) {
 			return NotFound();
 		}
 
-		ValidationResult result = await validator.ValidateAsync(memberDto.ToMember());
+		ValidationResult result = await validator.ValidateAsync(memberReqDto.ToMember());
 		if (!result.IsValid) {
 			return BadRequest(result.Errors);
 		}
 
-		if (!await this.IsResourceOwner(attendee.Id)) {
+		if (!await this.IsResourceOwner(member.MemberId)) {
 			return Forbid();
 		}
 
-		attendee = await memberService.UpdateMember(memberId, memberDto);
-		return Ok(attendee);
+		member = await memberService.UpdateMember(memberId, memberReqDto);
+		return Ok(member);
 	}
 }

@@ -6,9 +6,19 @@ namespace Evently.Server.Features.HealthChecks;
 [ApiController]
 [Route("api/v1/[controller]")]
 public sealed class HealthChecksController(HealthCheckService healthCheckService) : ControllerBase {
+	private readonly Dictionary<HealthStatus, string> _statuses = new() {
+		{ HealthStatus.Healthy, "Healthy" },
+		{ HealthStatus.Unhealthy, "Unhealthy" },
+		{ HealthStatus.Degraded, "Degraded" },
+	};
+
 	[HttpGet(Name = "HealthCheck")]
 	public async Task<ActionResult> GetHealthcheck() {
 		HealthReport healthReport = await healthCheckService.CheckHealthAsync();
-		return Ok(healthReport);
+
+		Dictionary<string, string> statuses = healthReport.Entries
+			.ToDictionary(key => key.Key, value => _statuses[value.Value.Status]);
+		statuses["Server"] = "Healthy"; 
+		return Ok(statuses);
 	}
 }

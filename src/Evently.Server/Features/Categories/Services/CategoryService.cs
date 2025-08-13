@@ -13,11 +13,12 @@ public sealed class CategoryService(AppDbContext db) : ICategoryService {
 		return category;
 	}
 
-	public async Task<PageResult<Category>> GetCategories(long? memberId, bool? approved) {
+	public async Task<PageResult<Category>> GetCategories(long? gatheringId, bool? approved) {
 		IQueryable<Category> query = db.Categories
-			.Where((topic) =>
-				memberId == null || topic.MemberCategoryDetails.Any((detail) => detail.MemberId == memberId))
-			.Where((topic) => approved == null || topic.Approved == approved);
+			.Include((category) => category.GatheringCategoryDetails)
+			.Where((category) =>
+				gatheringId == null || category.GatheringCategoryDetails.Any((detail) => detail.GatheringId == gatheringId))
+			.Where((category) => approved == null || category.Approved == approved);
 
 		int totalCount = await query.CountAsync();
 		List<Category> topics = await query.ToListAsync();

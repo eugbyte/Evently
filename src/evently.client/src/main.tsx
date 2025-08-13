@@ -1,10 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import "reflect-metadata";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ReactDOM from "react-dom/client";
+// Import the generated route tree
+import { App } from "./App.tsx";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const queryClient = new QueryClient();
+
+const rootElement = document.getElementById("root")!;
+if (!rootElement.innerHTML) {
+	const root = ReactDOM.createRoot(rootElement);
+	root.render(
+		<StrictMode>
+			<QueryClientProvider client={queryClient}>
+				<App />
+			</QueryClientProvider>
+		</StrictMode>
+	);
+}

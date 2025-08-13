@@ -17,13 +17,12 @@ namespace Evently.Server.Features.Accounts;
 public sealed class AccountController(
 	IAccountsService accountService,
 	ILogger<AccountController> logger) : ControllerBase {
-
 	private readonly Dictionary<string, string> _authSchemes = new() {
 		{ "google", GoogleDefaults.AuthenticationScheme },
 		{ "microsoft", MicrosoftAccountDefaults.AuthenticationScheme },
 	};
 
-	[HttpGet("account", Name = "Get Account")]
+	[HttpGet("account", Name = "GetAccount from Cookie")]
 	public async Task<ActionResult> GetAccount() {
 		AuthenticateResult result = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
 		if (!result.Succeeded) {
@@ -36,10 +35,10 @@ public sealed class AccountController(
 			return NotFound(new { message = "User not found" });
 		}
 
-		return Ok(new Account(
+		return Ok(new AccountDto(
 			user.Id,
 			Email: user.Email ?? "",
-			UserName: user.UserName ?? ""));
+			Username: user.UserName ?? ""));
 	}
 
 	[HttpPost("logout")]
@@ -89,7 +88,8 @@ public sealed class AccountController(
 			throw new ExternalLoginProviderException(provider, "ClaimsPrincipal is null");
 		}
 
-		await accountService.ExternalLogin(claimsPrincipal, loginProvider: _authSchemes.GetValueOrDefault(provider) ?? "");
+		await accountService.ExternalLogin(claimsPrincipal,
+			loginProvider: _authSchemes.GetValueOrDefault(provider) ?? "");
 		return Redirect(originUrl);
 	}
 }
