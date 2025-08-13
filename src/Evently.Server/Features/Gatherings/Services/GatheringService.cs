@@ -30,8 +30,7 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 			.Where((gathering) => startDate == null || gathering.End >= startDate)
 			.Where((gathering) => endDate == null || gathering.Start <= endDate)
 			.Where((gathering) => hostUserId == null || gathering.OrganiserId == hostUserId)
-			.Include((gathering) => gathering.Member)
-			.Include((gathering) => gathering.Bookings);
+			.Include((gathering) => gathering.Member);
 
 		int totalCount = await query.CountAsync();
 

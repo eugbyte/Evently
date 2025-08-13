@@ -50,7 +50,6 @@ public sealed class MemberService(AppDbContext db) : IMemberService {
 
 		current.Name = member.Name;
 		current.Email = member.Email;
-		current.Phone = member.Phone;
 		current.LogoSrc = member.LogoSrc;
 
 		await db.SaveChangesAsync();

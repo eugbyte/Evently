@@ -26,7 +26,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 			MemberId = 1,
 			Name = "John Doe",
 			Email = "john.doe@gmail.com",
-			Phone = "088888888",
 		};
 		builder.Entity<Member>().HasData(member);
 

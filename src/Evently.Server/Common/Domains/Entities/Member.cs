@@ -13,7 +13,6 @@ namespace Evently.Server.Common.Domains.Entities;
 public class Member {
 	public long MemberId { get; set; }
 	[StringLength(100)] public string Name { get; set; } = string.Empty;
-	[StringLength(100)] public string Phone { get; set; } = string.Empty;
 	[StringLength(100)] public string Email { get; set; } = string.Empty;
 
 	[StringLength(1000)] public string? LogoSrc { get; set; } = string.Empty;

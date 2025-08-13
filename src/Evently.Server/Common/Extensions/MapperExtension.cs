@@ -9,7 +9,6 @@ public static class MapperExtension {
 			member.MemberId,
 			member.Name,
 			member.Email,
-			member.Phone,
 			member.LogoSrc
 		);
 		return reqDto;
@@ -20,7 +19,6 @@ public static class MapperExtension {
 			MemberId = memberReqDto.MemberId,
 			Name = memberReqDto.Name,
 			Email = memberReqDto.Email,
-			Phone = memberReqDto.Phone,
 			LogoSrc = memberReqDto.LogoSrc,
 		};
 		return member;

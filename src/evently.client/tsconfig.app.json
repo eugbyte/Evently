@@ -27,11 +27,9 @@
 		"experimentalDecorators": true,
 
 		/* Path alias */
-		"compilerOptions": {
-			"baseUrl": "./",
-			"paths": {
-				"~/*": ["./src/*"]
-			}
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["./src/*"]
 		}
 	},
 	"include": ["src"]

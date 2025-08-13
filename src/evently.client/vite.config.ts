@@ -1,11 +1,10 @@
-import { fileURLToPath, URL } from "node:url";
-
 import { defineConfig } from "vite";
 import { env } from "process";
 import { generatePem, getBackendUrl, type KeyCertPair } from "./aspnetcore-https.ts";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { fileURLToPath, URL } from "node:url";
 
 const keyCert: KeyCertPair = generatePem();
 const { key, cert } = keyCert;

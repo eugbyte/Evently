@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index'
+import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const HealthcheckIndexRoute = HealthcheckIndexRouteImport.update({
   path: '/healthcheck/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GatheringsIndexRoute = GatheringsIndexRouteImport.update({
+  id: '/gatherings/',
+  path: '/gatherings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/gatherings/': typeof GatheringsIndexRoute
   '/healthcheck/': typeof HealthcheckIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/healthcheck'
+  fullPaths: '/' | '/gatherings' | '/healthcheck'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/healthcheck'
-  id: '__root__' | '/' | '/healthcheck/'
+  to: '/' | '/gatherings' | '/healthcheck'
+  id: '__root__' | '/' | '/gatherings/' | '/healthcheck/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GatheringsIndexRoute: typeof GatheringsIndexRoute
   HealthcheckIndexRoute: typeof HealthcheckIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HealthcheckIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gatherings/': {
+      id: '/gatherings/'
+      path: '/gatherings'
+      fullPath: '/gatherings'
+      preLoaderRoute: typeof GatheringsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GatheringsIndexRoute: GatheringsIndexRoute,
   HealthcheckIndexRoute: HealthcheckIndexRoute,
 }
 export const routeTree = rootRouteImport
