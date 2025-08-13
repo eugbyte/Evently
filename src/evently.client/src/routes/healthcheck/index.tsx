@@ -1,7 +1,7 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import type { JSX } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getStatus } from "./-services";
+import { getStatus } from "./-services/health-check-service";
 
 export const Route = createFileRoute("/healthcheck/")({
 	component: HealthcheckPage

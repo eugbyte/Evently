@@ -14,3 +14,8 @@ export async function getGatherings(params: GetGatheringsParams): Promise<Gather
 	const response = await axios.get<Gathering[]>("/api/v1/Gatherings", { params });
 	return response.data;
 }
+
+export async function getGathering(id: number): Promise<Gathering> {
+	const response = await axios.get<Gathering>(`/api/v1/Gatherings/${id}`);
+	return response.data;
+}

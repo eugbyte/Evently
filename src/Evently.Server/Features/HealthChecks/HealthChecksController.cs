@@ -17,8 +17,8 @@ public sealed class HealthChecksController(HealthCheckService healthCheckService
 		HealthReport healthReport = await healthCheckService.CheckHealthAsync();
 
 		Dictionary<string, string> statuses = healthReport.Entries
-			.ToDictionary(key => key.Key, value => _statuses[value.Value.Status]);
-		statuses["Server"] = "Healthy"; 
+			.ToDictionary(keySelector: key => key.Key, elementSelector: value => _statuses[value.Value.Status]);
+		statuses["Server"] = "Healthy";
 		return Ok(statuses);
 	}
 }

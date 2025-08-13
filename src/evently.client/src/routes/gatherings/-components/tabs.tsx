@@ -1,9 +1,11 @@
-﻿export interface TabsProps {
+﻿import { type JSX } from "react";
+
+export interface TabsProps {
 	tab: number;
 	handleTabChange: (tab: number) => void;
 }
 
-export function Tabs({ tab, handleTabChange }: TabsProps) {
+export function Tabs({ tab, handleTabChange }: TabsProps): JSX.Element {
 	const tabStates: Record<number, string> = {
 		0: "All",
 		1: "Upcoming",

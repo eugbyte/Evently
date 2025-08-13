@@ -17,7 +17,15 @@ export function GatheringsPage(): JSX.Element {
 		queryKey: ["getGatherings", queryParams],
 		queryFn: (): Promise<Gathering[]> => getGatherings(queryParams)
 	});
-	const gatherings: Gathering[] = _gatherings ?? [];
+	let gatherings: Gathering[] = _gatherings ?? [];
+	gatherings = [
+		...gatherings,
+		...gatherings,
+		...gatherings,
+		...gatherings,
+		...gatherings,
+		...gatherings
+	];
 	const guestUserId = 2;
 	const handleTabChange = (_tab: number) => {
 		setTab(_tab);
@@ -39,19 +47,35 @@ export function GatheringsPage(): JSX.Element {
 	};
 
 	return (
-		<div className="border border-white p-1 sm:p-4">
-			<Tabs tab={tab} handleTabChange={handleTabChange} />
+		<div className="mb-20 border p-1 sm:mb-0 sm:p-4">
+			<div className="flex flex-col justify-between space-y-5 sm:flex-row">
+				<Tabs tab={tab} handleTabChange={handleTabChange} />
+				<label className="input w-40">
+					<svg
+						className="h-[1em] opacity-50"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+					>
+						<g
+							strokeLinejoin="round"
+							strokeLinecap="round"
+							strokeWidth="2.5"
+							fill="none"
+							stroke="currentColor"
+						>
+							<circle cx="11" cy="11" r="8"></circle>
+							<path d="m21 21-4.3-4.3"></path>
+						</g>
+					</svg>
+					<input type="search" className="grow" placeholder="Search" />
+				</label>
+			</div>
 			{isLoading ? (
 				<progress className="progress w-full"></progress>
 			) : (
-				<div className="my-4">
-					{gatherings.map((gathering) => (
-						<Card
-							key={gathering.gatheringId}
-							title={gathering.name}
-							description={gathering.description}
-							imgSrc={gathering.coverSrc}
-						/>
+				<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
+					{gatherings.map((gathering, index) => (
+						<Card key={gathering.gatheringId + "-" + index} gathering={gathering} />
 					))}
 				</div>
 			)}
