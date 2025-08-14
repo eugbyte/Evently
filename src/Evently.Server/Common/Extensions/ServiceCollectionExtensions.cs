@@ -24,12 +24,13 @@ public static partial class ServiceCollectionExtensions {
 		IOptions<Settings> options = Options.Create(settings);
 		return options;
 	}
-	
+
+	// Not possible to seed with AppDbContext with OnModelCreating with IdentityUser
 	public static async Task SeedDatas(this WebApplication app) {
 		using IServiceScope scope = app.Services.CreateScope();
 		UserManager<Account> userManager = scope.ServiceProvider.GetRequiredService<UserManager<Account>>();
 		AppDbContext db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-		
+
 		// Define the admin user details
 		string email = "host@gmail.com";
 		string password = "Host@123";
@@ -70,7 +71,7 @@ public static partial class ServiceCollectionExtensions {
 				throw new Exception("Failed to create the guest user: " + string.Join(", ", result.Errors));
 			}
 		}
-		
+
 		Category? category1 = await db.Categories.FindAsync((long)1);
 		if (category1 is null) {
 			category1 = new Category {
@@ -80,7 +81,7 @@ public static partial class ServiceCollectionExtensions {
 			await db.Categories.AddAsync(category1);
 			await db.SaveChangesAsync();
 		}
-		
+
 		Gathering? gathering = await db.Gatherings.FindAsync((long)1);
 		if (gathering is null) {
 			gathering = new Gathering {
@@ -98,15 +99,15 @@ public static partial class ServiceCollectionExtensions {
 			.Where(detail => detail.GatheringId == gathering.GatheringId)
 			.FirstOrDefaultAsync();
 		if (gcDetail is null) {
-			gcDetail = new GatheringCategoryDetail() {
+			gcDetail = new GatheringCategoryDetail {
 				GatheringId = gathering.GatheringId,
 				CategoryId = category1.CategoryId,
 			};
 			await db.GatheringCategoryDetails.AddAsync(gcDetail);
 			await db.SaveChangesAsync();
 		}
-		
-		
+
+
 		Booking? booking = await db.Bookings.FindAsync("abc");
 		if (booking is null) {
 			booking = new Booking {

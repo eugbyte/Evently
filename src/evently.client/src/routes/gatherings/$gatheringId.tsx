@@ -32,5 +32,5 @@ export function GatheringPage(): JSX.Element {
 				</div>
 			</div>
 		</div>
-	)
+	);
 }

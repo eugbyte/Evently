@@ -70,7 +70,7 @@ public sealed partial class AccountService(UserManager<Account> userManager, App
 			.Where(account => email == null || EF.Functions.ILike(account.Email ?? "", $"%{email}%"))
 			.Where(account => username == null || EF.Functions.ILike(account.UserName ?? "", $"%{username}%"))
 			.Where(account => name == null || EF.Functions.ILike(account.Name, $"%{name}%"));
-		
+
 		List<Account> members = await query
 			.OrderBy((member) => member.Id)
 			.ToListAsync();

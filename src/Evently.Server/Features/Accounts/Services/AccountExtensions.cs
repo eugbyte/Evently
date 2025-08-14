@@ -1,10 +1,7 @@
-﻿using Evently.Server.Common.Adapters.Data;
-using Evently.Server.Common.Domains.Entities;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Evently.Server.Features.Accounts.Services;
