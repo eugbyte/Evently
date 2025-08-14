@@ -16,8 +16,8 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 	}
 
 	public async Task<PageResult<Gathering>> GetGatherings(
-		long? guestUserId,
-		long? hostUserId,
+		string? guestUserId,
+		string? hostUserId,
 		string? name,
 		DateTimeOffset? startDate,
 		DateTimeOffset? endDate,

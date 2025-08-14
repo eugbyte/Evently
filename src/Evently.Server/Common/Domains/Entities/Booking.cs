@@ -13,7 +13,7 @@ public class Booking {
 	[StringLength(50)]
 	public string BookingId { get; set; } = $"book_{Nanoid.Generate(size: 10)}";
 
-	[ForeignKey("Member")] public long MemberId { get; set; }
+	[StringLength(100)] [ForeignKey("Member")] public string MemberId { get; set; } = string.Empty;
 	public Member? Member { get; set; }
 
 	public long GatheringId { get; set; }

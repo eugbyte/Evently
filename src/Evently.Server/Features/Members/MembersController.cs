@@ -16,8 +16,8 @@ namespace Evently.Server.Features.Members;
 [Route("api/v1/[controller]")]
 public sealed class MembersController(IMemberService memberService, IValidator<Member> validator)
 	: ControllerBase {
-	[HttpGet("{memberId:long}", Name = "GetMember")]
-	public async Task<ActionResult<Member>> GetMember(long memberId) {
+	[HttpGet("{memberId}", Name = "GetMember")]
+	public async Task<ActionResult<Member>> GetMember(string memberId) {
 		Member? member = await memberService.GetMember(memberId);
 		if (member is null) {
 			return NotFound();
@@ -39,7 +39,7 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 
 	[HttpPost("", Name = "CreateMember")]
 	public async Task<ActionResult<Member>> CreateMember(MemberReqDto memberReqDto) {
-		memberReqDto = memberReqDto with { MemberId = 0 };
+		memberReqDto = memberReqDto with { Id = string.Empty };
 		ValidationResult result = await validator.ValidateAsync(memberReqDto.ToMember());
 		if (!result.IsValid) {
 			return BadRequest(result.Errors);
@@ -54,8 +54,8 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 		return Ok(member);
 	}
 
-	[HttpPut("{memberId:long}", Name = "UpdateMember")]
-	public async Task<ActionResult<Member>> UpdateMember(long memberId, [FromBody] MemberReqDto memberReqDto) {
+	[HttpPut("{memberId}", Name = "UpdateMember")]
+	public async Task<ActionResult<Member>> UpdateMember(string memberId, [FromBody] MemberReqDto memberReqDto) {
 		Member? member = await memberService.GetMember(memberId);
 		if (member is null) {
 			return NotFound();
@@ -66,7 +66,7 @@ public sealed class MembersController(IMemberService memberService, IValidator<M
 			return BadRequest(result.Errors);
 		}
 
-		if (!await this.IsResourceOwner(member.MemberId)) {
+		if (!await this.IsResourceOwner(member.Id)) {
 			return Forbid();
 		}
 

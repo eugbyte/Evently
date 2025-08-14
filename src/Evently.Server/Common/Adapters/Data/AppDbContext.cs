@@ -23,17 +23,23 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 		builder.Entity<Category>().HasData(category1);
 
 		Member member = new() {
-			MemberId = 1,
+			Id = "ABC",
 			Name = "John Doe",
 			Email = "john.doe@gmail.com",
+			SecurityStamp = "DEF",
+			ConcurrencyStamp = "DEF",
 		};
+		
+		PasswordHasher<Member> ph = new();
+		member.PasswordHash = ph.HashPassword(member, "mypassword_?");
+		
 		builder.Entity<Member>().HasData(member);
 
 		Gathering gathering = new() {
 			GatheringId = 1,
 			Name = "The Great Fair",
 			Description = "Meet and Greet",
-			OrganiserId = 1,
+			OrganiserId = member.Id,
 			Start = new DateTimeOffset(year: 2025, month: 1, day: 1, hour: 0, minute: 0, second: 0, TimeSpan.Zero),
 			End = new DateTimeOffset(year: 2025, month: 1, day: 1, hour: 0, minute: 0, second: 0, TimeSpan.Zero),
 		};

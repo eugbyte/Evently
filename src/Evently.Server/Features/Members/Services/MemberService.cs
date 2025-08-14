@@ -15,7 +15,7 @@ public sealed class MemberService(AppDbContext db) : IMemberService {
 		int totalCount = await query.CountAsync();
 
 		List<Member> members = await query
-			.OrderBy((member) => member.MemberId)
+			.OrderBy((member) => member.Id)
 			.Skip(offset ?? 0)
 			.Take(limit ?? int.MaxValue)
 			.ToListAsync();
@@ -26,9 +26,9 @@ public sealed class MemberService(AppDbContext db) : IMemberService {
 		};
 	}
 
-	public async Task<Member?> GetMember(long memberId) {
+	public async Task<Member?> GetMember(string memberId) {
 		IQueryable<Member> query = db.Members
-			.Where((a) => a.MemberId == memberId);
+			.Where((a) => a.Id == memberId);
 		return await query.FirstOrDefaultAsync();
 	}
 
@@ -40,13 +40,13 @@ public sealed class MemberService(AppDbContext db) : IMemberService {
 		return member;
 	}
 
-	public async Task<Member> UpdateMember(long memberId, MemberReqDto memberReqDto) {
+	public async Task<Member> UpdateMember(string memberId, MemberReqDto memberReqDto) {
 		Member member = memberReqDto.ToMember();
 		// need to include related entities intended to update - otherwise EF Core won't track these related entities and won't mark them as track
 		// ignore connectionEvents and bookingEvents as those related entities should be updated via their respective services
 		Member current = await db.Members.AsTracking()
-			                 .FirstOrDefaultAsync((a) => a.MemberId == memberId)
-		                 ?? throw new KeyNotFoundException($"{member.MemberId} not found");
+			                 .FirstOrDefaultAsync((a) => a.Id == memberId)
+		                 ?? throw new KeyNotFoundException($"{member.Id} not found");
 
 		current.Name = member.Name;
 		current.Email = member.Email;
@@ -56,10 +56,10 @@ public sealed class MemberService(AppDbContext db) : IMemberService {
 		return current;
 	}
 
-	public async Task<Member> DeleteUser(long memberId) {
+	public async Task<Member> DeleteUser(string memberId) {
 		Member member = await db.Members
 			.AsTracking()
-			.SingleAsync((member) => member.MemberId == memberId);
+			.SingleAsync((member) => member.Id == memberId);
 		db.Remove(member);
 		return member;
 	}

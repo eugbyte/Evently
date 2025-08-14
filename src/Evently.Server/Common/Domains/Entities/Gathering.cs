@@ -20,7 +20,7 @@ public class Gathering {
 
 	[StringLength(1000)] public string? CoverSrc { get; set; } = string.Empty;
 
-	[ForeignKey("Member")] public long OrganiserId { get; set; }
+	[StringLength(100)] [ForeignKey("Member")] public string OrganiserId { get; set; } = string.Empty;
 	public Member? Member { get; set; }
 
 	public List<Booking> Bookings { get; set; } = [];

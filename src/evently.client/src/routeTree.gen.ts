@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from "./routes/__root";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as HealthcheckIndexRouteImport } from "./routes/healthcheck/index";
 import { Route as GatheringsIndexRouteImport } from "./routes/gatherings/index";
-import { Route as GatheringsGatheringIdIndexRouteImport } from "./routes/gatherings/$gatheringId/index";
+import { Route as GatheringsGatheringIdIndexRouteImport } from "./routes/gatherings/$gatheringId/index.$gatheringId.tsx";
 
 const IndexRoute = IndexRouteImport.update({
 	id: "/",

@@ -2,8 +2,8 @@
 import axios from "axios";
 
 export interface GetGatheringsParams {
-	guestUserId?: number;
-	hostUserId?: number;
+	guestId?: number;
+	hostId?: number;
 	exhibitionName?: string;
 	start?: Date;
 	end?: Date;

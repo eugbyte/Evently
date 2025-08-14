@@ -36,11 +36,11 @@ export function GatheringsPage(): JSX.Element {
 				break;
 			}
 			case 1: {
-				setQueryParams({ guestUserId, start: new Date() });
+				setQueryParams({ guestId: guestUserId, start: new Date() });
 				break;
 			}
 			case 2: {
-				setQueryParams({ guestUserId, end: new Date() });
+				setQueryParams({ guestId: guestUserId, end: new Date() });
 				break;
 			}
 		}

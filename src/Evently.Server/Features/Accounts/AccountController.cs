@@ -61,7 +61,7 @@ public sealed class AccountController(
 	[HttpGet("{provider}/login")]
 	public IActionResult Login(string provider, string? originUrl = "") {
 		Uri rootUri = Request.RootUri();
-		string uri = Url.Action("Callback", "Account") ?? "";
+		string uri = Url.Action("Callback", "Account", new { provider }) ?? "";
 		UriBuilder combined = new(rootUri) {
 			Path = uri,
 			Query = $"originUrl={originUrl}",

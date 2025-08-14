@@ -17,11 +17,11 @@
 }
 
 export class Member {
-	memberId: number = 0;
+	id = "";
 	name: string = "";
+	userName: string = "";
 	email: string = "";
 	logoSrc?: string = "";
-	gatherings: Gathering[] = []; // You may want to replace 'any[]' with a proper Gathering[] type
 	bookings: Booking[] = []; // You may want to replace 'any[]' with a proper Booking[] type
 
 	constructor(data: Partial<Member> = {}) {
@@ -68,8 +68,7 @@ export class GatheringCategoryDetail {
 }
 
 export class Account {
-	identityUserId: string = "";
+	id: string = "";
 	email: string = "";
 	userName: string = "";
-	phoneNumber: string = "";
 }

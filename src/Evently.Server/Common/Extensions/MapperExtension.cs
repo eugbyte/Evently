@@ -6,9 +6,9 @@ namespace Evently.Server.Common.Extensions;
 public static class MapperExtension {
 	public static MemberReqDto ToMemberDto(this Member member) {
 		MemberReqDto reqDto = new(
-			member.MemberId,
+			member.Id,
 			member.Name,
-			member.Email,
+			member.Email ?? "",
 			member.LogoSrc
 		);
 		return reqDto;
@@ -16,7 +16,7 @@ public static class MapperExtension {
 
 	public static Member ToMember(this MemberReqDto memberReqDto) {
 		Member member = new() {
-			MemberId = memberReqDto.MemberId,
+			Id = memberReqDto.Id,
 			Name = memberReqDto.Name,
 			Email = memberReqDto.Email,
 			LogoSrc = memberReqDto.LogoSrc,
@@ -32,7 +32,7 @@ public static class MapperExtension {
 			Start = gatheringReqDto.Start,
 			End = gatheringReqDto.End,
 			Location = gatheringReqDto.Location,
-			OrganiserId = gatheringReqDto.EventOrganiserId,
+			OrganiserId = gatheringReqDto.OrganiserId,
 			CoverSrc = gatheringReqDto.CoverSrc,
 		};
 		return gathering;
@@ -56,12 +56,20 @@ public static class MapperExtension {
 	public static Booking ToBooking(this BookingReqDto bookingReqDto) {
 		return new Booking {
 			BookingId = bookingReqDto.BookingId,
-			MemberId = bookingReqDto.AttendeeId,
+			MemberId = bookingReqDto.GuestId,
 			GatheringId = bookingReqDto.ExhibitionId,
 			RegistrationDateTime = bookingReqDto.RegistrationDateTime,
 			CheckInDateTime = bookingReqDto.CheckInDateTime,
 			CheckoutDateTime = bookingReqDto.CheckoutDateTime,
 			CancellationDateTime = bookingReqDto.CancellationDateTime,
 		};
+	}
+
+	public static AccountDto ToAccount(this Member member) {
+		return new AccountDto(
+			Id: member.Id,
+			Email: member.Email ?? string.Empty,
+			Username: member.UserName ?? string.Empty
+		);
 	}
 }

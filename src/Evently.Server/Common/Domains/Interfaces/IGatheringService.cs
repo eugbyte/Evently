@@ -6,7 +6,7 @@ namespace Evently.Server.Common.Domains.Interfaces;
 public interface IGatheringService {
 	Task<Gathering?> GetGathering(long gatheringId);
 
-	Task<PageResult<Gathering>> GetGatherings(long? guestUserId, long? hostUserId,
+	Task<PageResult<Gathering>> GetGatherings(string? guestUserId, string? hostUserId,
 		string? exhibitionName,
 		DateTimeOffset? startDate, DateTimeOffset? endDate,
 		int? offset,

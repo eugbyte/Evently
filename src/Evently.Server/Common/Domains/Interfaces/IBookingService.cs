@@ -6,7 +6,7 @@ namespace Evently.Server.Common.Domains.Interfaces;
 public interface IBookingService {
 	Task<Booking?> GetBooking(string bookingId);
 
-	Task<PageResult<Booking>> GetBookings(long? guestId, long? organiserId, DateTime? checkInStart,
+	Task<PageResult<Booking>> GetBookings(string? guestId, long? gatheringId, DateTime? checkInStart,
 		DateTime? checkInEnd,
 		bool? isCancelled, int? offset, int? limit);
 
