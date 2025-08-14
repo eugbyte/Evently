@@ -13,7 +13,7 @@ namespace Evently.Server.Features.Accounts;
 
 // Based on https://tinyurl.com/26arz8vk
 [ApiController]
-[Route("api/v1/auth/external")]
+[Route("api/v1/Auth/external")]
 public sealed class AccountController(
 	IAccountsService accountService,
 	ILogger<AccountController> logger) : ControllerBase {

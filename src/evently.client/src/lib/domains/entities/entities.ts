@@ -66,3 +66,10 @@ export class GatheringCategoryDetail {
 		Object.assign(this, partial);
 	}
 }
+
+export class Account {
+	identityUserId: string = "";
+	email: string = "";
+	userName: string = "";
+	phoneNumber: string = "";
+}
