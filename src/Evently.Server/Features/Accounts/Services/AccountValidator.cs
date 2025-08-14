@@ -1,14 +1,14 @@
 using Evently.Server.Common.Domains.Entities;
 using FluentValidation;
 
-namespace Evently.Server.Features.Members.Services;
+namespace Evently.Server.Features.Accounts.Services;
 
-public sealed class MemberValidator : AbstractValidator<Member> {
-	public MemberValidator() {
+public sealed class AccountValidator : AbstractValidator<Account> {
+	public AccountValidator() {
 		RuleFor((member) => member.Name).NotEmpty().WithMessage("Name is required.");
 		RuleFor((member) => member.Email).NotEmpty().WithMessage("Email is required.");
 		RuleForEach((member) => member.Bookings).Custom((value, context) => {
-			if (value.MemberId == string.Empty) {
+			if (value.AccountId == string.Empty) {
 				context.AddFailure("MemberId is required.");
 			}
 

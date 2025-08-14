@@ -4,7 +4,7 @@ import { type JSX } from "react";
 import { Gathering } from "~/lib/domains/entities";
 import Placeholder from "~/lib/assets/event_placeholder.webp";
 
-export const Route = createFileRoute("/gatherings/$gatheringId/")({
+export const Route = createFileRoute("/gatherings/$gatheringId")({
 	loader: async ({ params }) => {
 		return getGathering(parseInt(params.gatheringId));
 	},
@@ -32,5 +32,5 @@ export function GatheringPage(): JSX.Element {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }

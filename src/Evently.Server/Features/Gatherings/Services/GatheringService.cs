@@ -10,7 +10,7 @@ namespace Evently.Server.Features.Gatherings.Services;
 public sealed class GatheringService(AppDbContext db) : IGatheringService {
 	public async Task<Gathering?> GetGathering(long gatheringId) {
 		return await db.Gatherings
-			.Include((gathering) => gathering.Member)
+			.Include((gathering) => gathering.Account)
 			.Include(gathering => gathering.Bookings)
 			.FirstOrDefaultAsync((gathering) => gathering.GatheringId == gatheringId);
 	}
@@ -26,11 +26,11 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 		IQueryable<Gathering> query = db.Gatherings
 			.Where((gathering) => name == null || EF.Functions.ILike(gathering.Name, $"%{name}%"))
 			.Where((gathering) =>
-				guestUserId == null || gathering.Bookings.Any((be) => be.MemberId == guestUserId))
+				guestUserId == null || gathering.Bookings.Any((be) => be.AccountId == guestUserId))
 			.Where((gathering) => startDate == null || gathering.End >= startDate)
 			.Where((gathering) => endDate == null || gathering.Start <= endDate)
-			.Where((gathering) => hostUserId == null || gathering.OrganiserId == hostUserId)
-			.Include((gathering) => gathering.Member);
+			.Where((gathering) => hostUserId == null || gathering.HostId == hostUserId)
+			.Include((gathering) => gathering.Account);
 
 		int totalCount = await query.CountAsync();
 

@@ -4,26 +4,6 @@ using Evently.Server.Common.Domains.Models;
 namespace Evently.Server.Common.Extensions;
 
 public static class MapperExtension {
-	public static MemberReqDto ToMemberDto(this Member member) {
-		MemberReqDto reqDto = new(
-			member.Id,
-			member.Name,
-			member.Email ?? "",
-			member.LogoSrc
-		);
-		return reqDto;
-	}
-
-	public static Member ToMember(this MemberReqDto memberReqDto) {
-		Member member = new() {
-			Id = memberReqDto.Id,
-			Name = memberReqDto.Name,
-			Email = memberReqDto.Email,
-			LogoSrc = memberReqDto.LogoSrc,
-		};
-		return member;
-	}
-
 	public static Gathering ToGathering(this GatheringReqDto gatheringReqDto) {
 		Gathering gathering = new() {
 			GatheringId = gatheringReqDto.GatheringId,
@@ -32,7 +12,7 @@ public static class MapperExtension {
 			Start = gatheringReqDto.Start,
 			End = gatheringReqDto.End,
 			Location = gatheringReqDto.Location,
-			OrganiserId = gatheringReqDto.OrganiserId,
+			HostId = gatheringReqDto.HostId,
 			CoverSrc = gatheringReqDto.CoverSrc,
 		};
 		return gathering;
@@ -46,7 +26,7 @@ public static class MapperExtension {
 			gathering.Start,
 			gathering.End,
 			gathering.Location,
-			gathering.OrganiserId,
+			gathering.HostId,
 			gathering.CoverSrc
 		);
 		return reqDto;
@@ -56,8 +36,8 @@ public static class MapperExtension {
 	public static Booking ToBooking(this BookingReqDto bookingReqDto) {
 		return new Booking {
 			BookingId = bookingReqDto.BookingId,
-			MemberId = bookingReqDto.GuestId,
-			GatheringId = bookingReqDto.ExhibitionId,
+			AccountId = bookingReqDto.GuestId,
+			GatheringId = bookingReqDto.GatheringId,
 			RegistrationDateTime = bookingReqDto.RegistrationDateTime,
 			CheckInDateTime = bookingReqDto.CheckInDateTime,
 			CheckoutDateTime = bookingReqDto.CheckoutDateTime,
@@ -65,11 +45,13 @@ public static class MapperExtension {
 		};
 	}
 
-	public static AccountDto ToAccount(this Member member) {
+	public static AccountDto ToAccountDto(this Account account) {
 		return new AccountDto(
-			Id: member.Id,
-			Email: member.Email ?? string.Empty,
-			Username: member.UserName ?? string.Empty
+			account.Id,
+			Email: account.Email ?? string.Empty,
+			Username: account.UserName ?? string.Empty,
+			Name: account.Name ?? string.Empty,
+			LogoSrc: account.LogoSrc ?? string.Empty
 		);
 	}
 }

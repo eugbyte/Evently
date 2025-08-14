@@ -1,6 +1,6 @@
-﻿using Evently.Server.Common.Domains.Exceptions;
+﻿using Evently.Server.Common.Domains.Entities;
+using Evently.Server.Common.Domains.Exceptions;
 using Evently.Server.Common.Domains.Interfaces;
-using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -30,15 +30,12 @@ public sealed class AccountController(
 		}
 
 		ClaimsPrincipal principal = result.Principal ?? new ClaimsPrincipal();
-		IdentityUser? user = await accountService.FindByClaimsPrincipalAsync(principal);
+		Account? user = await accountService.FindByClaimsPrincipalAsync(principal);
 		if (user is null) {
 			return NotFound(new { message = "User not found" });
 		}
 
-		return Ok(new AccountDto(
-			user.Id,
-			Email: user.Email ?? "",
-			Username: user.UserName ?? ""));
+		return Ok(user.ToAccountDto());
 	}
 
 	[HttpPost("logout")]
@@ -61,7 +58,7 @@ public sealed class AccountController(
 	[HttpGet("{provider}/login")]
 	public IActionResult Login(string provider, string? originUrl = "") {
 		Uri rootUri = Request.RootUri();
-		string uri = Url.Action("Callback", "Account", new { provider }) ?? "";
+		string uri = Url.Action("Callback", "Account", values: new { provider }) ?? "";
 		UriBuilder combined = new(rootUri) {
 			Path = uri,
 			Query = $"originUrl={originUrl}",

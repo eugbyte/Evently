@@ -1,3 +1,3 @@
 ﻿namespace Evently.Server.Common.Domains.Models;
 
-public sealed record AccountDto(string Id, string Email, string Username);
+public sealed record AccountDto(string Id, string Email, string Username, string Name, string LogoSrc);

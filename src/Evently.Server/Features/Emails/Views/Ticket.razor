@@ -50,7 +50,7 @@
             <td>@Gathering.Location</td>
         </tr>
         <tr style="margin-top: 1rem; font-size: 2.5rem;">
-            <td>@Member.Name</td>
+            <td>@Account.Name</td>
         </tr>
         <tr style="text-align: center; font-size: 1.75rem; color: #0d6efd;">
             <td>ATTENDEE</td>
@@ -87,7 +87,7 @@
     private string StartDate => Gathering.Start.ToString("d MMM yyyy");
     private string _baseUri = string.Empty;
     private Gathering Gathering => Booking.Gathering ?? new Gathering();
-    private Member Member => Booking.Member ?? new Member();
+    private Account Account => Booking.Account ?? new Account();
 
 
 }

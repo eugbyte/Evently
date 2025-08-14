@@ -77,7 +77,7 @@ public sealed class GatheringsController(
 			return BadRequest(result.Errors);
 		}
 
-		if (!await this.IsResourceOwner(exhibition.Member?.Id)) {
+		if (!await this.IsResourceOwner(exhibition.Account?.Id)) {
 			return Forbid();
 		}
 
@@ -92,7 +92,7 @@ public sealed class GatheringsController(
 			return NotFound();
 		}
 
-		if (!await this.IsResourceOwner(exhibition.Member?.Id)) {
+		if (!await this.IsResourceOwner(exhibition.Account?.Id)) {
 			return Forbid();
 		}
 

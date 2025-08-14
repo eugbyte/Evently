@@ -17,7 +17,7 @@ public sealed class BookingService(
 	: IBookingService {
 	public async Task<Booking?> GetBooking(string bookingId) {
 		return await db.Bookings
-			.Include((b) => b.Member)
+			.Include((b) => b.Account)
 			.Include((b) => b.Gathering)
 			.FirstOrDefaultAsync((be) => be.BookingId == bookingId);
 	}
@@ -26,12 +26,12 @@ public sealed class BookingService(
 		DateTime? checkInStart, DateTime? checkInEnd,
 		bool? isCancelled, int? offset, int? limit) {
 		IQueryable<Booking> query = db.Bookings
-			.Where((b) => guestId == null || b.MemberId == guestId)
+			.Where((b) => guestId == null || b.AccountId == guestId)
 			.Where((b) => gatheringId == null || b.GatheringId == gatheringId)
 			.Where((c) => checkInStart == null || checkInStart <= c.CheckInDateTime)
 			.Where((b) => checkInEnd == null || b.CheckInDateTime <= checkInEnd)
 			.Where((b) => isCancelled == null || b.CancellationDateTime.HasValue == isCancelled)
-			.Include((b) => b.Member)
+			.Include((b) => b.Account)
 			.Include((b) => b.Gathering);
 
 		int totalCount = await query.CountAsync();
@@ -67,7 +67,7 @@ public sealed class BookingService(
 			                  .FirstOrDefaultAsync((be) => be.BookingId == bookingId)
 		                  ?? throw new KeyNotFoundException($"{booking.BookingId} not found");
 
-		current.MemberId = booking.MemberId;
+		current.AccountId = booking.AccountId;
 		current.GatheringId = booking.GatheringId;
 		current.RegistrationDateTime = booking.RegistrationDateTime;
 		current.CheckInDateTime = booking.CheckInDateTime;
@@ -80,7 +80,7 @@ public sealed class BookingService(
 
 	public async Task<string> RenderTicket(string bookingId) {
 		Booking? booking = await GetBooking(bookingId);
-		if (booking?.Member is null || booking.Gathering is null) {
+		if (booking?.Account is null || booking.Gathering is null) {
 			throw new KeyNotFoundException(
 				$"Booking with id: {bookingId} not found or related member or gathering is null");
 		}

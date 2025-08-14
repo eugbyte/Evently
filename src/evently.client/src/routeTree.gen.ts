@@ -8,106 +8,161 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as HealthcheckIndexRouteImport } from "./routes/healthcheck/index";
-import { Route as GatheringsIndexRouteImport } from "./routes/gatherings/index";
-import { Route as GatheringsGatheringIdIndexRouteImport } from "./routes/gatherings/$gatheringId/index.$gatheringId.tsx";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index'
+import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
+import { Route as LoginCallbackRouteImport } from './routes/login/callback'
+import { Route as GatheringsGatheringIdRouteImport } from './routes/gatherings/$gatheringId'
 
 const IndexRoute = IndexRouteImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HealthcheckIndexRoute = HealthcheckIndexRouteImport.update({
-	id: "/healthcheck/",
-	path: "/healthcheck/",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/healthcheck/',
+  path: '/healthcheck/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GatheringsIndexRoute = GatheringsIndexRouteImport.update({
-	id: "/gatherings/",
-	path: "/gatherings/",
-	getParentRoute: () => rootRouteImport
-} as any);
-const GatheringsGatheringIdIndexRoute = GatheringsGatheringIdIndexRouteImport.update({
-	id: "/gatherings/$gatheringId/",
-	path: "/gatherings/$gatheringId/",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/gatherings/',
+  path: '/gatherings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginCallbackRoute = LoginCallbackRouteImport.update({
+  id: '/login/callback',
+  path: '/login/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GatheringsGatheringIdRoute = GatheringsGatheringIdRouteImport.update({
+  id: '/gatherings/$gatheringId',
+  path: '/gatherings/$gatheringId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-	"/": typeof IndexRoute;
-	"/gatherings": typeof GatheringsIndexRoute;
-	"/healthcheck": typeof HealthcheckIndexRoute;
-	"/gatherings/$gatheringId": typeof GatheringsGatheringIdIndexRoute;
+  '/': typeof IndexRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdRoute
+  '/login/callback': typeof LoginCallbackRoute
+  '/gatherings': typeof GatheringsIndexRoute
+  '/healthcheck': typeof HealthcheckIndexRoute
+  '/login': typeof LoginIndexRoute
 }
 export interface FileRoutesByTo {
-	"/": typeof IndexRoute;
-	"/gatherings": typeof GatheringsIndexRoute;
-	"/healthcheck": typeof HealthcheckIndexRoute;
-	"/gatherings/$gatheringId": typeof GatheringsGatheringIdIndexRoute;
+  '/': typeof IndexRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdRoute
+  '/login/callback': typeof LoginCallbackRoute
+  '/gatherings': typeof GatheringsIndexRoute
+  '/healthcheck': typeof HealthcheckIndexRoute
+  '/login': typeof LoginIndexRoute
 }
 export interface FileRoutesById {
-	__root__: typeof rootRouteImport;
-	"/": typeof IndexRoute;
-	"/gatherings/": typeof GatheringsIndexRoute;
-	"/healthcheck/": typeof HealthcheckIndexRoute;
-	"/gatherings/$gatheringId/": typeof GatheringsGatheringIdIndexRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdRoute
+  '/login/callback': typeof LoginCallbackRoute
+  '/gatherings/': typeof GatheringsIndexRoute
+  '/healthcheck/': typeof HealthcheckIndexRoute
+  '/login/': typeof LoginIndexRoute
 }
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths: "/" | "/gatherings" | "/healthcheck" | "/gatherings/$gatheringId";
-	fileRoutesByTo: FileRoutesByTo;
-	to: "/" | "/gatherings" | "/healthcheck" | "/gatherings/$gatheringId";
-	id: "__root__" | "/" | "/gatherings/" | "/healthcheck/" | "/gatherings/$gatheringId/";
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/gatherings/$gatheringId'
+    | '/login/callback'
+    | '/gatherings'
+    | '/healthcheck'
+    | '/login'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/gatherings/$gatheringId'
+    | '/login/callback'
+    | '/gatherings'
+    | '/healthcheck'
+    | '/login'
+  id:
+    | '__root__'
+    | '/'
+    | '/gatherings/$gatheringId'
+    | '/login/callback'
+    | '/gatherings/'
+    | '/healthcheck/'
+    | '/login/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute;
-	GatheringsIndexRoute: typeof GatheringsIndexRoute;
-	HealthcheckIndexRoute: typeof HealthcheckIndexRoute;
-	GatheringsGatheringIdIndexRoute: typeof GatheringsGatheringIdIndexRoute;
+  IndexRoute: typeof IndexRoute
+  GatheringsGatheringIdRoute: typeof GatheringsGatheringIdRoute
+  LoginCallbackRoute: typeof LoginCallbackRoute
+  GatheringsIndexRoute: typeof GatheringsIndexRoute
+  HealthcheckIndexRoute: typeof HealthcheckIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
 }
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/": {
-			id: "/";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof IndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/healthcheck/": {
-			id: "/healthcheck/";
-			path: "/healthcheck";
-			fullPath: "/healthcheck";
-			preLoaderRoute: typeof HealthcheckIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/gatherings/": {
-			id: "/gatherings/";
-			path: "/gatherings";
-			fullPath: "/gatherings";
-			preLoaderRoute: typeof GatheringsIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/gatherings/$gatheringId/": {
-			id: "/gatherings/$gatheringId/";
-			path: "/gatherings/$gatheringId";
-			fullPath: "/gatherings/$gatheringId";
-			preLoaderRoute: typeof GatheringsGatheringIdIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/healthcheck/': {
+      id: '/healthcheck/'
+      path: '/healthcheck'
+      fullPath: '/healthcheck'
+      preLoaderRoute: typeof HealthcheckIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gatherings/': {
+      id: '/gatherings/'
+      path: '/gatherings'
+      fullPath: '/gatherings'
+      preLoaderRoute: typeof GatheringsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/callback': {
+      id: '/login/callback'
+      path: '/login/callback'
+      fullPath: '/login/callback'
+      preLoaderRoute: typeof LoginCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gatherings/$gatheringId': {
+      id: '/gatherings/$gatheringId'
+      path: '/gatherings/$gatheringId'
+      fullPath: '/gatherings/$gatheringId'
+      preLoaderRoute: typeof GatheringsGatheringIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	GatheringsIndexRoute: GatheringsIndexRoute,
-	HealthcheckIndexRoute: HealthcheckIndexRoute,
-	GatheringsGatheringIdIndexRoute: GatheringsGatheringIdIndexRoute
-};
+  IndexRoute: IndexRoute,
+  GatheringsGatheringIdRoute: GatheringsGatheringIdRoute,
+  LoginCallbackRoute: LoginCallbackRoute,
+  GatheringsIndexRoute: GatheringsIndexRoute,
+  HealthcheckIndexRoute: HealthcheckIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
+}
 export const routeTree = rootRouteImport
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()

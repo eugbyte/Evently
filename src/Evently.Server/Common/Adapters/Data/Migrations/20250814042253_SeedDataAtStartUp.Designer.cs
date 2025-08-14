@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250814023548_SimplifyMember")]
-    partial class SimplifyMember
+    [Migration("20250814042253_SeedDataAtStartUp")]
+    partial class SeedDataAtStartUp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,11 +25,89 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Account", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LogoSrc")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Booking", b =>
                 {
                     b.Property<string>("BookingId")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTimeOffset?>("CancellationDateTime")
                         .HasColumnType("timestamp with time zone");
@@ -43,19 +121,14 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.Property<long>("GatheringId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("MemberId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<DateTimeOffset>("RegistrationDateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("BookingId");
 
-                    b.HasIndex("GatheringId");
+                    b.HasIndex("AccountId");
 
-                    b.HasIndex("MemberId");
+                    b.HasIndex("GatheringId");
 
                     b.ToTable("Bookings");
                 });
@@ -79,14 +152,6 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = 1L,
-                            Approved = false,
-                            CategoryName = "Information Technology"
-                        });
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Gathering", b =>
@@ -109,6 +174,11 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.Property<DateTimeOffset>("End")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("HostId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -119,32 +189,14 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("OrganiserId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<DateTimeOffset>("Start")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("GatheringId");
 
-                    b.HasIndex("OrganiserId");
+                    b.HasIndex("HostId");
 
                     b.ToTable("Gatherings");
-
-                    b.HasData(
-                        new
-                        {
-                            GatheringId = 1L,
-                            CoverSrc = "",
-                            Description = "Meet and Greet",
-                            End = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Location = "",
-                            Name = "The Great Fair",
-                            OrganiserId = "ABC",
-                            Start = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
-                        });
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.GatheringCategoryDetail", b =>
@@ -160,93 +212,6 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("GatheringCategoryDetails");
-
-                    b.HasData(
-                        new
-                        {
-                            GatheringId = 1L,
-                            CategoryId = 1L
-                        });
-                });
-
-            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Member", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LogoSrc")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("Members");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "ABC",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "DEF",
-                            Email = "john.doe@gmail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            Name = "John Doe",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAb7czoxSy1+HJDSlCugt0C7O8OLnDLdpK5gGlJFZ2dcA9vO4wgBASbGckRrx7SXyQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "DEF",
-                            TwoFactorEnabled = false
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -298,70 +263,6 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -447,32 +348,32 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Booking", b =>
                 {
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", "Account")
+                        .WithMany("Bookings")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Evently.Server.Common.Domains.Entities.Gathering", "Gathering")
                         .WithMany("Bookings")
                         .HasForeignKey("GatheringId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Evently.Server.Common.Domains.Entities.Member", "Member")
-                        .WithMany("Bookings")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Account");
 
                     b.Navigation("Gathering");
-
-                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Gathering", b =>
                 {
-                    b.HasOne("Evently.Server.Common.Domains.Entities.Member", "Member")
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("OrganiserId")
+                        .HasForeignKey("HostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Member");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.GatheringCategoryDetail", b =>
@@ -505,7 +406,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -514,7 +415,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -529,7 +430,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -538,11 +439,16 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Account", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Category", b =>
@@ -555,11 +461,6 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("GatheringCategoryDetails");
-                });
-
-            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Member", b =>
-                {
-                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

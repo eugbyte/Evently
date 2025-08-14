@@ -1,6 +1,6 @@
 import {createFileRoute, useNavigate} from "@tanstack/react-router";
 import {getAccount} from "~/lib/services/auth-service.ts";
-import {Account, Member} from "~/lib/domains/entities";
+import {Account} from "~/lib/domains/entities";
 import {getMembers} from "~/lib/services";
 
 export const Route = createFileRoute("/login/callback")({
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/login/callback")({
     }
 });
 export function LoginCallbackPage() {
-    const member: Member = Route.useLoaderData();
+    const member: Account = Route.useLoaderData();
     sessionStorage.setItem("identityUserId", member.id);
     sessionStorage.setItem("userName", member.userName);
     sessionStorage.setItem("email", member.email);

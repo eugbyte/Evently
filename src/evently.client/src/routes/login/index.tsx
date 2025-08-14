@@ -1,5 +1,5 @@
 import {login} from "~/lib/services/auth-service.ts";
-import GoogleIcon from "~/lib/assets/google.svg";
+import GoogleIcon from "~/lib/assets/GoogleIcon.svg";
 import {createFileRoute} from "@tanstack/react-router";
 
 export const Route = createFileRoute("/login/")({
