@@ -10,14 +10,14 @@ namespace Evently.Server.Features.Gatherings.Services;
 public sealed class GatheringService(AppDbContext db) : IGatheringService {
 	public async Task<Gathering?> GetGathering(long gatheringId) {
 		return await db.Gatherings
-			.Include((gathering) => gathering.Member)
+			.Include((gathering) => gathering.Organiser)
 			.Include(gathering => gathering.Bookings)
 			.FirstOrDefaultAsync((gathering) => gathering.GatheringId == gatheringId);
 	}
 
 	public async Task<PageResult<Gathering>> GetGatherings(
-		long? guestUserId,
-		long? hostUserId,
+		string? attendeeId,
+		string? organiserId,
 		string? name,
 		DateTimeOffset? startDate,
 		DateTimeOffset? endDate,
@@ -26,11 +26,12 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 		IQueryable<Gathering> query = db.Gatherings
 			.Where((gathering) => name == null || EF.Functions.ILike(gathering.Name, $"%{name}%"))
 			.Where((gathering) =>
-				guestUserId == null || gathering.Bookings.Any((be) => be.MemberId == guestUserId))
+				attendeeId == null || gathering.Bookings.Any((be) => be.AccountId == attendeeId))
 			.Where((gathering) => startDate == null || gathering.End >= startDate)
 			.Where((gathering) => endDate == null || gathering.Start <= endDate)
-			.Where((gathering) => hostUserId == null || gathering.OrganiserId == hostUserId)
-			.Include((gathering) => gathering.Member);
+			.Where((gathering) => organiserId == null || gathering.OrganiserId == organiserId)
+			.Include((gathering) => gathering.Bookings)
+			.Include((gathering) => gathering.Organiser);
 
 		int totalCount = await query.CountAsync();
 

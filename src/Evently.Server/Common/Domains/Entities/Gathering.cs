@@ -20,8 +20,8 @@ public class Gathering {
 
 	[StringLength(1000)] public string? CoverSrc { get; set; } = string.Empty;
 
-	[ForeignKey("Member")] public long OrganiserId { get; set; }
-	public Member? Member { get; set; }
+	[StringLength(100)] [ForeignKey("Account")] public string OrganiserId { get; set; } = string.Empty;
+	public Account? Organiser { get; set; }
 
 	public List<Booking> Bookings { get; set; } = [];
 	public List<GatheringCategoryDetail> GatheringCategoryDetails { get; set; } = [];

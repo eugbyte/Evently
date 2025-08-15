@@ -7,7 +7,7 @@
 	location: string = "";
 	coverSrc?: string = "";
 	organiserId: number = 0;
-	member = new Member(); // You may want to replace 'any' with a proper Member type
+	organiser = new Account();
 	bookings: Booking[] = []; // You may want to replace 'any[]' with a proper Booking[] type
 	gatheringCategoryDetails: GatheringCategoryDetail[] = []; // You may want to replace 'any[]' with a proper GatheringCategoryDetail[] type
 
@@ -16,23 +16,23 @@
 	}
 }
 
-export class Member {
-	memberId: number = 0;
+export class Account {
+	id = "";
 	name: string = "";
+	userName: string = "";
 	email: string = "";
 	logoSrc?: string = "";
-	gatherings: Gathering[] = []; // You may want to replace 'any[]' with a proper Gathering[] type
 	bookings: Booking[] = []; // You may want to replace 'any[]' with a proper Booking[] type
 
-	constructor(data: Partial<Member> = {}) {
+	constructor(data: Partial<Account> = {}) {
 		Object.assign(this, data);
 	}
 }
 
 export class Booking {
 	public bookingId = "";
-	public memberId = 0;
-	public member = new Member();
+	public accountId = 0;
+	public accountDto = new Account();
 	public gatheringId = 0;
 	public gathering = new Gathering();
 	public registrationDateTime = new Date();

@@ -1,7 +1,7 @@
 ﻿export class BookingReqDto {
 	public bookingId: string = "";
-	public attendeeId: number = 0;
-	public exhibitionId: number = 0;
+	public guestId: number = 0;
+	public gatheringId: number = 0;
 	public registrationDateTime: Date = new Date();
 	public checkInDateTime: Date | null = null;
 	public checkoutDateTime: Date | null = null;
@@ -19,21 +19,10 @@ export class GatheringReqDto {
 	public start: Date = new Date();
 	public end: Date = new Date();
 	public location: string = "";
-	public eventOrganiserId: number = 0;
+	public hostId: number = 0;
 	public coverSrc = "";
 
 	constructor(partial: Partial<GatheringReqDto> = {}) {
-		Object.assign(this, partial);
-	}
-}
-
-export class MemberReqDto {
-	public memberId: number = 0;
-	public name: string = "";
-	public email: string = "";
-	public logoSrc: string | null = null;
-
-	constructor(partial: Partial<MemberReqDto> = {}) {
 		Object.assign(this, partial);
 	}
 }

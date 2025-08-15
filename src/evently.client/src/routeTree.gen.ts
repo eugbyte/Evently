@@ -10,12 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index'
 import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
+import { Route as BookingsIndexRouteImport } from './routes/bookings/index'
+import { Route as LoginCallbackRouteImport } from './routes/login/callback'
+import { Route as GatheringsGatheringIdRouteImport } from './routes/gatherings/$gatheringId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HealthcheckIndexRoute = HealthcheckIndexRouteImport.update({
@@ -28,35 +37,88 @@ const GatheringsIndexRoute = GatheringsIndexRouteImport.update({
   path: '/gatherings/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookingsIndexRoute = BookingsIndexRouteImport.update({
+  id: '/bookings/',
+  path: '/bookings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginCallbackRoute = LoginCallbackRouteImport.update({
+  id: '/login/callback',
+  path: '/login/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GatheringsGatheringIdRoute = GatheringsGatheringIdRouteImport.update({
+  id: '/gatherings/$gatheringId',
+  path: '/gatherings/$gatheringId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdRoute
+  '/login/callback': typeof LoginCallbackRoute
+  '/bookings': typeof BookingsIndexRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
+  '/login': typeof LoginIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdRoute
+  '/login/callback': typeof LoginCallbackRoute
+  '/bookings': typeof BookingsIndexRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
+  '/login': typeof LoginIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdRoute
+  '/login/callback': typeof LoginCallbackRoute
+  '/bookings/': typeof BookingsIndexRoute
   '/gatherings/': typeof GatheringsIndexRoute
   '/healthcheck/': typeof HealthcheckIndexRoute
+  '/login/': typeof LoginIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/gatherings' | '/healthcheck'
+  fullPaths:
+    | '/'
+    | '/gatherings/$gatheringId'
+    | '/login/callback'
+    | '/bookings'
+    | '/gatherings'
+    | '/healthcheck'
+    | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/gatherings' | '/healthcheck'
-  id: '__root__' | '/' | '/gatherings/' | '/healthcheck/'
+  to:
+    | '/'
+    | '/gatherings/$gatheringId'
+    | '/login/callback'
+    | '/bookings'
+    | '/gatherings'
+    | '/healthcheck'
+    | '/login'
+  id:
+    | '__root__'
+    | '/'
+    | '/gatherings/$gatheringId'
+    | '/login/callback'
+    | '/bookings/'
+    | '/gatherings/'
+    | '/healthcheck/'
+    | '/login/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GatheringsGatheringIdRoute: typeof GatheringsGatheringIdRoute
+  LoginCallbackRoute: typeof LoginCallbackRoute
+  BookingsIndexRoute: typeof BookingsIndexRoute
   GatheringsIndexRoute: typeof GatheringsIndexRoute
   HealthcheckIndexRoute: typeof HealthcheckIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/healthcheck/': {
@@ -82,13 +151,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GatheringsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bookings/': {
+      id: '/bookings/'
+      path: '/bookings'
+      fullPath: '/bookings'
+      preLoaderRoute: typeof BookingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/callback': {
+      id: '/login/callback'
+      path: '/login/callback'
+      fullPath: '/login/callback'
+      preLoaderRoute: typeof LoginCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gatherings/$gatheringId': {
+      id: '/gatherings/$gatheringId'
+      path: '/gatherings/$gatheringId'
+      fullPath: '/gatherings/$gatheringId'
+      preLoaderRoute: typeof GatheringsGatheringIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GatheringsGatheringIdRoute: GatheringsGatheringIdRoute,
+  LoginCallbackRoute: LoginCallbackRoute,
+  BookingsIndexRoute: BookingsIndexRoute,
   GatheringsIndexRoute: GatheringsIndexRoute,
   HealthcheckIndexRoute: HealthcheckIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

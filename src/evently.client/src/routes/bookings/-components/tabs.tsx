@@ -1,13 +1,14 @@
-﻿export interface TabsProps {
+﻿import { type JSX } from "react";
+
+export interface TabsProps {
 	tab: number;
 	handleTabChange: (tab: number) => void;
 }
 
-export function Tabs({ tab, handleTabChange }: TabsProps) {
+export function Tabs({ tab, handleTabChange }: TabsProps): JSX.Element {
 	const tabStates: Record<number, string> = {
-		0: "All",
-		1: "Upcoming",
-		2: "Past"
+		0: "Upcoming",
+		1: "Past"
 	};
 
 	return (
@@ -25,13 +26,6 @@ export function Tabs({ tab, handleTabChange }: TabsProps) {
 				className={`tab ${tab === 1 ? "tab-active" : ""}`}
 			>
 				{tabStates[1]}
-			</button>
-			<button
-				role="tab"
-				onClick={() => handleTabChange(2)}
-				className={`tab ${tab === 2 ? "tab-active" : ""}`}
-			>
-				{tabStates[2]}
 			</button>
 		</div>
 	);

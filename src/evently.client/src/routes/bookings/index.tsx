@@ -1,11 +1,12 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Gathering } from "~/lib/domains/entities";
+import { Account, Gathering } from "~/lib/domains/entities";
+import { Tabs } from "./-components";
 import { getAccount, getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card } from "~/lib/components";
 
-export const Route = createFileRoute("/gatherings/")({
+export const Route = createFileRoute("/bookings/")({
 	component: GatheringsPage,
 	loader: async () => {
 		return getAccount();
@@ -13,7 +14,14 @@ export const Route = createFileRoute("/gatherings/")({
 });
 
 export function GatheringsPage(): JSX.Element {
-	const [queryParams] = useState<GetGatheringsParams>({ start: new Date() });
+	const account: Account | null = Route.useLoaderData();
+	const attendeeId: string = account?.id ?? "-1";
+
+	const [tab, setTab] = useState(0);
+	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
+		attendeeId,
+		start: new Date()
+	});
 	const { data: _gatherings, isLoading } = useQuery({
 		queryKey: ["getGatherings", queryParams],
 		queryFn: (): Promise<Gathering[]> => getGatherings(queryParams)
@@ -27,30 +35,24 @@ export function GatheringsPage(): JSX.Element {
 		...gatherings,
 		...gatherings
 	];
+	const handleTabChange = (_tab: number) => {
+		setTab(_tab);
+
+		switch (_tab) {
+			case 0: {
+				setQueryParams({ attendeeId, start: new Date() });
+				break;
+			}
+			case 1: {
+				setQueryParams({ attendeeId, end: new Date() });
+				break;
+			}
+		}
+	};
 
 	return (
 		<div className="mb-20 p-1 sm:mb-0 sm:p-4">
-			<div className="flex flex-col justify-between space-y-5 sm:flex-row">
-				<label className="input w-40">
-					<svg
-						className="h-[1em] opacity-50"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 24 24"
-					>
-						<g
-							strokeLinejoin="round"
-							strokeLinecap="round"
-							strokeWidth="2.5"
-							fill="none"
-							stroke="currentColor"
-						>
-							<circle cx="11" cy="11" r="8"></circle>
-							<path d="m21 21-4.3-4.3"></path>
-						</g>
-					</svg>
-					<input type="search" className="grow" placeholder="Search" />
-				</label>
-			</div>
+			<Tabs tab={tab} handleTabChange={handleTabChange} />
 			{isLoading ? (
 				<progress className="progress w-full"></progress>
 			) : (

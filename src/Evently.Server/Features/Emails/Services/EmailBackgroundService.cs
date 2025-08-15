@@ -19,15 +19,15 @@ public sealed class EmailBackgroundService(
 				IBookingService bookingService = scope.ServiceProvider.GetRequiredService<IBookingService>();
 
 				Booking? booking = await bookingService.GetBooking(bookingId);
-				if (booking?.Member is null) {
+				if (booking?.Account is null) {
 					continue;
 				}
 
 				string html = await bookingService.RenderTicket(bookingId);
-				Member member = booking.Member;
+				Account account = booking.Account;
 
-				await emailerAdapter.SendEmailAsync("noreply@expoconnect.id", member.Email, "Test QR ticket", html);
-				LoggerExtension.LogSuccessEmail(logger, member.Email);
+				await emailerAdapter.SendEmailAsync("noreply@expoconnect.id", account.Email, "Test QR ticket", html);
+				LoggerExtension.LogSuccessEmail(logger, account.Email);
 			} catch (Exception ex) {
 				logger.LogError("email error: {}", ex.Message);
 			}

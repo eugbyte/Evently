@@ -3,6 +3,7 @@ using System;
 using Evently.Server.Common.Adapters.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250814024847_SimplifyMember")]
+    partial class SimplifyMember
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,131 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Account", b =>
+            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Booking", b =>
+                {
+                    b.Property<string>("BookingId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTimeOffset?>("CancellationDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("CheckInDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("CheckoutDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("GatheringId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("MemberId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTimeOffset>("RegistrationDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("BookingId");
+
+                    b.HasIndex("GatheringId");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Category", b =>
+                {
+                    b.Property<long>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("CategoryId"));
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1L,
+                            Approved = false,
+                            CategoryName = "Information Technology"
+                        });
+                });
+
+            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Gathering", b =>
+                {
+                    b.Property<long>("GatheringId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("GatheringId"));
+
+                    b.Property<string>("CoverSrc")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(10000)
+                        .HasColumnType("character varying(10000)");
+
+                    b.Property<DateTimeOffset>("End")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("OrganiserId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTimeOffset>("Start")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("GatheringId");
+
+                    b.HasIndex("OrganiserId");
+
+                    b.ToTable("Gatherings");
+                });
+
+            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.GatheringCategoryDetail", b =>
+                {
+                    b.Property<long>("GatheringId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("GatheringId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("GatheringCategoryDetails");
+                });
+
+            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Member", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -95,123 +222,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Booking", b =>
-                {
-                    b.Property<string>("BookingId")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("AccountId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTimeOffset?>("CancellationDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset?>("CheckInDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset?>("CheckoutDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("GatheringId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTimeOffset>("RegistrationDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("BookingId");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("GatheringId");
-
-                    b.ToTable("Bookings");
-                });
-
-            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Category", b =>
-                {
-                    b.Property<long>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("CategoryId"));
-
-                    b.Property<bool>("Approved")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Gathering", b =>
-                {
-                    b.Property<long>("GatheringId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("GatheringId"));
-
-                    b.Property<string>("CoverSrc")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(10000)
-                        .HasColumnType("character varying(10000)");
-
-                    b.Property<DateTimeOffset>("End")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("OrganiserId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTimeOffset>("Start")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("GatheringId");
-
-                    b.HasIndex("OrganiserId");
-
-                    b.ToTable("Gatherings");
-                });
-
-            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.GatheringCategoryDetail", b =>
-                {
-                    b.Property<long>("GatheringId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("CategoryId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("GatheringId", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("GatheringCategoryDetails");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<string>", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -345,32 +356,32 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Booking", b =>
                 {
-                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", "Account")
-                        .WithMany("Bookings")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Evently.Server.Common.Domains.Entities.Gathering", "Gathering")
                         .WithMany("Bookings")
                         .HasForeignKey("GatheringId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Member", "Member")
+                        .WithMany("Bookings")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Gathering");
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Gathering", b =>
                 {
-                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", "Organiser")
-                        .WithMany("Gatherings")
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Member", "Member")
+                        .WithMany()
                         .HasForeignKey("OrganiserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Organiser");
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.GatheringCategoryDetail", b =>
@@ -394,7 +405,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<string>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -403,7 +414,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", null)
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Member", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -412,7 +423,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", null)
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Member", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -421,13 +432,13 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<string>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", null)
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Member", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -436,18 +447,11 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", null)
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Member", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Account", b =>
-                {
-                    b.Navigation("Bookings");
-
-                    b.Navigation("Gatherings");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Category", b =>
@@ -460,6 +464,11 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("GatheringCategoryDetails");
+                });
+
+            modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Member", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,16 +14,20 @@
     <PackageJsonDependenciesTanstackReactQuery Condition="$(PackageJsonDependenciesTanstackReactQuery) == ''">^5.84.2</PackageJsonDependenciesTanstackReactQuery>
     <PackageJsonDependenciesTanstackReactRouter Condition="$(PackageJsonDependenciesTanstackReactRouter) == ''">^1.131.7</PackageJsonDependenciesTanstackReactRouter>
     <PackageJsonDependenciesTanstackReactRouterDevtools Condition="$(PackageJsonDependenciesTanstackReactRouterDevtools) == ''">^1.131.7</PackageJsonDependenciesTanstackReactRouterDevtools>
+    <PackageJsonDependenciesTanstackReactStore Condition="$(PackageJsonDependenciesTanstackReactStore) == ''">^0.7.3</PackageJsonDependenciesTanstackReactStore>
     <PackageJsonDependenciesAxios Condition="$(PackageJsonDependenciesAxios) == ''">^1.11.0</PackageJsonDependenciesAxios>
     <PackageJsonDependenciesDaisyui Condition="$(PackageJsonDependenciesDaisyui) == ''">^5.0.50</PackageJsonDependenciesDaisyui>
+    <PackageJsonDependenciesJsCookie Condition="$(PackageJsonDependenciesJsCookie) == ''">^3.0.5</PackageJsonDependenciesJsCookie>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^19.1.1</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^19.1.1</PackageJsonDependenciesReactDom>
     <PackageJsonDependenciesReflectMetadata Condition="$(PackageJsonDependenciesReflectMetadata) == ''">^0.2.2</PackageJsonDependenciesReflectMetadata>
     <PackageJsonDependenciesTailwindcss Condition="$(PackageJsonDependenciesTailwindcss) == ''">^4.1.11</PackageJsonDependenciesTailwindcss>
     <PackageJsonDependenciesTypedi Condition="$(PackageJsonDependenciesTypedi) == ''">^0.10.0</PackageJsonDependenciesTypedi>
+    <PackageJsonDependenciesUseAsyncEffect Condition="$(PackageJsonDependenciesUseAsyncEffect) == ''">^2.2.7</PackageJsonDependenciesUseAsyncEffect>
     <PackageJsonDependenciesWouter Condition="$(PackageJsonDependenciesWouter) == ''">^3.7.1</PackageJsonDependenciesWouter>
     <PackageJsonDevdependenciesEslintJs Condition="$(PackageJsonDevdependenciesEslintJs) == ''">^9.32.0</PackageJsonDevdependenciesEslintJs>
     <PackageJsonDevdependenciesTanstackRouterPlugin Condition="$(PackageJsonDevdependenciesTanstackRouterPlugin) == ''">^1.131.7</PackageJsonDevdependenciesTanstackRouterPlugin>
+    <PackageJsonDevdependenciesTypesJsCookie Condition="$(PackageJsonDevdependenciesTypesJsCookie) == ''">^3.0.6</PackageJsonDevdependenciesTypesJsCookie>
     <PackageJsonDevdependenciesTypesNode Condition="$(PackageJsonDevdependenciesTypesNode) == ''">^22</PackageJsonDevdependenciesTypesNode>
     <PackageJsonDevdependenciesTypesReact Condition="$(PackageJsonDevdependenciesTypesReact) == ''">^19.1.9</PackageJsonDevdependenciesTypesReact>
     <PackageJsonDevdependenciesTypesReactDom Condition="$(PackageJsonDevdependenciesTypesReactDom) == ''">^19.1.7</PackageJsonDevdependenciesTypesReactDom>

@@ -1,3 +1,5 @@
+using Evently.Server.Common.Domains.Models;
+using Evently.Server.Common.Extensions;
 using NanoidDotNet;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,8 +15,9 @@ public class Booking {
 	[StringLength(50)]
 	public string BookingId { get; set; } = $"book_{Nanoid.Generate(size: 10)}";
 
-	[ForeignKey("Member")] public long MemberId { get; set; }
-	public Member? Member { get; set; }
+	[StringLength(100)] [ForeignKey("Account")] public string AccountId { get; set; } = string.Empty;
+	public Account? Account { get; set; }
+	[NotMapped] public AccountDto? AccountDto => Account?.ToAccountDto();
 
 	public long GatheringId { get; set; }
 	public Gathering? Gathering { get; set; }

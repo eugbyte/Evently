@@ -3,6 +3,7 @@ using System;
 using Evently.Server.Common.Adapters.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250814042253_SeedDataAtStartUp")]
+    partial class SeedDataAtStartUp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,6 +174,11 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.Property<DateTimeOffset>("End")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("HostId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -181,17 +189,12 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("OrganiserId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<DateTimeOffset>("Start")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("GatheringId");
 
-                    b.HasIndex("OrganiserId");
+                    b.HasIndex("HostId");
 
                     b.ToTable("Gatherings");
                 });
@@ -364,13 +367,13 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Gathering", b =>
                 {
-                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", "Organiser")
-                        .WithMany("Gatherings")
-                        .HasForeignKey("OrganiserId")
+                    b.HasOne("Evently.Server.Common.Domains.Entities.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("HostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Organiser");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.GatheringCategoryDetail", b =>
@@ -446,8 +449,6 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Account", b =>
                 {
                     b.Navigation("Bookings");
-
-                    b.Navigation("Gatherings");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Category", b =>

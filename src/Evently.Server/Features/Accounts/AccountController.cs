@@ -1,6 +1,6 @@
-﻿using Evently.Server.Common.Domains.Exceptions;
+﻿using Evently.Server.Common.Domains.Entities;
+using Evently.Server.Common.Domains.Exceptions;
 using Evently.Server.Common.Domains.Interfaces;
-using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -13,7 +13,7 @@ namespace Evently.Server.Features.Accounts;
 
 // Based on https://tinyurl.com/26arz8vk
 [ApiController]
-[Route("api/v1/auth/external")]
+[Route("api/v1/Auth/external")]
 public sealed class AccountController(
 	IAccountsService accountService,
 	ILogger<AccountController> logger) : ControllerBase {
@@ -30,15 +30,12 @@ public sealed class AccountController(
 		}
 
 		ClaimsPrincipal principal = result.Principal ?? new ClaimsPrincipal();
-		IdentityUser? user = await accountService.FindByClaimsPrincipalAsync(principal);
+		Account? user = await accountService.FindByClaimsPrincipalAsync(principal);
 		if (user is null) {
 			return NotFound(new { message = "User not found" });
 		}
 
-		return Ok(new AccountDto(
-			user.Id,
-			Email: user.Email ?? "",
-			Username: user.UserName ?? ""));
+		return Ok(user.ToAccountDto());
 	}
 
 	[HttpPost("logout")]
@@ -58,10 +55,21 @@ public sealed class AccountController(
 		return Ok(new { redirectUrl });
 	}
 
+	/**
+	 * Overall auth flow:
+	 * 1. Login from FE browser. FE specified callback URL.
+	 * 2. Lands on "{provider}/login".
+	 * 3. One callback url is appended to the challenge URL in the form of {provider}/callback by the Login method.
+	 * 4. Another callback url is appended to the challenge URL in the form of /signin-google/ by the OAuth middleware in Program.cs.
+	 * 5. User is redirected to the Google Login page.
+	 * 6. On success, redirected to /signin-google/ specified by middleware.
+	 * 7. Middleware redirects to {provider}/callback.
+	 * 8. Callback() method redirects to FE specified callback URL.
+	 */
 	[HttpGet("{provider}/login")]
 	public IActionResult Login(string provider, string? originUrl = "") {
 		Uri rootUri = Request.RootUri();
-		string uri = Url.Action("Callback", "Account") ?? "";
+		string uri = Url.Action("Callback", "Account", values: new { provider }) ?? "";
 		UriBuilder combined = new(rootUri) {
 			Path = uri,
 			Query = $"originUrl={originUrl}",

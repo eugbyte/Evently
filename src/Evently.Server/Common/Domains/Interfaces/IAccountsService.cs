@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Evently.Server.Common.Domains.Entities;
 using System.Security.Claims;
 
 namespace Evently.Server.Common.Domains.Interfaces;
 
 public interface IAccountsService {
-	Task<IdentityUser> ExternalLogin(ClaimsPrincipal claimsPrincipal, string loginProvider);
-	Task<IdentityUser?> FindByClaimsPrincipalAsync(ClaimsPrincipal claimsPrincipal);
+	Task<Account> ExternalLogin(ClaimsPrincipal claimsPrincipal, string loginProvider);
+	Task<Account?> FindByClaimsPrincipalAsync(ClaimsPrincipal claimsPrincipal);
 }

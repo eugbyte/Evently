@@ -4,26 +4,6 @@ using Evently.Server.Common.Domains.Models;
 namespace Evently.Server.Common.Extensions;
 
 public static class MapperExtension {
-	public static MemberReqDto ToMemberDto(this Member member) {
-		MemberReqDto reqDto = new(
-			member.MemberId,
-			member.Name,
-			member.Email,
-			member.LogoSrc
-		);
-		return reqDto;
-	}
-
-	public static Member ToMember(this MemberReqDto memberReqDto) {
-		Member member = new() {
-			MemberId = memberReqDto.MemberId,
-			Name = memberReqDto.Name,
-			Email = memberReqDto.Email,
-			LogoSrc = memberReqDto.LogoSrc,
-		};
-		return member;
-	}
-
 	public static Gathering ToGathering(this GatheringReqDto gatheringReqDto) {
 		Gathering gathering = new() {
 			GatheringId = gatheringReqDto.GatheringId,
@@ -32,7 +12,7 @@ public static class MapperExtension {
 			Start = gatheringReqDto.Start,
 			End = gatheringReqDto.End,
 			Location = gatheringReqDto.Location,
-			OrganiserId = gatheringReqDto.EventOrganiserId,
+			OrganiserId = gatheringReqDto.OrganiserId,
 			CoverSrc = gatheringReqDto.CoverSrc,
 		};
 		return gathering;
@@ -56,12 +36,22 @@ public static class MapperExtension {
 	public static Booking ToBooking(this BookingReqDto bookingReqDto) {
 		return new Booking {
 			BookingId = bookingReqDto.BookingId,
-			MemberId = bookingReqDto.AttendeeId,
-			GatheringId = bookingReqDto.ExhibitionId,
+			AccountId = bookingReqDto.AttendeeId,
+			GatheringId = bookingReqDto.OrganiserId,
 			RegistrationDateTime = bookingReqDto.RegistrationDateTime,
 			CheckInDateTime = bookingReqDto.CheckInDateTime,
 			CheckoutDateTime = bookingReqDto.CheckoutDateTime,
 			CancellationDateTime = bookingReqDto.CancellationDateTime,
 		};
+	}
+
+	public static AccountDto ToAccountDto(this Account account) {
+		return new AccountDto(
+			account.Id,
+			Email: account.Email ?? string.Empty,
+			Username: account.UserName ?? string.Empty,
+			Name: account.Name ?? string.Empty,
+			LogoSrc: account.LogoSrc ?? string.Empty
+		);
 	}
 }

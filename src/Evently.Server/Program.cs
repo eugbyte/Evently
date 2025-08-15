@@ -10,7 +10,6 @@ using Evently.Server.Features.Categories.Services;
 using Evently.Server.Features.Emails.Services;
 using Evently.Server.Features.Files.Services;
 using Evently.Server.Features.Gatherings.Services;
-using Evently.Server.Features.Members.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -50,7 +49,6 @@ builder.Services.AddControllersWithViews().AddJsonOptions((options) =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddTransient<IMemberService, MemberService>();
 builder.Services.AddTransient<IGatheringService, GatheringService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IAccountsService, AccountService>();
@@ -74,11 +72,11 @@ builder.Services.AddHostedService<EmailBackgroundService>();
 
 
 // Fluent validation dependency injection without automatic registration
-builder.Services.AddScoped<IValidator<Member>, MemberValidator>();
+builder.Services.AddScoped<IValidator<Account>, AccountValidator>();
 builder.Services.AddScoped<IValidator<Gathering>, GatheringValidator>();
 builder.Services.AddScoped<IValidator<Booking>, BookingValidator>();
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+builder.Services.AddIdentityApiEndpoints<Account>()
 	.AddEntityFrameworkStores<AppDbContext>();
 
 // https://learn.microsoft.com/en-us/dotnet/core/compatibility/aspnet-core/7.0/default-authentication-scheme#new-behavior
@@ -92,11 +90,14 @@ builder.Services.AddAuthentication()
 		options.SignInScheme =
 			IdentityConstants
 				.ExternalScheme; // important to default to external scheme - https://stackoverflow.com/a/78674926/6514532
+		
+		// Enable refresh token
 		options.SaveTokens = true;
+		options.AccessType = "offline"; 
 
 		// For debugging purpose
 		options.Events.OnRedirectToAuthorizationEndpoint = (context) => {
-			// logger.LogInformation("Request Path: {Request}", context.Request.FullUri().AbsoluteUri);
+			logger.LogInformation("Request Path: {Request}", context.Request.RootUri().AbsoluteUri);
 			context.HttpContext.Response.Redirect(context.RedirectUri);
 			return Task.CompletedTask;
 		};
@@ -122,6 +123,9 @@ using (IServiceScope serviceScope = app.Services.CreateScope()) {
 	await dbContext.Database.MigrateAsync();
 }
 
+// must come after migration
+await app.SeedDatas();
+
 // To serve the Svelte SPA files
 app.UseFileServer();
 
@@ -129,7 +133,6 @@ app.UseFileServer();
 app.UseAntiforgery();
 app.MapRazorComponents<BlazorApp>()
 	.AddInteractiveServerRenderMode();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {

@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace Evently.Server.Features.Accounts.Services;
 
 public static class AccountExtensions {
-	public static async Task<bool> IsResourceOwner(this ControllerBase controller, long? resourceIdentityUserId) {
+	public static async Task<bool> IsResourceOwner(this ControllerBase controller, object? resourceIdentityUserId) {
 		IAuthorizationService authorizationService =
 			controller.HttpContext.RequestServices.GetRequiredService<IAuthorizationService>();
 
