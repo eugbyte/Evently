@@ -18,23 +18,8 @@ export function GatheringsPage(): JSX.Element {
 	const attendeeId: string = account?.id ?? "-1";
 
 	const [tab, setTab] = useState(0);
-	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
-		attendeeId,
-		start: new Date()
-	});
-	const { data: _gatherings, isLoading } = useQuery({
-		queryKey: ["getGatherings", queryParams],
-		queryFn: (): Promise<Gathering[]> => getGatherings(queryParams)
-	});
-	let gatherings: Gathering[] = _gatherings ?? [];
-	gatherings = [
-		...gatherings,
-		...gatherings,
-		...gatherings,
-		...gatherings,
-		...gatherings,
-		...gatherings
-	];
+	const [bookings, setBookings] = useState<Booking[]>(cloneDeep(_bookings));
+
 	const handleTabChange = (_tab: number) => {
 		setTab(_tab);
 
