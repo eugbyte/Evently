@@ -4,6 +4,7 @@ using NanoidDotNet;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Evently.Server.Common.Domains.Entities;
 
@@ -16,7 +17,7 @@ public class Booking {
 	public string BookingId { get; set; } = $"book_{Nanoid.Generate(size: 10)}";
 
 	[StringLength(100)] [ForeignKey("Account")] public string AccountId { get; set; } = string.Empty;
-	public Account? Account { get; set; }
+	[JsonIgnore] public Account? Account { get; set; }
 	[NotMapped] public AccountDto? AccountDto => Account?.ToAccountDto();
 	public bool IsOrganiser { get; set; }
 
