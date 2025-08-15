@@ -5,7 +5,7 @@ import { Gathering } from "~/lib/domains/entities";
 
 export interface CardProps {
 	gathering: Gathering;
-	accountId: string | null;
+	accountId?: string | null;
 }
 
 export function Card({ gathering, accountId }: CardProps): JSX.Element {
@@ -27,7 +27,7 @@ export function Card({ gathering, accountId }: CardProps): JSX.Element {
 				<div className="flex flex-row justify-between">
 					<h2 className="card-title">{title}</h2>
 					{isOrganiser && 
-						<p><div className="badge badge-outline badge-info">I'm the host</div></p>						
+						<div className="badge badge-outline badge-info">I'm the host</div>						
 					}
 				</div>
 				<p>{description}</p>

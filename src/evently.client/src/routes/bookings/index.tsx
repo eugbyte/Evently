@@ -29,7 +29,7 @@ export const Route = createFileRoute("/bookings/")({
 });
 
 export function GatheringsPage(): JSX.Element {
-	const { bookings: _bookings } = Route.useLoaderData();
+	const { bookings: _bookings, account } = Route.useLoaderData();
 	const [tab, setTab] = useState(0);
 	const [bookings, setBookings] = useState<Booking[]>(cloneDeep(_bookings));
 
@@ -46,7 +46,7 @@ export function GatheringsPage(): JSX.Element {
 				break;
 			}
 			case 1: {
-				setBookings(_bookings.filter((booking) => booking.gathering.start <= new Date()));
+				setBookings(_bookings.filter((booking) => booking.gathering.end < new Date()));
 				break;
 			}
 		}
@@ -58,7 +58,7 @@ export function GatheringsPage(): JSX.Element {
 			<Tabs tab={tab} handleTabChange={handleTabChange} />
 			<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
 				{gatherings.map((gathering) => (
-					<Card key={gathering.gatheringId} gathering={gathering} />
+					<Card key={gathering.gatheringId} gathering={gathering} accountId={account?.id} />
 				))}
 			</div>
 		</div>
