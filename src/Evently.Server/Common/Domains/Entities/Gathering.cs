@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Evently.Server.Common.Domains.Entities;
@@ -20,8 +19,8 @@ public class Gathering {
 
 	[StringLength(1000)] public string? CoverSrc { get; set; } = string.Empty;
 
-	[StringLength(100)] [ForeignKey("Account")] public string OrganiserId { get; set; } = string.Empty;
-	public Account? Organiser { get; set; }
+	// convenience field that acts as a readonly field for Account that created the Gathering
+	[StringLength(100)] public string OrganiserId { get; set; } = string.Empty;
 
 	public List<Booking> Bookings { get; set; } = [];
 	public List<GatheringCategoryDetail> GatheringCategoryDetails { get; set; } = [];

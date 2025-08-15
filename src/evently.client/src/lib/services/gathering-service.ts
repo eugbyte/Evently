@@ -12,10 +12,18 @@ export interface GetGatheringsParams {
 }
 export async function getGatherings(params: GetGatheringsParams): Promise<Gathering[]> {
 	const response = await axios.get<Gathering[]>("/api/v1/Gatherings", { params });
-	return response.data;
+	const gatherings: Gathering[] = response.data;
+	for (const gathering of gatherings) {
+		gathering.start = new Date(gathering.start);
+		gathering.end = new Date(gathering.end);
+	}
+	return gatherings;
 }
 
 export async function getGathering(id: number): Promise<Gathering> {
 	const response = await axios.get<Gathering>(`/api/v1/Gatherings/${id}`);
-	return response.data;
+	const gathering: Gathering = response.data;
+	gathering.start = new Date(gathering.start);
+	gathering.end = new Date(gathering.end);
+	return gathering;
 }

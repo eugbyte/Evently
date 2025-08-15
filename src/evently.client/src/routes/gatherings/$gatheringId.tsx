@@ -1,18 +1,36 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { type JSX } from "react";
-import { Gathering } from "~/lib/domains/entities";
+import { Account, Booking, Gathering } from "~/lib/domains/entities";
 import Placeholder from "~/lib/assets/event_placeholder.webp";
-import { getGathering } from "~/lib/services";
+import { getAccount, getBookings, getGathering } from "~/lib/services";
 
 export const Route = createFileRoute("/gatherings/$gatheringId")({
 	loader: async ({ params }) => {
-		return getGathering(parseInt(params.gatheringId));
+		const account: Account | null = await getAccount();
+		const gatheringId: number = parseInt(params.gatheringId);
+		const gathering: Gathering | null = await getGathering(gatheringId);
+		const bookings: Booking[] = await getBookings({
+			accountId: account?.id,
+			gatheringId,
+			isCancelled: false
+		});
+
+		return {
+			gathering,
+			booking: bookings.length > 0 ? bookings[0] : null,
+			account
+		};
 	},
-	component: GatheringPage
+	component: GatheringPage,
+	pendingComponent: () => (
+		<div className="h-full">
+			<progress className="progress w-full"></progress>
+		</div>
+	)
 });
 
 export function GatheringPage(): JSX.Element {
-	const gathering: Gathering = Route.useLoaderData();
+	const { gathering } = Route.useLoaderData();
 	const { name: title, description, coverSrc } = gathering;
 	const imgSrc: string = coverSrc == null || coverSrc.length === 0 ? Placeholder : coverSrc;
 
@@ -27,7 +45,7 @@ export function GatheringPage(): JSX.Element {
 					<p>{description}</p>
 					<div className="card-actions justify-between">
 						<button className="btn btn-primary">Register</button>
-						<button className="btn btn-primary">View QR</button>
+						<button className="btn btn-info">View QR</button>
 					</div>
 				</div>
 			</div>
