@@ -11,6 +11,8 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 	public async Task<Gathering?> GetGathering(long gatheringId) {
 		return await db.Gatherings
 			.Include(gathering => gathering.Bookings)
+			.Include(gathering => gathering.GatheringCategoryDetails)
+			.ThenInclude(detail => detail.Category)
 			.FirstOrDefaultAsync((gathering) => gathering.GatheringId == gatheringId);
 	}
 
@@ -29,7 +31,8 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 			.Where((gathering) => startDate == null || gathering.End >= startDate)
 			.Where((gathering) => endDate == null || gathering.Start <= endDate)
 			.Where((gathering) => organiserId == null || gathering.OrganiserId == organiserId)
-			.Include((gathering) => gathering.Bookings);
+			.Include(gathering => gathering.GatheringCategoryDetails)
+			.ThenInclude(detail => detail.Category);
 
 		int totalCount = await query.CountAsync();
 

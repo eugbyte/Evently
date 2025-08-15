@@ -45,7 +45,7 @@ export function GatheringPage(): JSX.Element {
 					<p>{description}</p>
 					<div className="card-actions justify-between">
 						<button className="btn btn-primary">Register</button>
-						<button className="btn btn-primary">View QR</button>
+						<button className="btn btn-info">View QR</button>
 					</div>
 				</div>
 			</div>

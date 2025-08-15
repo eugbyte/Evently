@@ -5,9 +5,10 @@ import { Gathering } from "~/lib/domains/entities";
 
 export interface CardProps {
 	gathering: Gathering;
+	accountId: string | null;
 }
 
-export function Card({ gathering }: CardProps): JSX.Element {
+export function Card({ gathering, accountId }: CardProps): JSX.Element {
 	let { name: title, description, coverSrc: imgSrc } = gathering;
 	imgSrc = imgSrc == null || imgSrc.length === 0 ? Placeholder : imgSrc;
 	if (title.length > 30) {
@@ -16,13 +17,19 @@ export function Card({ gathering }: CardProps): JSX.Element {
 	if (description.length > 190) {
 		description = description.substring(0, 100) + "...";
 	}
+	const isOrganiser: boolean = gathering.organiserId === accountId;
 	return (
 		<div className="card bg-base-200 w-96 text-white shadow-sm">
 			<figure>
 				<img src={imgSrc} alt="Event Image" className="h-48 w-96" />
 			</figure>
 			<div className="card-body">
-				<h2 className="card-title">{title}</h2>
+				<div className="flex flex-row justify-between">
+					<h2 className="card-title">{title}</h2>
+					{isOrganiser && 
+						<p><div className="badge badge-outline badge-info">I'm the host</div></p>						
+					}
+				</div>
 				<p>{description}</p>
 				<div className="card-actions justify-end">
 					<Link
