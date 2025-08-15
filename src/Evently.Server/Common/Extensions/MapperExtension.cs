@@ -12,7 +12,7 @@ public static class MapperExtension {
 			Start = gatheringReqDto.Start,
 			End = gatheringReqDto.End,
 			Location = gatheringReqDto.Location,
-			HostId = gatheringReqDto.HostId,
+			OrganiserId = gatheringReqDto.OrganiserId,
 			CoverSrc = gatheringReqDto.CoverSrc,
 		};
 		return gathering;
@@ -26,7 +26,7 @@ public static class MapperExtension {
 			gathering.Start,
 			gathering.End,
 			gathering.Location,
-			gathering.HostId,
+			gathering.OrganiserId,
 			gathering.CoverSrc
 		);
 		return reqDto;
@@ -36,8 +36,8 @@ public static class MapperExtension {
 	public static Booking ToBooking(this BookingReqDto bookingReqDto) {
 		return new Booking {
 			BookingId = bookingReqDto.BookingId,
-			AccountId = bookingReqDto.GuestId,
-			GatheringId = bookingReqDto.GatheringId,
+			AccountId = bookingReqDto.AttendeeId,
+			GatheringId = bookingReqDto.OrganiserId,
 			RegistrationDateTime = bookingReqDto.RegistrationDateTime,
 			CheckInDateTime = bookingReqDto.CheckInDateTime,
 			CheckoutDateTime = bookingReqDto.CheckoutDateTime,

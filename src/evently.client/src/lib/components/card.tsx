@@ -16,11 +16,10 @@ export function Card({ gathering }: CardProps): JSX.Element {
 	if (description.length > 190) {
 		description = description.substring(0, 100) + "...";
 	}
-	console.log(imgSrc);
 	return (
 		<div className="card bg-base-200 w-96 text-white shadow-sm">
 			<figure>
-				<img src={Placeholder} alt="Event Image" className="h-48 w-96" />
+				<img src={imgSrc} alt="Event Image" className="h-48 w-96" />
 			</figure>
 			<div className="card-body">
 				<h2 className="card-title">{title}</h2>

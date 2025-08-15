@@ -30,12 +30,12 @@ public sealed class GatheringsController(
 	}
 
 	[HttpGet("", Name = "GetGatherings")]
-	public async Task<ActionResult<List<Gathering>>> GetGatherings(string? guestId,
-		string? hostId, string? exhibitionName,
+	public async Task<ActionResult<List<Gathering>>> GetGatherings(string? attendeeId,
+		string? organiserId, string? name,
 		DateTimeOffset? start, DateTimeOffset? end, int? offset, int? limit) {
-		PageResult<Gathering> result = await gatheringService.GetGatherings(guestId,
-			hostId,
-			exhibitionName,
+		PageResult<Gathering> result = await gatheringService.GetGatherings(attendeeId,
+			organiserId,
+			name,
 			start,
 			end,
 			offset,
@@ -77,7 +77,7 @@ public sealed class GatheringsController(
 			return BadRequest(result.Errors);
 		}
 
-		if (!await this.IsResourceOwner(exhibition.Account?.Id)) {
+		if (!await this.IsResourceOwner(exhibition.Organiser?.Id)) {
 			return Forbid();
 		}
 
@@ -92,7 +92,7 @@ public sealed class GatheringsController(
 			return NotFound();
 		}
 
-		if (!await this.IsResourceOwner(exhibition.Account?.Id)) {
+		if (!await this.IsResourceOwner(exhibition.Organiser?.Id)) {
 			return Forbid();
 		}
 

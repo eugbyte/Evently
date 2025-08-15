@@ -12,4 +12,5 @@ public class Account : IdentityUser {
 	[StringLength(1000)] public string? LogoSrc { get; set; }
 
 	public List<Booking> Bookings { get; set; } = [];
+	public List<Gathering> Gatherings { get; set; } = [];
 }

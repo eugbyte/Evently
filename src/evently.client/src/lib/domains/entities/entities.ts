@@ -7,7 +7,7 @@
 	location: string = "";
 	coverSrc?: string = "";
 	organiserId: number = 0;
-	account = new Account();
+	organiser = new Account();
 	bookings: Booking[] = []; // You may want to replace 'any[]' with a proper Booking[] type
 	gatheringCategoryDetails: GatheringCategoryDetail[] = []; // You may want to replace 'any[]' with a proper GatheringCategoryDetail[] type
 

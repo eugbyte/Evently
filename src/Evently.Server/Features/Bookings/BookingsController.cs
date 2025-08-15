@@ -32,14 +32,14 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 
 	[HttpGet("", Name = "GetBookings")]
 	public async Task<ActionResult<Booking>> GetBookings(
-		string? guestId,
+		string? attendeeId,
 		long? gatheringId,
 		DateTime? checkInStart,
 		DateTime? checkInEnd,
 		bool isCancelled,
 		int? offset,
 		int? limit) {
-		PageResult<Booking> result = await bookingService.GetBookings(guestId,
+		PageResult<Booking> result = await bookingService.GetBookings(attendeeId,
 			gatheringId,
 			checkInStart,
 			checkInEnd,

@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getGathering } from "~/routes/gatherings/-services/gathering-service";
 import { type JSX } from "react";
 import { Gathering } from "~/lib/domains/entities";
 import Placeholder from "~/lib/assets/event_placeholder.webp";
+import { getGathering } from "~/lib/services";
 
 export const Route = createFileRoute("/gatherings/$gatheringId")({
 	loader: async ({ params }) => {

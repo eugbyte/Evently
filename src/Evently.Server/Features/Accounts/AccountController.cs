@@ -55,6 +55,17 @@ public sealed class AccountController(
 		return Ok(new { redirectUrl });
 	}
 
+	/**
+	 * Overall auth flow:
+	 * 1. Login from FE browser. FE specified callback URL.
+	 * 2. Lands on "{provider}/login".
+	 * 3. One callback url is appended to the challenge URL in the form of {provider}/callback by the Login method.
+	 * 4. Another callback url is appended to the challenge URL in the form of /signin-google/ by the OAuth middleware in Program.cs.
+	 * 5. User is redirected to the Google Login page.
+	 * 6. On success, redirected to /signin-google/ specified by middleware.
+	 * 7. Middleware redirects to {provider}/callback.
+	 * 8. Callback() method redirects to FE specified callback URL.
+	 */
 	[HttpGet("{provider}/login")]
 	public IActionResult Login(string provider, string? originUrl = "") {
 		Uri rootUri = Request.RootUri();

@@ -90,11 +90,14 @@ builder.Services.AddAuthentication()
 		options.SignInScheme =
 			IdentityConstants
 				.ExternalScheme; // important to default to external scheme - https://stackoverflow.com/a/78674926/6514532
+		
+		// Enable refresh token
 		options.SaveTokens = true;
+		options.AccessType = "offline"; 
 
 		// For debugging purpose
 		options.Events.OnRedirectToAuthorizationEndpoint = (context) => {
-			// logger.LogInformation("Request Path: {Request}", context.Request.FullUri().AbsoluteUri);
+			logger.LogInformation("Request Path: {Request}", context.Request.RootUri().AbsoluteUri);
 			context.HttpContext.Response.Redirect(context.RedirectUri);
 			return Task.CompletedTask;
 		};

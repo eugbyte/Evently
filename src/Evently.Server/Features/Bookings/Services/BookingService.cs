@@ -22,11 +22,11 @@ public sealed class BookingService(
 			.FirstOrDefaultAsync((be) => be.BookingId == bookingId);
 	}
 
-	public async Task<PageResult<Booking>> GetBookings(string? guestId, long? gatheringId,
+	public async Task<PageResult<Booking>> GetBookings(string? attendeeId, long? gatheringId,
 		DateTime? checkInStart, DateTime? checkInEnd,
 		bool? isCancelled, int? offset, int? limit) {
 		IQueryable<Booking> query = db.Bookings
-			.Where((b) => guestId == null || b.AccountId == guestId)
+			.Where((b) => attendeeId == null || b.AccountId == attendeeId)
 			.Where((b) => gatheringId == null || b.GatheringId == gatheringId)
 			.Where((c) => checkInStart == null || checkInStart <= c.CheckInDateTime)
 			.Where((b) => checkInEnd == null || b.CheckInDateTime <= checkInEnd)

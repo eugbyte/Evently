@@ -2,9 +2,9 @@
 import axios from "axios";
 
 export interface GetGatheringsParams {
-	guestId?: number;
-	hostId?: number;
-	exhibitionName?: string;
+	attendeeId?: string;
+	organiserId?: string;
+	name?: string;
 	start?: Date;
 	end?: Date;
 	offset?: number;

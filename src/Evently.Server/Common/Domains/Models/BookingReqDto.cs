@@ -2,8 +2,8 @@
 
 public sealed record BookingReqDto(
 	string BookingId,
-	string GuestId,
-	long GatheringId,
+	string AttendeeId,
+	long OrganiserId,
 	DateTimeOffset RegistrationDateTime,
 	DateTimeOffset? CheckInDateTime,
 	DateTimeOffset? CheckoutDateTime,

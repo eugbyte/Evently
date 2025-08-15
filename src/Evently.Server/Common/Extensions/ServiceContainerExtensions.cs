@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Evently.Server.Common.Extensions;
 
-public static partial class ServiceCollectionExtensions {
+public static partial class ServiceContainerExtensions {
 	public static IOptions<Settings> LoadAppConfiguration(this IServiceCollection services,
 		ConfigurationManager configuration) {
 		// load .env variables, in addition to appsettings.json that is loaded by default
@@ -88,7 +88,7 @@ public static partial class ServiceCollectionExtensions {
 				GatheringId = 1,
 				Name = "Party 1",
 				Description = "A nice party",
-				HostId = host.Id,
+				OrganiserId = host.Id,
 			};
 			await db.Gatherings.AddAsync(gathering);
 			await db.SaveChangesAsync();
