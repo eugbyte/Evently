@@ -22,11 +22,11 @@ public sealed class BookingService(
 			.FirstOrDefaultAsync((be) => be.BookingId == bookingId);
 	}
 
-	public async Task<PageResult<Booking>> GetBookings(string? attendeeId, long? gatheringId,
+	public async Task<PageResult<Booking>> GetBookings(string? accountId, long? gatheringId,
 		DateTime? checkInStart, DateTime? checkInEnd,
 		bool? isCancelled, int? offset, int? limit) {
 		IQueryable<Booking> query = db.Bookings
-			.Where((b) => attendeeId == null || b.AccountId == attendeeId)
+			.Where((b) => accountId == null || b.AccountId == accountId)
 			.Where((b) => gatheringId == null || b.GatheringId == gatheringId)
 			.Where((c) => checkInStart == null || checkInStart <= c.CheckInDateTime)
 			.Where((b) => checkInEnd == null || b.CheckInDateTime <= checkInEnd)
@@ -37,7 +37,7 @@ public sealed class BookingService(
 		int totalCount = await query.CountAsync();
 
 		List<Booking> bookingEvents = await query
-			.OrderByDescending((be) => be.RegistrationDateTime)
+			.OrderByDescending((be) => be.CreationDateTime)
 			.Skip(offset ?? 0)
 			.Take(limit ?? int.MaxValue)
 			.ToListAsync();
@@ -69,7 +69,7 @@ public sealed class BookingService(
 
 		current.AccountId = booking.AccountId;
 		current.GatheringId = booking.GatheringId;
-		current.RegistrationDateTime = booking.RegistrationDateTime;
+		current.CreationDateTime = booking.CreationDateTime;
 		current.CheckInDateTime = booking.CheckInDateTime;
 		current.CheckoutDateTime = booking.CheckoutDateTime;
 		current.CancellationDateTime = booking.CancellationDateTime;

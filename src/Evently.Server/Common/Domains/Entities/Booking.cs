@@ -18,11 +18,12 @@ public class Booking {
 	[StringLength(100)] [ForeignKey("Account")] public string AccountId { get; set; } = string.Empty;
 	public Account? Account { get; set; }
 	[NotMapped] public AccountDto? AccountDto => Account?.ToAccountDto();
+	public bool IsOrganiser { get; set; }
 
 	public long GatheringId { get; set; }
 	public Gathering? Gathering { get; set; }
 
-	public DateTimeOffset RegistrationDateTime { get; set; } = DateTimeOffset.UtcNow;
+	public DateTimeOffset CreationDateTime { get; set; } = DateTimeOffset.UtcNow;
 	public DateTimeOffset? CheckInDateTime { get; set; }
 	public DateTimeOffset? CheckoutDateTime { get; set; }
 	public DateTimeOffset? CancellationDateTime { get; set; }

@@ -9,7 +9,12 @@ export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,
 	loader: async () => {
 		return getAccount();
-	}
+	},
+	pendingComponent: () => (
+		<div className="h-full">
+			<progress className="progress w-full"></progress>
+		</div>
+	)
 });
 
 export function GatheringsPage(): JSX.Element {

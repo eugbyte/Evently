@@ -10,7 +10,6 @@ namespace Evently.Server.Features.Gatherings.Services;
 public sealed class GatheringService(AppDbContext db) : IGatheringService {
 	public async Task<Gathering?> GetGathering(long gatheringId) {
 		return await db.Gatherings
-			.Include((gathering) => gathering.Organiser)
 			.Include(gathering => gathering.Bookings)
 			.FirstOrDefaultAsync((gathering) => gathering.GatheringId == gatheringId);
 	}
@@ -30,8 +29,7 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 			.Where((gathering) => startDate == null || gathering.End >= startDate)
 			.Where((gathering) => endDate == null || gathering.Start <= endDate)
 			.Where((gathering) => organiserId == null || gathering.OrganiserId == organiserId)
-			.Include((gathering) => gathering.Bookings)
-			.Include((gathering) => gathering.Organiser);
+			.Include((gathering) => gathering.Bookings);
 
 		int totalCount = await query.CountAsync();
 
