@@ -19,7 +19,7 @@ export async function getAccount(): Promise<Account | null> {
 		return response.data;
 	} catch (e) {
 		const error = e as Error;
-		console.error(error.message);
+		console.warn(error.message);
 	}
 	return null;
 }
