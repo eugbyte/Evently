@@ -9,44 +9,42 @@ import cloneDeep from "lodash.clonedeep";
 export const Route = createFileRoute("/bookings/")({
 	component: GatheringsPage,
 	loader: async () => {
-		const account: Account | null = await getAccount();
-		let bookings: Booking[] = [];
-		if (account != null) {
-			bookings = await getBookings({
-				accountId: account.id
-			});
-		}
-		return {
-			account,
-			bookings
-		};
-	},
-	pendingComponent: () => (
-		<div className="h-full">
-			<progress className="progress w-full"></progress>
-		</div>
-	)
+		return getAccount();
+	}
 });
 
 export function GatheringsPage(): JSX.Element {
-	const { bookings: _bookings, account } = Route.useLoaderData();
-	const [tab, setTab] = useState(0);
-	const [bookings, setBookings] = useState<Booking[]>(cloneDeep(_bookings));
+	const account: Account | null = Route.useLoaderData();
+	const attendeeId: string = account?.id ?? "-1";
 
+	const [tab, setTab] = useState(0);
+	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
+		attendeeId,
+		start: new Date()
+	});
+	const { data: _gatherings, isLoading } = useQuery({
+		queryKey: ["getGatherings", queryParams],
+		queryFn: (): Promise<Gathering[]> => getGatherings(queryParams)
+	});
+	let gatherings: Gathering[] = _gatherings ?? [];
+	gatherings = [
+		...gatherings,
+		...gatherings,
+		...gatherings,
+		...gatherings,
+		...gatherings,
+		...gatherings
+	];
 	const handleTabChange = (_tab: number) => {
 		setTab(_tab);
 
 		switch (_tab) {
 			case 0: {
-				setBookings(
-					_bookings.filter(
-						(booking) => booking.cancellationDateTime == null && new Date() <= booking.gathering.end
-					)
-				);
+				setQueryParams({ attendeeId, start: new Date() });
 				break;
 			}
 			case 1: {
-				setBookings(_bookings.filter((booking) => booking.gathering.end < new Date()));
+				setQueryParams({ attendeeId, end: new Date() });
 				break;
 			}
 		}
