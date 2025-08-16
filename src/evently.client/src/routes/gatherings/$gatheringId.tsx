@@ -61,6 +61,9 @@ export function GatheringPage(): JSX.Element {
 	const qrDialogRef = useRef<HTMLDialogElement>(null);
 	const cancellationDialogRef = useRef<HTMLDialogElement>(null);
 	const handleCancel = async () => {
+		if (booking == null) {
+			return;
+		}
 		await cancelBooking(booking?.bookingId ?? "", booking);
 		navigate({
 			to: `/gatherings/${gathering.gatheringId}`,

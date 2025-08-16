@@ -4,7 +4,7 @@ import { Gathering, Category, Booking } from "~/lib/domains/entities";
 import { DateTime } from "luxon";
 
 interface JumbotronProps {
-	booking?: Booking;
+	booking: Booking | null;
 	gathering: Gathering;
 	accountId?: string | null;
 }
