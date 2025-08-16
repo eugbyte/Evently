@@ -19,6 +19,8 @@ public sealed class BookingService(
 		return await db.Bookings
 			.Include((b) => b.Account)
 			.Include((b) => b.Gathering)
+			.ThenInclude((g) => g!.GatheringCategoryDetails)
+			.ThenInclude((detail) => detail.Category)
 			.FirstOrDefaultAsync((be) => be.BookingId == bookingId);
 	}
 
@@ -32,7 +34,9 @@ public sealed class BookingService(
 			.Where((b) => checkInEnd == null || b.CheckInDateTime <= checkInEnd)
 			.Where((b) => isCancelled == null || b.CancellationDateTime.HasValue == isCancelled)
 			.Include((b) => b.Account)
-			.Include((b) => b.Gathering);
+			.Include((b) => b.Gathering)
+			.ThenInclude((g) => g!.GatheringCategoryDetails)
+			.ThenInclude((detail) => detail.Category);
 
 		int totalCount = await query.CountAsync();
 

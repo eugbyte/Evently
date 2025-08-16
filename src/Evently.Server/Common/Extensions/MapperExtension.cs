@@ -37,9 +37,9 @@ public static class MapperExtension {
 		return new Booking {
 			BookingId = bookingReqDto.BookingId,
 			AccountId = bookingReqDto.AttendeeId,
-			GatheringId = bookingReqDto.OrganiserId,
+			GatheringId = bookingReqDto.GatheringId,
 			IsOrganiser = bookingReqDto.IsOrganiser,
-			CreationDateTime = bookingReqDto.RegistrationDateTime,
+			CreationDateTime = bookingReqDto.CreationDateTime,
 			CheckInDateTime = bookingReqDto.CheckInDateTime,
 			CheckoutDateTime = bookingReqDto.CheckoutDateTime,
 			CancellationDateTime = bookingReqDto.CancellationDateTime,

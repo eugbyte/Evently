@@ -23,15 +23,7 @@ export function GatheringsPage(): JSX.Element {
 		queryKey: ["getGatherings", queryParams],
 		queryFn: (): Promise<Gathering[]> => getGatherings(queryParams)
 	});
-	let gatherings: Gathering[] = _gatherings ?? [];
-	gatherings = [
-		...gatherings,
-		...gatherings,
-		...gatherings,
-		...gatherings,
-		...gatherings,
-		...gatherings
-	];
+	const gatherings: Gathering[] = _gatherings ?? [];
 
 	return (
 		<div className="mb-20 p-1 sm:mb-0 sm:p-4">

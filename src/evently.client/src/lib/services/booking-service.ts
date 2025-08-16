@@ -1,8 +1,9 @@
 ﻿import axios from "axios";
 import { Booking } from "~/lib/domains/entities";
+import { BookingReqDto } from "~/lib/domains/models";
 
 export interface GetBookingsParams {
-	accountId?: string;
+	attendeeId?: string;
 	gatheringId?: number;
 	checkInStart?: Date;
 	checkInEnd?: Date;
@@ -28,4 +29,9 @@ export async function getBookings(params: GetBookingsParams): Promise<Booking[]>
 		}
 	}
 	return bookings;
+}
+
+export async function createBooking(bookingReqDto: BookingReqDto): Promise<Booking> {
+	const response = await axios.post<Booking>("/api/v1/Bookings", bookingReqDto);
+	return response.data;
 }

@@ -19,6 +19,7 @@
     <PackageJsonDependenciesDaisyui Condition="$(PackageJsonDependenciesDaisyui) == ''">^5.0.50</PackageJsonDependenciesDaisyui>
     <PackageJsonDependenciesJsCookie Condition="$(PackageJsonDependenciesJsCookie) == ''">^3.0.5</PackageJsonDependenciesJsCookie>
     <PackageJsonDependenciesLodashClonedeep Condition="$(PackageJsonDependenciesLodashClonedeep) == ''">^4.5.0</PackageJsonDependenciesLodashClonedeep>
+    <PackageJsonDependenciesLuxon Condition="$(PackageJsonDependenciesLuxon) == ''">^3.7.1</PackageJsonDependenciesLuxon>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^19.1.1</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^19.1.1</PackageJsonDependenciesReactDom>
     <PackageJsonDependenciesReflectMetadata Condition="$(PackageJsonDependenciesReflectMetadata) == ''">^0.2.2</PackageJsonDependenciesReflectMetadata>
@@ -27,9 +28,11 @@
     <PackageJsonDependenciesUseAsyncEffect Condition="$(PackageJsonDependenciesUseAsyncEffect) == ''">^2.2.7</PackageJsonDependenciesUseAsyncEffect>
     <PackageJsonDependenciesWouter Condition="$(PackageJsonDependenciesWouter) == ''">^3.7.1</PackageJsonDependenciesWouter>
     <PackageJsonDevdependenciesEslintJs Condition="$(PackageJsonDevdependenciesEslintJs) == ''">^9.32.0</PackageJsonDevdependenciesEslintJs>
+    <PackageJsonDevdependenciesIconifyReact Condition="$(PackageJsonDevdependenciesIconifyReact) == ''">^6.0.0</PackageJsonDevdependenciesIconifyReact>
     <PackageJsonDevdependenciesTanstackRouterPlugin Condition="$(PackageJsonDevdependenciesTanstackRouterPlugin) == ''">^1.131.7</PackageJsonDevdependenciesTanstackRouterPlugin>
     <PackageJsonDevdependenciesTypesJsCookie Condition="$(PackageJsonDevdependenciesTypesJsCookie) == ''">^3.0.6</PackageJsonDevdependenciesTypesJsCookie>
     <PackageJsonDevdependenciesTypesLodashClonedeep Condition="$(PackageJsonDevdependenciesTypesLodashClonedeep) == ''">^4.5.9</PackageJsonDevdependenciesTypesLodashClonedeep>
+    <PackageJsonDevdependenciesTypesLuxon Condition="$(PackageJsonDevdependenciesTypesLuxon) == ''">^3.7.1</PackageJsonDevdependenciesTypesLuxon>
     <PackageJsonDevdependenciesTypesNode Condition="$(PackageJsonDevdependenciesTypesNode) == ''">^22</PackageJsonDevdependenciesTypesNode>
     <PackageJsonDevdependenciesTypesReact Condition="$(PackageJsonDevdependenciesTypesReact) == ''">^19.1.9</PackageJsonDevdependenciesTypesReact>
     <PackageJsonDevdependenciesTypesReactDom Condition="$(PackageJsonDevdependenciesTypesReactDom) == ''">^19.1.7</PackageJsonDevdependenciesTypesReactDom>
