@@ -62,7 +62,7 @@ export function GatheringPage(): JSX.Element {
 		if (booking == null || canvasRef.current == null) {
 			return;
 		}
-		const url = new URL(`bookings/${booking?.bookingId}`, window.location.href);
+		const url = new URL(`bookings/${booking.bookingId}`, window.location.href);
 		QRCode.toCanvas(canvasRef.current, url.href, (error) => {
 			if (error) {
 				console.error(error);
