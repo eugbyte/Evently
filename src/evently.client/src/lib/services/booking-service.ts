@@ -7,8 +7,10 @@ export interface GetBookingsParams {
 	gatheringId?: number;
 	checkInStart?: Date;
 	checkInEnd?: Date;
-	gatheringStart?: Date;
-	gatheringEnd?: Date;
+	gatheringStartBefore?: Date, 
+	gatheringStartAfter?: Date, 
+	gatheringEndBefore?: Date, 
+	gatheringEndAfter?: Date,
 	isCancelled?: boolean;
 	offset?: number;
 	limit?: number;
@@ -36,4 +38,16 @@ export async function getBookings(params: GetBookingsParams): Promise<Booking[]>
 export async function createBooking(bookingReqDto: BookingReqDto): Promise<Booking> {
 	const response = await axios.post<Booking>("/api/v1/Bookings", bookingReqDto);
 	return response.data;
+}
+
+export async function getBooking(bookingId: string): Promise<Booking> {
+	const response = await axios.get<Booking>(`/api/v1/Bookings/${bookingId}`);
+	const booking: Booking = response.data;
+	booking.creationDateTime = new Date(booking.creationDateTime);
+	booking.checkInDateTime = booking.checkInDateTime ? new Date(booking.checkInDateTime) : null;
+	booking.checkoutDateTime = booking.checkoutDateTime ? new Date(booking.checkoutDateTime) : null;
+	booking.cancellationDateTime = booking.cancellationDateTime
+		? new Date(booking.cancellationDateTime)
+		: null;
+	return booking;
 }

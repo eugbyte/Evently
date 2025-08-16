@@ -1,12 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { type JSX, useEffect, useRef } from "react";
-import { Account, Booking, Category, Gathering } from "~/lib/domains/entities";
+import {createFileRoute} from "@tanstack/react-router";
+import {type JSX, useEffect, useRef} from "react";
+import {Account, Booking, Category, Gathering} from "~/lib/domains/entities";
 import Placeholder from "~/lib/assets/event_placeholder.webp";
-import { createBooking, getAccount, getBookings, getGathering } from "~/lib/services";
-import { DateTime } from "luxon";
-import { Icon } from "@iconify/react";
-import { useMutation } from "@tanstack/react-query";
-import { BookingReqDto } from "~/lib/domains/models";
+import {createBooking, getAccount, getBookings, getGathering} from "~/lib/services";
+import {DateTime} from "luxon";
+import {Icon} from "@iconify/react";
+import {useMutation} from "@tanstack/react-query";
+import {BookingReqDto} from "~/lib/domains/models";
 import QRCode from "qrcode";
 
 export const Route = createFileRoute("/gatherings/$gatheringId")({
@@ -14,15 +14,15 @@ export const Route = createFileRoute("/gatherings/$gatheringId")({
 		const account: Account | null = await getAccount();
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering | null = await getGathering(gatheringId);
-		const bookings: Booking[] = await getBookings({
+		let booking: Booking | null = null;
+		[booking] = await getBookings({
 			attendeeId: account?.id ?? "",
 			gatheringId,
 			isCancelled: false
 		});
-
 		return {
 			gathering,
-			booking: bookings.length > 0 ? bookings[0] : null,
+			booking,
 			account
 		};
 	},

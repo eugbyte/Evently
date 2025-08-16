@@ -26,7 +26,7 @@ public sealed class BookingService(
 
 	public async Task<PageResult<Booking>> GetBookings(string? accountId, long? gatheringId,
 		DateTimeOffset? checkInStart, DateTimeOffset? checkInEnd,
-		DateTimeOffset? gatheringStart, DateTimeOffset? gatheringInEnd,
+		DateTimeOffset? gatheringStartBefore, DateTimeOffset? gatheringStartAfter, DateTimeOffset? gatheringEndBefore, DateTimeOffset? gatheringEndAfter,
 		bool? isCancelled, int? offset, int? limit) {
 		IQueryable<Booking> query = db.Bookings
 			.Where((b) => accountId == null || b.AccountId == accountId)
@@ -34,8 +34,10 @@ public sealed class BookingService(
 			.Where((c) => checkInStart == null || checkInStart <= c.CheckInDateTime)
 			.Where((b) => checkInEnd == null || b.CheckInDateTime <= checkInEnd)
 			.Where((b) => isCancelled == null || b.CancellationDateTime.HasValue == isCancelled)
-			.Where((b) => gatheringStart == null || b.Gathering != null && b.Gathering.End >= gatheringStart)
-			.Where((b) => gatheringInEnd == null || b.Gathering != null && b.Gathering.Start <= gatheringInEnd)
+			.Where((b) => gatheringStartBefore == null || b.Gathering != null && b.Gathering.Start <= gatheringStartBefore)
+			.Where((b) => gatheringStartAfter == null || b.Gathering != null && b.Gathering.Start >= gatheringStartAfter)
+			.Where((b) => gatheringEndBefore == null || b.Gathering != null && b.Gathering.End <= gatheringEndBefore)
+			.Where((b) => gatheringEndAfter == null || b.Gathering != null && b.Gathering.End >= gatheringEndAfter)
 			.Include((b) => b.Account)
 			.Include((b) => b.Gathering)
 			.ThenInclude((g) => g!.GatheringCategoryDetails)

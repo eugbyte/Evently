@@ -36,8 +36,7 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 		long? gatheringId,
 		DateTimeOffset? checkInStart,
 		DateTimeOffset? checkInEnd,
-		DateTimeOffset? gatheringStart,
-		DateTimeOffset? gatheringEnd,
+		DateTimeOffset? gatheringStartBefore, DateTimeOffset? gatheringStartAfter, DateTimeOffset? gatheringEndBefore, DateTimeOffset? gatheringEndAfter,
 		bool isCancelled,
 		int? offset,
 		int? limit) {
@@ -45,8 +44,10 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 			gatheringId,
 			checkInStart,
 			checkInEnd,
-			gatheringStart,
-			gatheringEnd,
+			gatheringStartBefore,
+			gatheringStartAfter,
+			gatheringEndBefore,
+			gatheringEndAfter,
 			isCancelled,
 			offset,
 			limit);
