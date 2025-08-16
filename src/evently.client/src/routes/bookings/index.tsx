@@ -31,7 +31,11 @@ export function GetBookingsPage(): JSX.Element {
 
 		switch (_tab) {
 			case 0: {
-				setQueryParams({ attendeeId: account?.id ?? "", gatheringStart: new Date() });
+				setQueryParams({
+					attendeeId: account?.id ?? "",
+					gatheringStart: new Date(),
+					isCancelled: false
+				});
 				break;
 			}
 			case 1: {
