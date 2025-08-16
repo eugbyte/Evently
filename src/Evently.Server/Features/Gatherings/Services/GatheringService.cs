@@ -31,6 +31,7 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 			.Where((gathering) => organiserId == null || gathering.OrganiserId == organiserId)
 			.Where((gathering) =>
 				attendeeId == null || gathering.Bookings.Any((be) => be.AccountId == attendeeId))
+			.Where((gathering) => !gathering.Bookings.Any(booking => booking.IsOrganiser && booking.CancellationDateTime != null))
 			.Include(gathering => gathering.Bookings.Where((be) => be.AccountId == attendeeId))
 			.Include(gathering => gathering.GatheringCategoryDetails)
 			.ThenInclude(detail => detail.Category);

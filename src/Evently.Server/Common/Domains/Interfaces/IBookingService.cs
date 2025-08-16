@@ -5,12 +5,10 @@ namespace Evently.Server.Common.Domains.Interfaces;
 
 public interface IBookingService {
 	Task<Booking?> GetBooking(string bookingId);
-
 	Task<PageResult<Booking>> GetBookings(string? accountId, long? gatheringId,
 		DateTimeOffset? checkInStart, DateTimeOffset? checkInEnd,
-		DateTimeOffset? gatheringStart, DateTimeOffset? gatheringInEnd,
+		DateTimeOffset? gatheringStartBefore, DateTimeOffset? gatheringStartAfter, DateTimeOffset? gatheringEndBefore, DateTimeOffset? gatheringEndAfter,
 		bool? isCancelled, int? offset, int? limit);
-
 	Task<Booking> CreateBooking(BookingReqDto bookingReqDto);
 	Task<Booking> UpdateBooking(string bookingId, BookingReqDto bookingReqDto);
 	Task<bool> Exists(string bookingId);
