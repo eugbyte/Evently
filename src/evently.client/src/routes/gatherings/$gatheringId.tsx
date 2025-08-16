@@ -59,6 +59,9 @@ export function GatheringPage(): JSX.Element {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	useEffect(() => {
+		if (booking == null || canvasRef.current == null) {
+			return;
+		}
 		const url = new URL(`bookings/${booking?.bookingId}`, window.location.href);
 		QRCode.toCanvas(canvasRef.current, url.href, (error) => {
 			if (error) {
