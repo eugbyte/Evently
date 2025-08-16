@@ -7,10 +7,10 @@ export interface GetBookingsParams {
 	gatheringId?: number;
 	checkInStart?: Date;
 	checkInEnd?: Date;
-	gatheringStartBefore?: Date, 
-	gatheringStartAfter?: Date, 
-	gatheringEndBefore?: Date, 
-	gatheringEndAfter?: Date,
+	gatheringStartBefore?: Date;
+	gatheringStartAfter?: Date;
+	gatheringEndBefore?: Date;
+	gatheringEndAfter?: Date;
 	isCancelled?: boolean;
 	offset?: number;
 	limit?: number;
@@ -49,5 +49,16 @@ export async function getBooking(bookingId: string): Promise<Booking> {
 	booking.cancellationDateTime = booking.cancellationDateTime
 		? new Date(booking.cancellationDateTime)
 		: null;
+	return booking;
+}
+
+export async function cancelBooking(bookingId: string, booking: Booking): Promise<Booking> {
+	console.log({ getBk: booking });
+	const bookingDto: BookingReqDto = {
+		...booking,
+		attendeeId: booking.accountDto.id,
+		cancellationDateTime: new Date()
+	};
+	booking = await axios.put(`/api/v1/Bookings/${bookingId}`, bookingDto);
 	return booking;
 }

@@ -8,10 +8,9 @@ import { DateTime } from "luxon";
 export interface CardProps {
 	gathering: Gathering;
 	accountId?: string | null;
-	bookingId?: string | null;
 }
 
-export function Card({ gathering, accountId, bookingId }: CardProps): JSX.Element {
+export function Card({ gathering, accountId }: CardProps): JSX.Element {
 	let { name: title, description, coverSrc: imgSrc } = gathering;
 	const categories: Category[] = gathering.gatheringCategoryDetails.map(
 		(detail) => detail.category
@@ -60,7 +59,6 @@ export function Card({ gathering, accountId, bookingId }: CardProps): JSX.Elemen
 						className="btn btn-primary"
 						to={`/gatherings/$gatheringId`}
 						params={{ gatheringId: gathering.gatheringId.toString() }}
-						search={{ bookingId }}
 					>
 						View
 					</Link>

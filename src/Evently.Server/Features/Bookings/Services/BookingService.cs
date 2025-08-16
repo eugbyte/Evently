@@ -66,7 +66,7 @@ public sealed class BookingService(
 		booking.BookingId = $"book_{await Nanoid.GenerateAsync(size: 10)}";
 		await db.Bookings.AddAsync(booking);
 		await db.SaveChangesAsync();
-		return booking;
+		return (await GetBooking(booking.BookingId))!;
 	}
 
 	public async Task<Booking> UpdateBooking(string bookingId, BookingReqDto bookingReqDto) {
@@ -84,7 +84,7 @@ public sealed class BookingService(
 		current.CancellationDateTime = booking.CancellationDateTime;
 
 		await db.SaveChangesAsync();
-		return current;
+		return (await GetBooking(booking.BookingId))!;
 	}
 
 	public async Task<string> RenderTicket(string bookingId) {
