@@ -30,7 +30,6 @@ export class Account {
 
 export class Booking {
 	public bookingId = "";
-	public accountId = 0;
 	public accountDto = new Account();
 	public gatheringId = 0;
 	public gathering = new Gathering();

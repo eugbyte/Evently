@@ -1,7 +1,7 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Gathering } from "~/lib/domains/entities";
+import { Account, Gathering } from "~/lib/domains/entities";
 import { getAccount, getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card } from "~/lib/components";
 
@@ -18,20 +18,13 @@ export const Route = createFileRoute("/gatherings/")({
 });
 
 export function GatheringsPage(): JSX.Element {
+	const account: Account | null = Route.useLoaderData();
 	const [queryParams] = useState<GetGatheringsParams>({ start: new Date() });
 	const { data: _gatherings, isLoading } = useQuery({
 		queryKey: ["getGatherings", queryParams],
 		queryFn: (): Promise<Gathering[]> => getGatherings(queryParams)
 	});
-	let gatherings: Gathering[] = _gatherings ?? [];
-	gatherings = [
-		...gatherings,
-		...gatherings,
-		...gatherings,
-		...gatherings,
-		...gatherings,
-		...gatherings
-	];
+	const gatherings: Gathering[] = _gatherings ?? [];
 
 	return (
 		<div className="mb-20 p-1 sm:mb-0 sm:p-4">
@@ -61,7 +54,11 @@ export function GatheringsPage(): JSX.Element {
 			) : (
 				<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
 					{gatherings.map((gathering, index) => (
-						<Card key={gathering.gatheringId + "-" + index} gathering={gathering} />
+						<Card
+							key={gathering.gatheringId + "-" + index}
+							gathering={gathering}
+							accountId={account?.id}
+						/>
 					))}
 				</div>
 			)}

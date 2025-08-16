@@ -31,11 +31,13 @@ export function Navbar(): JSX.Element {
 							Explore
 						</Link>
 					</li>
-					<li>
-						<Link to="/bookings" activeProps={{ className: "underline" }}>
-							My Events
-						</Link>
-					</li>
+					{isAuth && (
+						<li>
+							<Link to="/bookings" activeProps={{ className: "underline" }}>
+								My Events
+							</Link>
+						</li>
+					)}
 				</ul>
 			</div>
 			<div className="navbar-end pr-5">

@@ -34,8 +34,10 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 	public async Task<ActionResult<Booking>> GetBookings(
 		string? attendeeId,
 		long? gatheringId,
-		DateTime? checkInStart,
-		DateTime? checkInEnd,
+		DateTimeOffset? checkInStart,
+		DateTimeOffset? checkInEnd,
+		DateTimeOffset? gatheringStart,
+		DateTimeOffset? gatheringEnd,
 		bool isCancelled,
 		int? offset,
 		int? limit) {
@@ -43,6 +45,8 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 			gatheringId,
 			checkInStart,
 			checkInEnd,
+			gatheringStart,
+			gatheringEnd,
 			isCancelled,
 			offset,
 			limit);
@@ -55,12 +59,13 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 
 	[HttpPost("", Name = "CreateBooking")]
 	public async Task<ActionResult<Booking>> CreateBooking([FromBody] BookingReqDto bookingReqDto) {
-		ValidationResult validationResult = await validator.ValidateAsync(bookingReqDto.ToBooking());
+		Booking booking = bookingReqDto.ToBooking();
+		ValidationResult validationResult = await validator.ValidateAsync(booking);
 		if (!validationResult.IsValid) {
 			return BadRequest(validationResult.Errors);
 		}
 
-		Booking booking = await bookingService.CreateBooking(bookingReqDto);
+		booking = await bookingService.CreateBooking(bookingReqDto);
 		await emailQueue.WriteAsync(booking.BookingId);
 		return Ok(booking);
 	}

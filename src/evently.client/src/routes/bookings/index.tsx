@@ -1,21 +1,16 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
-import { Account, Booking, Gathering } from "~/lib/domains/entities";
+import { Account, Booking } from "~/lib/domains/entities";
 import { Tabs } from "./-components";
 import { getAccount, getBookings } from "~/lib/services";
 import { Card } from "~/lib/components";
 import cloneDeep from "lodash.clonedeep";
 
 export const Route = createFileRoute("/bookings/")({
-	component: GatheringsPage,
+	component: GetBookingsPage,
 	loader: async () => {
 		const account: Account | null = await getAccount();
-		let bookings: Booking[] = [];
-		if (account != null) {
-			bookings = await getBookings({
-				accountId: account.id
-			});
-		}
+		const bookings: Booking[] = await getBookings({ attendeeId: account?.id ?? "" });
 		return {
 			account,
 			bookings
@@ -28,9 +23,13 @@ export const Route = createFileRoute("/bookings/")({
 	)
 });
 
-export function GatheringsPage(): JSX.Element {
-	const { bookings: _bookings, account } = Route.useLoaderData();
+export function GetBookingsPage(): JSX.Element {
+	const { account, ...rest } = Route.useLoaderData();
 	const [tab, setTab] = useState(0);
+	const _bookings: Booking[] = cloneDeep(rest.bookings).sort(
+		(a, b) => Number(b.isOrganiser) - Number(a.isOrganiser)
+	);
+
 	const [bookings, setBookings] = useState<Booking[]>(cloneDeep(_bookings));
 
 	const handleTabChange = (_tab: number) => {
@@ -38,27 +37,27 @@ export function GatheringsPage(): JSX.Element {
 
 		switch (_tab) {
 			case 0: {
-				setBookings(
-					_bookings.filter(
-						(booking) => booking.cancellationDateTime == null && new Date() <= booking.gathering.end
-					)
-				);
+				setBookings(_bookings.filter((booking) => new Date() <= booking.gathering.end));
 				break;
 			}
 			case 1: {
-				setBookings(_bookings.filter((booking) => booking.gathering.end < new Date()));
+				setBookings(_bookings.filter((booking) => new Date() > booking.gathering.end));
 				break;
 			}
 		}
 	};
 
-	const gatherings: Gathering[] = bookings.map((booking) => booking.gathering);
 	return (
 		<div className="mb-20 p-1 sm:mb-0 sm:p-4">
 			<Tabs tab={tab} handleTabChange={handleTabChange} />
 			<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
-				{gatherings.map((gathering) => (
-					<Card key={gathering.gatheringId} gathering={gathering} accountId={account?.id} />
+				{bookings.map((booking) => (
+					<Card
+						key={booking.gathering.gatheringId}
+						gathering={booking.gathering}
+						accountId={account?.id}
+						bookingId={booking.bookingId}
+					/>
 				))}
 			</div>
 		</div>
