@@ -1,66 +1,65 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
-import { Account, Booking, Gathering } from "~/lib/domains/entities";
+import { Account, Booking } from "~/lib/domains/entities";
 import { Tabs } from "./-components";
-import { getAccount, getBookings, type GetBookingsParams } from "~/lib/services";
+import { getAccount, getBookings } from "~/lib/services";
 import { Card } from "~/lib/components";
-import { useQuery } from "@tanstack/react-query";
 import cloneDeep from "lodash.clonedeep";
 
 export const Route = createFileRoute("/bookings/")({
 	component: GetBookingsPage,
 	loader: async () => {
-		return getAccount();
-	}
+		const account: Account | null = await getAccount();
+		const bookings: Booking[] = await getBookings({ attendeeId: account?.id ?? "" });
+		return {
+			account,
+			bookings
+		};
+	},
+	pendingComponent: () => (
+		<div className="h-full">
+			<progress className="progress w-full"></progress>
+		</div>
+	)
 });
 
 export function GetBookingsPage(): JSX.Element {
-	const account: Account | null = Route.useLoaderData();
+	const { account, ...rest } = Route.useLoaderData();
 	const [tab, setTab] = useState(0);
+	const _bookings: Booking[] = cloneDeep(rest.bookings).sort(
+		(a, b) => Number(b.isOrganiser) - Number(a.isOrganiser)
+	);
 
-	const [queryParams, setQueryParams] = useState<GetBookingsParams>({
-		attendeeId: account?.id ?? ""
-	});
-	const { data: _bookings, isLoading } = useQuery({
-		queryKey: ["getBookings", queryParams],
-		queryFn: (): Promise<Booking[]> => getBookings(queryParams)
-	});
+	const [bookings, setBookings] = useState<Booking[]>(cloneDeep(_bookings));
 
 	const handleTabChange = (_tab: number) => {
 		setTab(_tab);
 
 		switch (_tab) {
 			case 0: {
-				setQueryParams({
-					attendeeId: account?.id ?? "",
-					gatheringStart: new Date(),
-					isCancelled: false
-				});
+				setBookings(_bookings.filter((booking) => new Date() <= booking.gathering.end));
 				break;
 			}
 			case 1: {
-				setQueryParams({ attendeeId: account?.id ?? "", gatheringEnd: new Date() });
+				setBookings(_bookings.filter((booking) => new Date() > booking.gathering.end));
 				break;
 			}
 		}
 	};
 
-	const bookings: Booking[] = cloneDeep(_bookings ?? []).sort(
-		(a, b) => Number(b.isOrganiser) - Number(a.isOrganiser)
-	);
-	const gatherings: Gathering[] = bookings.map((booking) => booking.gathering);
 	return (
 		<div className="mb-20 p-1 sm:mb-0 sm:p-4">
 			<Tabs tab={tab} handleTabChange={handleTabChange} />
-			{isLoading ? (
-				<progress className="progress w-full"></progress>
-			) : (
-				<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
-					{gatherings.map((gathering) => (
-						<Card key={gathering.gatheringId} gathering={gathering} accountId={account?.id} />
-					))}
-				</div>
-			)}
+			<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
+				{bookings.map((booking) => (
+					<Card
+						key={booking.gathering.gatheringId}
+						gathering={booking.gathering}
+						accountId={account?.id}
+						bookingId={booking.bookingId}
+					/>
+				))}
+			</div>
 		</div>
 	);
 }

@@ -26,6 +26,7 @@ export const Route = createFileRoute("/gatherings/$gatheringId")({
 			account
 		};
 	},
+
 	component: GatheringPage,
 	pendingComponent: () => (
 		<div className="h-full px-2">
@@ -93,7 +94,7 @@ export function GatheringPage(): JSX.Element {
 						))}
 					</div>
 					<div className="divider">More</div>
-					{isAttendee && booking?.accountId === account?.id && (
+					{isAttendee && booking?.accountDto.id === account?.id && (
 						<div className="card-actions justify-between">
 							<button className="btn btn-info" onClick={() => dialogRef.current?.showModal()}>
 								View QR
