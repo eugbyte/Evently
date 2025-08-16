@@ -2,48 +2,61 @@
 import { type JSX, useState } from "react";
 import { Account, Booking, Gathering } from "~/lib/domains/entities";
 import { Tabs } from "./-components";
-import { getAccount, getBookings } from "~/lib/services";
+import { getAccount, getBookings, type GetBookingsParams } from "~/lib/services";
 import { Card } from "~/lib/components";
+import { useQuery } from "@tanstack/react-query";
 import cloneDeep from "lodash.clonedeep";
 
 export const Route = createFileRoute("/bookings/")({
-	component: GatheringsPage,
+	component: GetBookingsPage,
 	loader: async () => {
 		return getAccount();
 	}
 });
 
-export function GatheringsPage(): JSX.Element {
+export function GetBookingsPage(): JSX.Element {
 	const account: Account | null = Route.useLoaderData();
-	const attendeeId: string = account?.id ?? "-1";
-
 	const [tab, setTab] = useState(0);
-	const [bookings, setBookings] = useState<Booking[]>(cloneDeep(_bookings));
+
+	const [queryParams, setQueryParams] = useState<GetBookingsParams>({
+		attendeeId: account?.id ?? ""
+	});
+	const { data: _bookings, isLoading } = useQuery({
+		queryKey: ["getBookings", queryParams],
+		queryFn: (): Promise<Booking[]> => getBookings(queryParams)
+	});
 
 	const handleTabChange = (_tab: number) => {
 		setTab(_tab);
 
 		switch (_tab) {
 			case 0: {
-				setQueryParams({ attendeeId, start: new Date() });
+				setQueryParams({ attendeeId: account?.id ?? "", gatheringStart: new Date() });
 				break;
 			}
 			case 1: {
-				setQueryParams({ attendeeId, end: new Date() });
+				setQueryParams({ attendeeId: account?.id ?? "", gatheringEnd: new Date() });
 				break;
 			}
 		}
 	};
 
+	const bookings: Booking[] = cloneDeep(_bookings ?? []).sort(
+		(a, b) => Number(b.isOrganiser) - Number(a.isOrganiser)
+	);
 	const gatherings: Gathering[] = bookings.map((booking) => booking.gathering);
 	return (
 		<div className="mb-20 p-1 sm:mb-0 sm:p-4">
 			<Tabs tab={tab} handleTabChange={handleTabChange} />
-			<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
-				{gatherings.map((gathering) => (
-					<Card key={gathering.gatheringId} gathering={gathering} accountId={account?.id} />
-				))}
-			</div>
+			{isLoading ? (
+				<progress className="progress w-full"></progress>
+			) : (
+				<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
+					{gatherings.map((gathering) => (
+						<Card key={gathering.gatheringId} gathering={gathering} accountId={account?.id} />
+					))}
+				</div>
+			)}
 		</div>
 	);
 }

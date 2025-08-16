@@ -34,8 +34,10 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 	public async Task<ActionResult<Booking>> GetBookings(
 		string? attendeeId,
 		long? gatheringId,
-		DateTime? checkInStart,
-		DateTime? checkInEnd,
+		DateTimeOffset? checkInStart,
+		DateTimeOffset? checkInEnd,
+		DateTimeOffset? gatheringStart,
+		DateTimeOffset? gatheringEnd,
 		bool isCancelled,
 		int? offset,
 		int? limit) {
@@ -43,6 +45,8 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 			gatheringId,
 			checkInStart,
 			checkInEnd,
+			gatheringStart,
+			gatheringEnd,
 			isCancelled,
 			offset,
 			limit);

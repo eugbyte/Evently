@@ -7,6 +7,8 @@ export interface GetBookingsParams {
 	gatheringId?: number;
 	checkInStart?: Date;
 	checkInEnd?: Date;
+	gatheringStart?: Date;
+	gatheringEnd?: Date;
 	isCancelled?: boolean;
 	offset?: number;
 	limit?: number;

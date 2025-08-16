@@ -26,11 +26,12 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 		int? limit) {
 		IQueryable<Gathering> query = db.Gatherings
 			.Where((gathering) => name == null || EF.Functions.ILike(gathering.Name, $"%{name}%"))
+			.Where((gathering) => startDate == null || gathering.End >= startDate)
+			.Where((gathering) => endDate == null || endDate >= gathering.Start)
+			.Where((gathering) => organiserId == null || gathering.OrganiserId == organiserId)
 			.Where((gathering) =>
 				attendeeId == null || gathering.Bookings.Any((be) => be.AccountId == attendeeId))
-			.Where((gathering) => startDate == null || gathering.End >= startDate)
-			.Where((gathering) => endDate == null || gathering.Start <= endDate)
-			.Where((gathering) => organiserId == null || gathering.OrganiserId == organiserId)
+			.Include(gathering => gathering.Bookings.Where((be) => be.AccountId == attendeeId))
 			.Include(gathering => gathering.GatheringCategoryDetails)
 			.ThenInclude(detail => detail.Category);
 

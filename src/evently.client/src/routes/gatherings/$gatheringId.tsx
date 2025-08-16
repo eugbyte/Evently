@@ -64,7 +64,7 @@ export function GatheringPage(): JSX.Element {
 				console.error(error);
 			}
 		});
-	}, [canvasRef.current]);
+	}, [canvasRef, booking?.bookingId]);
 
 	return (
 		<div className="mb-20 sm:mb-0">

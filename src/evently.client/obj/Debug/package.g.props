@@ -20,12 +20,12 @@
     <PackageJsonDependenciesJsCookie Condition="$(PackageJsonDependenciesJsCookie) == ''">^3.0.5</PackageJsonDependenciesJsCookie>
     <PackageJsonDependenciesLodashClonedeep Condition="$(PackageJsonDependenciesLodashClonedeep) == ''">^4.5.0</PackageJsonDependenciesLodashClonedeep>
     <PackageJsonDependenciesLuxon Condition="$(PackageJsonDependenciesLuxon) == ''">^3.7.1</PackageJsonDependenciesLuxon>
+    <PackageJsonDependenciesQrcode Condition="$(PackageJsonDependenciesQrcode) == ''">^1.5.4</PackageJsonDependenciesQrcode>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^19.1.1</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^19.1.1</PackageJsonDependenciesReactDom>
     <PackageJsonDependenciesReflectMetadata Condition="$(PackageJsonDependenciesReflectMetadata) == ''">^0.2.2</PackageJsonDependenciesReflectMetadata>
     <PackageJsonDependenciesTailwindcss Condition="$(PackageJsonDependenciesTailwindcss) == ''">^4.1.11</PackageJsonDependenciesTailwindcss>
     <PackageJsonDependenciesTypedi Condition="$(PackageJsonDependenciesTypedi) == ''">^0.10.0</PackageJsonDependenciesTypedi>
-    <PackageJsonDependenciesUseAsyncEffect Condition="$(PackageJsonDependenciesUseAsyncEffect) == ''">^2.2.7</PackageJsonDependenciesUseAsyncEffect>
     <PackageJsonDependenciesWouter Condition="$(PackageJsonDependenciesWouter) == ''">^3.7.1</PackageJsonDependenciesWouter>
     <PackageJsonDevdependenciesEslintJs Condition="$(PackageJsonDevdependenciesEslintJs) == ''">^9.32.0</PackageJsonDevdependenciesEslintJs>
     <PackageJsonDevdependenciesIconifyReact Condition="$(PackageJsonDevdependenciesIconifyReact) == ''">^6.0.0</PackageJsonDevdependenciesIconifyReact>
@@ -34,6 +34,7 @@
     <PackageJsonDevdependenciesTypesLodashClonedeep Condition="$(PackageJsonDevdependenciesTypesLodashClonedeep) == ''">^4.5.9</PackageJsonDevdependenciesTypesLodashClonedeep>
     <PackageJsonDevdependenciesTypesLuxon Condition="$(PackageJsonDevdependenciesTypesLuxon) == ''">^3.7.1</PackageJsonDevdependenciesTypesLuxon>
     <PackageJsonDevdependenciesTypesNode Condition="$(PackageJsonDevdependenciesTypesNode) == ''">^22</PackageJsonDevdependenciesTypesNode>
+    <PackageJsonDevdependenciesTypesQrcode Condition="$(PackageJsonDevdependenciesTypesQrcode) == ''">^1.5.5</PackageJsonDevdependenciesTypesQrcode>
     <PackageJsonDevdependenciesTypesReact Condition="$(PackageJsonDevdependenciesTypesReact) == ''">^19.1.9</PackageJsonDevdependenciesTypesReact>
     <PackageJsonDevdependenciesTypesReactDom Condition="$(PackageJsonDevdependenciesTypesReactDom) == ''">^19.1.7</PackageJsonDevdependenciesTypesReactDom>
     <PackageJsonDevdependenciesVitejsPluginReact Condition="$(PackageJsonDevdependenciesVitejsPluginReact) == ''">^4.7.0</PackageJsonDevdependenciesVitejsPluginReact>
