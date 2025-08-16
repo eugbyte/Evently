@@ -27,7 +27,7 @@ export function GatheringsPage(): JSX.Element {
 	const gatherings: Gathering[] = _gatherings ?? [];
 
 	return (
-		<div className="mb-20 p-1 sm:mb-0 sm:p-4">
+		<div className="h-full">
 			<div className="flex flex-col justify-between space-y-5 sm:flex-row">
 				<label className="input w-40">
 					<svg
@@ -62,6 +62,7 @@ export function GatheringsPage(): JSX.Element {
 					))}
 				</div>
 			)}
+			<div className="none mb-20 sm:block"></div>
 		</div>
 	);
 }

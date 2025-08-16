@@ -15,8 +15,8 @@ import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index
 import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
 import { Route as BookingsIndexRouteImport } from './routes/bookings/index'
 import { Route as LoginCallbackRouteImport } from './routes/login/callback'
-import { Route as GatheringsGatheringIdRouteImport } from './routes/gatherings/$gatheringId'
-import { Route as GatheringsGatheringIdUpsertRouteImport } from './routes/gatherings/$gatheringId.upsert'
+import { Route as GatheringsGatheringIdIndexRouteImport } from './routes/gatherings/$gatheringId/index'
+import { Route as GatheringsGatheringIdUpsertRouteImport } from './routes/gatherings/$gatheringId/upsert'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -48,90 +48,92 @@ const LoginCallbackRoute = LoginCallbackRouteImport.update({
   path: '/login/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GatheringsGatheringIdRoute = GatheringsGatheringIdRouteImport.update({
-  id: '/gatherings/$gatheringId',
-  path: '/gatherings/$gatheringId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const GatheringsGatheringIdIndexRoute =
+  GatheringsGatheringIdIndexRouteImport.update({
+    id: '/gatherings/$gatheringId/',
+    path: '/gatherings/$gatheringId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const GatheringsGatheringIdUpsertRoute =
   GatheringsGatheringIdUpsertRouteImport.update({
-    id: '/upsert',
-    path: '/upsert',
-    getParentRoute: () => GatheringsGatheringIdRoute,
+    id: '/gatherings/$gatheringId/upsert',
+    path: '/gatherings/$gatheringId/upsert',
+    getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/gatherings/$gatheringId': typeof GatheringsGatheringIdRouteWithChildren
   '/login/callback': typeof LoginCallbackRoute
   '/bookings': typeof BookingsIndexRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
   '/gatherings/$gatheringId/upsert': typeof GatheringsGatheringIdUpsertRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/gatherings/$gatheringId': typeof GatheringsGatheringIdRouteWithChildren
   '/login/callback': typeof LoginCallbackRoute
   '/bookings': typeof BookingsIndexRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
   '/gatherings/$gatheringId/upsert': typeof GatheringsGatheringIdUpsertRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/gatherings/$gatheringId': typeof GatheringsGatheringIdRouteWithChildren
   '/login/callback': typeof LoginCallbackRoute
   '/bookings/': typeof BookingsIndexRoute
   '/gatherings/': typeof GatheringsIndexRoute
   '/healthcheck/': typeof HealthcheckIndexRoute
   '/login/': typeof LoginIndexRoute
   '/gatherings/$gatheringId/upsert': typeof GatheringsGatheringIdUpsertRoute
+  '/gatherings/$gatheringId/': typeof GatheringsGatheringIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/gatherings/$gatheringId'
     | '/login/callback'
     | '/bookings'
     | '/gatherings'
     | '/healthcheck'
     | '/login'
     | '/gatherings/$gatheringId/upsert'
+    | '/gatherings/$gatheringId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/gatherings/$gatheringId'
     | '/login/callback'
     | '/bookings'
     | '/gatherings'
     | '/healthcheck'
     | '/login'
     | '/gatherings/$gatheringId/upsert'
+    | '/gatherings/$gatheringId'
   id:
     | '__root__'
     | '/'
-    | '/gatherings/$gatheringId'
     | '/login/callback'
     | '/bookings/'
     | '/gatherings/'
     | '/healthcheck/'
     | '/login/'
     | '/gatherings/$gatheringId/upsert'
+    | '/gatherings/$gatheringId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  GatheringsGatheringIdRoute: typeof GatheringsGatheringIdRouteWithChildren
   LoginCallbackRoute: typeof LoginCallbackRoute
   BookingsIndexRoute: typeof BookingsIndexRoute
   GatheringsIndexRoute: typeof GatheringsIndexRoute
   HealthcheckIndexRoute: typeof HealthcheckIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
+  GatheringsGatheringIdUpsertRoute: typeof GatheringsGatheringIdUpsertRoute
+  GatheringsGatheringIdIndexRoute: typeof GatheringsGatheringIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -178,44 +180,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/gatherings/$gatheringId': {
-      id: '/gatherings/$gatheringId'
+    '/gatherings/$gatheringId/': {
+      id: '/gatherings/$gatheringId/'
       path: '/gatherings/$gatheringId'
       fullPath: '/gatherings/$gatheringId'
-      preLoaderRoute: typeof GatheringsGatheringIdRouteImport
+      preLoaderRoute: typeof GatheringsGatheringIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gatherings/$gatheringId/upsert': {
       id: '/gatherings/$gatheringId/upsert'
-      path: '/upsert'
+      path: '/gatherings/$gatheringId/upsert'
       fullPath: '/gatherings/$gatheringId/upsert'
       preLoaderRoute: typeof GatheringsGatheringIdUpsertRouteImport
-      parentRoute: typeof GatheringsGatheringIdRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface GatheringsGatheringIdRouteChildren {
-  GatheringsGatheringIdUpsertRoute: typeof GatheringsGatheringIdUpsertRoute
-}
-
-const GatheringsGatheringIdRouteChildren: GatheringsGatheringIdRouteChildren = {
-  GatheringsGatheringIdUpsertRoute: GatheringsGatheringIdUpsertRoute,
-}
-
-const GatheringsGatheringIdRouteWithChildren =
-  GatheringsGatheringIdRoute._addFileChildren(
-    GatheringsGatheringIdRouteChildren,
-  )
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  GatheringsGatheringIdRoute: GatheringsGatheringIdRouteWithChildren,
   LoginCallbackRoute: LoginCallbackRoute,
   BookingsIndexRoute: BookingsIndexRoute,
   GatheringsIndexRoute: GatheringsIndexRoute,
   HealthcheckIndexRoute: HealthcheckIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
+  GatheringsGatheringIdUpsertRoute: GatheringsGatheringIdUpsertRoute,
+  GatheringsGatheringIdIndexRoute: GatheringsGatheringIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -52,7 +52,7 @@ export function GetBookingsPage(): JSX.Element {
 	);
 
 	return (
-		<div className="mb-20 p-1 sm:mb-0 sm:p-4">
+		<div className="h-full p-1">
 			<Tabs tab={tab} handleTabChange={handleTabChange} />
 			<div className="flex w-full flex-row justify-end">
 				<button className="btn btn-success">Create Event</button>

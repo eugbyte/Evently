@@ -11,6 +11,7 @@
     <PackageJsonScriptsFmt Condition="$(PackageJsonScriptsFmt) == ''">prettier --write . &amp;&amp; eslint .</PackageJsonScriptsFmt>
     <PackageJsonScriptsPreview Condition="$(PackageJsonScriptsPreview) == ''">vite preview</PackageJsonScriptsPreview>
     <PackageJsonDependenciesTailwindcssVite Condition="$(PackageJsonDependenciesTailwindcssVite) == ''">^4.1.11</PackageJsonDependenciesTailwindcssVite>
+    <PackageJsonDependenciesTanstackReactForm Condition="$(PackageJsonDependenciesTanstackReactForm) == ''">^1.19.2</PackageJsonDependenciesTanstackReactForm>
     <PackageJsonDependenciesTanstackReactQuery Condition="$(PackageJsonDependenciesTanstackReactQuery) == ''">^5.84.2</PackageJsonDependenciesTanstackReactQuery>
     <PackageJsonDependenciesTanstackReactRouter Condition="$(PackageJsonDependenciesTanstackReactRouter) == ''">^1.131.7</PackageJsonDependenciesTanstackReactRouter>
     <PackageJsonDependenciesTanstackReactRouterDevtools Condition="$(PackageJsonDependenciesTanstackReactRouterDevtools) == ''">^1.131.7</PackageJsonDependenciesTanstackReactRouterDevtools>
