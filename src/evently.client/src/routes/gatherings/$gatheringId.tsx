@@ -19,15 +19,14 @@ export const Route = createFileRoute("/gatherings/$gatheringId")({
 		const account: Account | null = await getAccount();
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering | null = await getGathering(gatheringId);
-		let booking: Booking | null = null;
-		[booking] = await getBookings({
+		const bookings: Booking[] = await getBookings({
 			attendeeId: account?.id ?? "",
 			gatheringId,
 			isCancelled: false
 		});
 		return {
 			gathering,
-			booking,
+			booking: bookings.length > 0 ? bookings[0] : null,
 			account
 		};
 	},
