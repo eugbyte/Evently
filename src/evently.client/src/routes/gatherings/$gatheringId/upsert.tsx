@@ -2,7 +2,7 @@
 import { Gathering } from "~/lib/domains/entities";
 import { useForm } from "@tanstack/react-form";
 import { type JSX } from "react";
-import { FieldErrMsg as FieldInfo } from "~/routes/gatherings/-components";
+import { FieldErrMsg as FieldInfo } from "./-components";
 import { getGathering } from "~/lib/services";
 
 export const Route = createFileRoute("/gatherings/$gatheringId/upsert")({

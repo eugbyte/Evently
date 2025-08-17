@@ -27,23 +27,19 @@ export function Navbar(): JSX.Element {
 			<div className="navbar-center lg:flex">
 				<ul className="menu menu-horizontal px-1">
 					<li>
-						<Link
-							to="/gatherings"
-							activeProps={{ className: "underline" }}
-							activeOptions={{ exact: true }}
-						>
-							Explore
+						<Link to="/gatherings" activeProps={{ className: "underline" }}>
+							Explore Gatherings
 						</Link>
 					</li>
 					{isAuth && (
 						<>
 							<li>
-								<Link to="/bookings" activeProps={{ className: "underline" }}>
+								<Link to="/bookings/attending" activeProps={{ className: "underline" }}>
 									Attending
 								</Link>
 							</li>
 							<li>
-								<Link to="/gatherings/host" activeProps={{ className: "underline" }}>
+								<Link to="/bookings/hosting" activeProps={{ className: "underline" }}>
 									Hosting
 								</Link>
 							</li>

@@ -6,7 +6,7 @@ import { Card, Tabs, TabState } from "~/lib/components";
 import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "@tanstack/react-query";
 
-export const Route = createFileRoute("/bookings/")({
+export const Route = createFileRoute("/bookings/attending")({
 	component: GetBookingsPage,
 	loader: async () => getAccount(),
 	pendingComponent: () => (

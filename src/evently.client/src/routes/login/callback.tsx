@@ -18,6 +18,6 @@ export function LoginCallbackPage() {
 
 	const navigate = useNavigate();
 	useEffect(() => {
-		navigate({ to: "/bookings" }).then();
+		navigate({ to: "/bookings/attending" }).then();
 	}, [navigate]);
 }
