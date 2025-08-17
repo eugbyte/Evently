@@ -19,7 +19,6 @@ public class Booking {
 	[StringLength(100)] [ForeignKey("Account")] public string AccountId { get; set; } = string.Empty;
 	[JsonIgnore] public Account? Account { get; set; }
 	[NotMapped] public AccountDto? AccountDto => Account?.ToAccountDto();
-	public bool IsOrganiser { get; set; }
 
 	public long GatheringId { get; set; }
 	public Gathering? Gathering { get; set; }

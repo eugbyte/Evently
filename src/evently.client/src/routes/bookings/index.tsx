@@ -48,7 +48,7 @@ export function GetBookingsPage(): JSX.Element {
 	};
 
 	const bookings: Booking[] = cloneDeep(_bookings ?? []).sort(
-		(a, b) => Number(b.isOrganiser) - Number(a.isOrganiser)
+		(a, b) => Number(b.gathering.organiserId === account?.id) - Number(a.gathering.organiserId === account?.id)
 	);
 
 	return (
