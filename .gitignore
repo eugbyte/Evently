@@ -434,4 +434,5 @@ src/emailpaywall.client/.svelte-kit
 
 # Rider
 .rider.*
-src/emailpaywall.client/obj
+**/obj/
+
