@@ -8,7 +8,8 @@ export interface TabsProps {
 export function Tabs({ tab, handleTabChange }: TabsProps): JSX.Element {
 	const tabStates: Record<number, string> = {
 		0: "Upcoming",
-		1: "Past"
+		1: "Past",
+		2: "Events I Host"
 	};
 
 	return (
@@ -26,6 +27,13 @@ export function Tabs({ tab, handleTabChange }: TabsProps): JSX.Element {
 				className={`tab ${tab === 1 ? "tab-active" : ""}`}
 			>
 				{tabStates[1]}
+			</button>
+			<button
+				role="tab"
+				onClick={() => handleTabChange(2)}
+				className={`tab ${tab === 2 ? "tab-active" : ""}`}
+			>
+				{tabStates[2]}
 			</button>
 		</div>
 	);

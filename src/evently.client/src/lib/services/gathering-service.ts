@@ -5,8 +5,10 @@ export interface GetGatheringsParams {
 	attendeeId?: string;
 	organiserId?: string;
 	name?: string;
-	start?: Date;
-	end?: Date;
+	startDateBefore?: Date;
+	startDateAfter?: Date;
+	endDateBefore?: Date;
+	endDateAfter?: Date;
 	offset?: number;
 	limit?: number;
 }
