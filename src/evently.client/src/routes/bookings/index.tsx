@@ -42,7 +42,7 @@ export function GetBookingsPage(): JSX.Element {
 				break;
 			}
 			case 1: {
-				setQueryParams({ attendeeId: account?.id ?? "", startDateBefore: new Date() });
+				setQueryParams({ attendeeId: account?.id ?? "", endDateBefore: new Date() });
 				break;
 			}
 			case 2: {
