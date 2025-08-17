@@ -7,14 +7,13 @@ export interface TabsProps {
 
 export enum TabState {
 	Upcoming = 0,
-	Past = 1,
+	Past = 1
 }
-
 
 export function Tabs({ tab, handleTabChange }: TabsProps): JSX.Element {
 	const tabStates: Record<TabState, string> = {
 		[TabState.Upcoming]: "Upcoming",
-		[TabState.Past]: "Past",
+		[TabState.Past]: "Past"
 	};
 
 	return (

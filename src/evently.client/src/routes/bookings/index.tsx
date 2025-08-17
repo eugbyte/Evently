@@ -29,7 +29,7 @@ export function GetBookingsPage(): JSX.Element {
 		queryKey: ["getBookings", bkQueryParams, tab],
 		queryFn: (): Promise<Booking[]> => getBookings(bkQueryParams)
 	});
-	
+
 	let gatherings: Gathering[] = cloneDeep(_bookings ?? []).map((booking) => booking.gathering);
 	gatherings = gatherings.sort((a, b) => b.end.getTime() - a.end.getTime());
 

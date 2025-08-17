@@ -1,13 +1,13 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { Account, Gathering } from "~/lib/domains/entities";
-import {getAccount, getGatherings, type GetGatheringsParams} from "~/lib/services";
+import { getAccount, getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card, Tabs, TabState } from "~/lib/components";
 import { useQuery } from "@tanstack/react-query";
 import cloneDeep from "lodash.clonedeep";
 
 export const Route = createFileRoute("/gatherings/host")({
-	component: GetBookingsPage,
+	component: GetHostedGatheringsPage,
 	loader: async () => getAccount(),
 	pendingComponent: () => (
 		<div className="h-full">
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/gatherings/host")({
 	)
 });
 
-export function GetBookingsPage(): JSX.Element {
+export function GetHostedGatheringsPage(): JSX.Element {
 	const account: Account | null = Route.useLoaderData();
 	const [tab, setTab] = useState(0);
 
@@ -43,19 +43,19 @@ export function GetBookingsPage(): JSX.Element {
 					organiserId: account?.id ?? "",
 					endDateAfter: new Date(),
 					isCancelled: false
-				})
-				break
+				});
+				break;
 			}
 			case TabState.Past: {
 				setQueryParams({
 					organiserId: account?.id ?? "",
 					endDateBefore: new Date(),
 					isCancelled: false
-				})
-				break
+				});
+				break;
 			}
 		}
-	}
+	};
 
 	return (
 		<div className="h-full p-1">
@@ -74,5 +74,5 @@ export function GetBookingsPage(): JSX.Element {
 				</div>
 			)}
 		</div>
-	)
+	);
 }
