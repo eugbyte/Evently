@@ -14,7 +14,7 @@ import { BookingReqDto } from "~/lib/domains/models";
 import { useNavigate } from "@tanstack/react-router";
 import { CancellationDialog, Jumbotron, QrDialog } from "~/routes/gatherings/-components";
 
-export const Route = createFileRoute("/gatherings/$gatheringId")({
+export const Route = createFileRoute("/gatherings/$gatheringId/")({
 	loader: async ({ params }) => {
 		const account: Account | null = await getAccount();
 		const gatheringId: number = parseInt(params.gatheringId);
@@ -61,6 +61,9 @@ export function GatheringPage(): JSX.Element {
 	const qrDialogRef = useRef<HTMLDialogElement>(null);
 	const cancellationDialogRef = useRef<HTMLDialogElement>(null);
 	const handleCancel = async () => {
+		if (booking == null) {
+			return;
+		}
 		await cancelBooking(booking?.bookingId ?? "", booking);
 		navigate({
 			to: `/gatherings/${gathering.gatheringId}`,
@@ -69,7 +72,7 @@ export function GatheringPage(): JSX.Element {
 	};
 
 	return (
-		<div className="mb-20 sm:mb-0">
+		<div className="p-2">
 			<div className="card bg-base-200 card-lg container mx-auto w-full text-white shadow-sm md:w-2/3">
 				<figure className="mt-0 sm:mt-5">
 					<img src={imgSrc} alt="Event Image" className="h-60 w-120 rounded-lg" />
@@ -122,6 +125,7 @@ export function GatheringPage(): JSX.Element {
 					/>
 				</div>
 			</div>
+			<div className="none mb-20 sm:block"></div>
 		</div>
 	);
 }

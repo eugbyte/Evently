@@ -4,7 +4,7 @@ import QRCode from "qrcode";
 
 // 1. Define the props for the child component
 interface QrDialogProps {
-	booking?: Booking;
+	booking: Booking | null;
 	qrDialogRef: Ref<HTMLDialogElement>;
 }
 
