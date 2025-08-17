@@ -1,12 +1,12 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
-import { Account, Booking, Gathering } from "~/lib/domains/entities";
-import { getAccount, getBookings, type GetBookingsParams } from "~/lib/services";
+import { Account, Gathering } from "~/lib/domains/entities";
+import {getAccount, getGatherings, type GetGatheringsParams} from "~/lib/services";
 import { Card, Tabs, TabState } from "~/lib/components";
-import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "@tanstack/react-query";
+import cloneDeep from "lodash.clonedeep";
 
-export const Route = createFileRoute("/bookings/")({
+export const Route = createFileRoute("/gatherings/host")({
 	component: GetBookingsPage,
 	loader: async () => getAccount(),
 	pendingComponent: () => (
@@ -20,17 +20,18 @@ export function GetBookingsPage(): JSX.Element {
 	const account: Account | null = Route.useLoaderData();
 	const [tab, setTab] = useState(0);
 
-	const [bkQueryParams, setBkQueryParams] = useState<GetBookingsParams>({
-		attendeeId: account?.id ?? "",
-		gatheringEndAfter: new Date(),
+	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
+		organiserId: account?.id ?? "",
+		endDateAfter: new Date(),
 		isCancelled: false
 	});
-	const { data: _bookings, isLoading } = useQuery({
-		queryKey: ["getBookings", bkQueryParams, tab],
-		queryFn: (): Promise<Booking[]> => getBookings(bkQueryParams)
+	const { data: _hostedGatherings, isLoading: isHostedGatheringLoading } = useQuery({
+		queryKey: ["getHostedGatherings", queryParams],
+		queryFn: (): Promise<Gathering[]> => getGatherings(queryParams)
 	});
-	
-	let gatherings: Gathering[] = cloneDeep(_bookings ?? []).map((booking) => booking.gathering);
+	const isLoading: boolean = isHostedGatheringLoading;
+
+	let gatherings: Gathering[] = cloneDeep(_hostedGatherings ?? []);
 	gatherings = gatherings.sort((a, b) => b.end.getTime() - a.end.getTime());
 
 	const handleTabChange = (_tab: number) => {
@@ -38,19 +39,23 @@ export function GetBookingsPage(): JSX.Element {
 
 		switch (_tab) {
 			case TabState.Upcoming: {
-				setBkQueryParams({
-					attendeeId: account?.id,
-					gatheringEndAfter: new Date(),
+				setQueryParams({
+					organiserId: account?.id ?? "",
+					endDateAfter: new Date(),
 					isCancelled: false
-				});
-				break;
+				})
+				break
 			}
 			case TabState.Past: {
-				setBkQueryParams({ attendeeId: account?.id, gatheringEndBefore: new Date() });
-				break;
+				setQueryParams({
+					organiserId: account?.id ?? "",
+					endDateBefore: new Date(),
+					isCancelled: false
+				})
+				break
 			}
 		}
-	};
+	}
 
 	return (
 		<div className="h-full p-1">
@@ -69,5 +74,5 @@ export function GetBookingsPage(): JSX.Element {
 				</div>
 			)}
 		</div>
-	);
+	)
 }

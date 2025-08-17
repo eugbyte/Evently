@@ -1,3 +1,4 @@
-﻿export { Navbar } from "./navbar.tsx";
-export { Dock } from "./dock.tsx";
-export { Card } from "./card.tsx";
+﻿export { Navbar } from "./navbar";
+export { Dock } from "./dock";
+export { Card } from "./card";
+export * from "./tabs";

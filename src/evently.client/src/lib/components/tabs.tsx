@@ -5,11 +5,16 @@ export interface TabsProps {
 	handleTabChange: (tab: number) => void;
 }
 
+export enum TabState {
+	Upcoming = 0,
+	Past = 1,
+}
+
+
 export function Tabs({ tab, handleTabChange }: TabsProps): JSX.Element {
-	const tabStates: Record<number, string> = {
-		0: "Upcoming",
-		1: "Past",
-		2: "Events I Host"
+	const tabStates: Record<TabState, string> = {
+		[TabState.Upcoming]: "Upcoming",
+		[TabState.Past]: "Past",
 	};
 
 	return (
@@ -19,21 +24,14 @@ export function Tabs({ tab, handleTabChange }: TabsProps): JSX.Element {
 				onClick={() => handleTabChange(0)}
 				className={`tab ${tab === 0 ? "tab-active" : ""}`}
 			>
-				{tabStates[0]}
+				{tabStates[TabState.Upcoming]}
 			</button>
 			<button
 				role="tab"
 				onClick={() => handleTabChange(1)}
 				className={`tab ${tab === 1 ? "tab-active" : ""}`}
 			>
-				{tabStates[1]}
-			</button>
-			<button
-				role="tab"
-				onClick={() => handleTabChange(2)}
-				className={`tab ${tab === 2 ? "tab-active" : ""}`}
-			>
-				{tabStates[2]}
+				{tabStates[TabState.Past]}
 			</button>
 		</div>
 	);

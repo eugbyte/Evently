@@ -14,6 +14,7 @@ public interface IGatheringService {
 		DateTimeOffset? startDateAfter,
 		DateTimeOffset? endDateBefore,
 		DateTimeOffset? endDateAfter,
+		bool? isCancelled,
 		int? offset,
 		int? limit);
 

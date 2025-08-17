@@ -27,22 +27,31 @@ export function Navbar(): JSX.Element {
 			<div className="navbar-center lg:flex">
 				<ul className="menu menu-horizontal px-1">
 					<li>
-						<Link to="/gatherings" activeProps={{ className: "underline" }}>
+						<Link to="/gatherings" activeProps={{ className: "underline" }} activeOptions={{ exact: true }} >
 							Explore
 						</Link>
 					</li>
 					{isAuth && (
-						<li>
-							<Link to="/bookings" activeProps={{ className: "underline" }}>
-								My Events
-							</Link>
-						</li>
+						<>
+							<li>
+								<Link to="/bookings" activeProps={{ className: "underline" }}>
+									Attending
+								</Link>
+							</li>
+							<li>
+								<Link to="/gatherings/host" activeProps={{ className: "underline" }}>
+									Hosting
+								</Link>
+							</li>
+						</>
 					)}
 				</ul>
 			</div>
 			<div className="navbar-end pr-5">
 				{!isAuth ? (
-					<Link to="/login">Login</Link>
+					<Link to="/login" className="btn">
+						Login
+					</Link>
 				) : (
 					<button className="btn" onClick={handleLogout}>
 						Logout

@@ -30,8 +30,10 @@ public sealed class GatheringsController(
 
 	[HttpGet("", Name = "GetGatherings")]
 	public async Task<ActionResult<List<Gathering>>> GetGatherings(string? attendeeId,
-		string? organiserId, string? name,
-		DateTimeOffset? startDateBefore, DateTimeOffset? startDateAfter, DateTimeOffset? endDateBefore, DateTimeOffset? endDateAfter, 
+		string? organiserId, 
+		string? name,
+		DateTimeOffset? startDateBefore, DateTimeOffset? startDateAfter, DateTimeOffset? endDateBefore, DateTimeOffset? endDateAfter,
+		bool? isCancelled,
 		int? offset, int? limit) {
 		PageResult<Gathering> result = await gatheringService.GetGatherings(attendeeId,
 			organiserId,
@@ -40,6 +42,7 @@ public sealed class GatheringsController(
 			startDateAfter,
 			endDateBefore,
 			endDateAfter,
+			isCancelled,
 			offset,
 			limit);
 		List<Gathering> exhibitions = result.Items;

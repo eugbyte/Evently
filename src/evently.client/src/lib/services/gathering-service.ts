@@ -9,6 +9,7 @@ export interface GetGatheringsParams {
 	startDateAfter?: Date;
 	endDateBefore?: Date;
 	endDateAfter?: Date;
+	isCancelled?: boolean;
 	offset?: number;
 	limit?: number;
 }
