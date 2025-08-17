@@ -7,6 +7,7 @@
 	location = "";
 	coverSrc?: string = "";
 	organiserId = "";
+	cancellationDateTime: Date | null = null;
 	bookings: Booking[] = []; // You may want to replace 'any[]' with a proper Booking[] type
 	gatheringCategoryDetails: GatheringCategoryDetail[] = []; // You may want to replace 'any[]' with a proper GatheringCategoryDetail[] type
 
@@ -33,7 +34,6 @@ export class Booking {
 	public accountDto = new Account();
 	public gatheringId = 0;
 	public gathering = new Gathering();
-	public isOrganiser = false;
 	public creationDateTime = new Date();
 	public checkInDateTime: Date | null = null;
 	public checkoutDateTime: Date | null = null;

@@ -20,18 +20,21 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 		string? attendeeId,
 		string? organiserId,
 		string? name,
-		DateTimeOffset? startDate,
-		DateTimeOffset? endDate,
+		DateTimeOffset? startDateBefore,
+		DateTimeOffset? startDateAfter,
+		DateTimeOffset? endDateBefore,
+		DateTimeOffset? endDateAfter,
 		int? offset,
 		int? limit) {
 		IQueryable<Gathering> query = db.Gatherings
 			.Where((gathering) => name == null || EF.Functions.ILike(gathering.Name, $"%{name}%"))
-			.Where((gathering) => startDate == null || gathering.End >= startDate)
-			.Where((gathering) => endDate == null || endDate >= gathering.Start)
+			.Where((gathering) => startDateBefore == null || gathering.Start <= startDateBefore)
+			.Where((gathering) => startDateAfter == null || gathering.Start >= startDateAfter)
+			.Where((gathering) => endDateBefore == null || gathering.End <= endDateBefore)
+			.Where((gathering) => endDateAfter == null || gathering.End >= endDateAfter)
 			.Where((gathering) => organiserId == null || gathering.OrganiserId == organiserId)
 			.Where((gathering) =>
 				attendeeId == null || gathering.Bookings.Any((be) => be.AccountId == attendeeId))
-			.Where((gathering) => !gathering.Bookings.Any(booking => booking.IsOrganiser && booking.CancellationDateTime != null))
 			.Include(gathering => gathering.Bookings.Where((be) => be.AccountId == attendeeId))
 			.Include(gathering => gathering.GatheringCategoryDetails)
 			.ThenInclude(detail => detail.Category);

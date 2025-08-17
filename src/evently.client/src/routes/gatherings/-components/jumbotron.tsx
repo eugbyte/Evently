@@ -14,8 +14,7 @@ export function Jumbotron({ gathering, accountId, booking }: JumbotronProps): JS
 	const start: DateTime = DateTime.fromJSDate(gathering.start);
 	const end: DateTime = DateTime.fromJSDate(gathering.end);
 	const categories: Category[] = gatheringCategoryDetails.map((detail) => detail.category);
-	const isOrganiser: boolean =
-		booking != null && booking.isOrganiser && booking.accountDto.id === accountId;
+	const isOrganiser: boolean = booking != null && booking.gathering.organiserId === accountId;
 
 	return (
 		<>

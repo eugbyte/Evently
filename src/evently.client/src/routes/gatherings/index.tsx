@@ -19,7 +19,7 @@ export const Route = createFileRoute("/gatherings/")({
 
 export function GatheringsPage(): JSX.Element {
 	const account: Account | null = Route.useLoaderData();
-	const [queryParams] = useState<GetGatheringsParams>({ start: new Date() });
+	const [queryParams] = useState<GetGatheringsParams>({ startDateAfter: new Date() });
 	const { data: _gatherings, isLoading } = useQuery({
 		queryKey: ["getGatherings", queryParams],
 		queryFn: (): Promise<Gathering[]> => getGatherings(queryParams)
@@ -28,7 +28,7 @@ export function GatheringsPage(): JSX.Element {
 
 	return (
 		<div className="h-full">
-			<div className="flex flex-col justify-between space-y-5 sm:flex-row">
+			<div className="flex flex-col justify-between space-y-5 sm:flex-row pl-4">
 				<label className="input w-40">
 					<svg
 						className="h-[1em] opacity-50"
