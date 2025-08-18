@@ -55,9 +55,6 @@ export function GetBookingsPage(): JSX.Element {
 	return (
 		<div className="h-full p-1">
 			<Tabs tab={tab} handleTabChange={handleTabChange} />
-			<div className="flex w-full flex-row justify-end px-4">
-				<button className="btn btn-success">Host Event</button>
-			</div>
 			{gatherings.length === 0 && !isLoading && <div className="text-center">None Found</div>}
 			{isLoading ? (
 				<progress className="progress mx-2 w-full"></progress>

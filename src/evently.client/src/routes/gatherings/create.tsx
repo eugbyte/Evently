@@ -1,7 +1,7 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Gathering } from "~/lib/domains/entities";
 import { useState, type JSX } from "react";
-import { getGathering, updateGathering } from "~/lib/services";
+import { updateGathering } from "~/lib/services";
 import {
 	useGatheringForm,
 	type GatheringForm as IGatheringForm
@@ -9,17 +9,12 @@ import {
 import { GatheringReqDto } from "~/lib/domains/models";
 import { GatheringForm } from "~/routes/gatherings/-components";
 
-export const Route = createFileRoute("/gatherings/$gatheringId/update")({
-	loader: async ({ params }) => {
-		const gatheringId: number = parseInt(params.gatheringId);
-		const gathering: Gathering | null = await getGathering(gatheringId);
-		return gathering ?? new Gathering();
-	},
-	component: UpdateGatheringPage
+export const Route = createFileRoute("/gatherings/create")({
+	component: CreateGatheringPage
 });
 
-function UpdateGatheringPage(): JSX.Element {
-	const gathering: Gathering = Route.useLoaderData();
+function CreateGatheringPage(): JSX.Element {
+	const gathering = new Gathering();
 	let defaultGathering: GatheringReqDto = {
 		...gathering
 	};

@@ -1,4 +1,4 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { Account, Gathering } from "~/lib/domains/entities";
 import { getAccount, getGatherings, type GetGatheringsParams } from "~/lib/services";
@@ -61,7 +61,9 @@ export function GetHostedGatheringsPage(): JSX.Element {
 		<div className="h-full p-1">
 			<Tabs tab={tab} handleTabChange={handleTabChange} />
 			<div className="flex w-full flex-row justify-end px-4">
-				<button className="btn btn-success">Host Event</button>
+				<Link to="/gatherings/create" className="btn btn-success">
+					Host Event
+				</Link>
 			</div>
 			{gatherings.length === 0 && !isLoading && <div className="text-center">None Found</div>}
 			{isLoading ? (

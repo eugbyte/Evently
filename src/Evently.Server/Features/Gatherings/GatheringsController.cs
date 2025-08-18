@@ -30,7 +30,7 @@ public sealed class GatheringsController(
 
 	[HttpGet("", Name = "GetGatherings")]
 	public async Task<ActionResult<List<Gathering>>> GetGatherings(string? attendeeId,
-		string? organiserId, 
+		string? organiserId,
 		string? name,
 		DateTimeOffset? startDateBefore, DateTimeOffset? startDateAfter, DateTimeOffset? endDateBefore, DateTimeOffset? endDateAfter,
 		bool? isCancelled,
@@ -67,7 +67,7 @@ public sealed class GatheringsController(
 		}
 
 		if (coverImg != null) {
-			Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg ?? throw new ArgumentNullException(nameof(coverImg)));
+			Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg: coverImg ?? throw new ArgumentNullException(nameof(coverImg)));
 			gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };
 		}
 
@@ -92,7 +92,7 @@ public sealed class GatheringsController(
 		}
 
 		return Ok();
-		
+
 		// if (coverImg != null) {
 		// 	Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg ?? throw new ArgumentNullException(nameof(coverImg)));
 		// 	gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };

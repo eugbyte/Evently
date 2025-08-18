@@ -42,6 +42,11 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 								<div className="space-y-6">
 									<form.Field
 										name="name"
+										validators={{
+											onBlur: ({ value }) => {
+												return value.trim() === "" ? "Event name is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div className="form-control">
 												<label className="label">
@@ -141,7 +146,7 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 													<span className="label-text font-semibold">Description</span>
 												</label>
 												<textarea
-													className="textarea textarea-bordered focus:textarea-primary h-32 w-[350px] resize-none"
+													className="textarea textarea-bordered focus:textarea-primary h-32 resize-none sm:w-[350px]"
 													placeholder="Describe your event..."
 													value={field.state.value}
 													onBlur={field.handleBlur}
