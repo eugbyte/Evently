@@ -30,3 +30,15 @@ export async function getGathering(id: number): Promise<Gathering> {
 	gathering.end = new Date(gathering.end);
 	return gathering;
 }
+
+export async function uploadCoverImg(exhibitionId: number, formData: FormData): Promise<string> {
+	const response = await axios.post<Record<string, string>>(
+		`/api/v1/Exhibitions/${exhibitionId}/images`,
+		formData,
+		{
+			headers: { "Content-Type": "multipart/form-data" }
+		}
+	);
+
+	return response.data["coverUri"];
+}

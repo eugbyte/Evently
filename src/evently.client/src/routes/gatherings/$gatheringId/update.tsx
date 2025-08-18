@@ -1,11 +1,17 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { Gathering } from "~/lib/domains/entities";
-import { useForm } from "@tanstack/react-form";
-import { type JSX } from "react";
-import { FieldErrMsg as FieldInfo } from "./-components";
+import { useEffect, useState, type JSX } from "react";
+import { FieldErrMsg as FieldInfo } from "~/routes/gatherings/-components";
 import { getGathering } from "~/lib/services";
+import {
+	type IGathering,
+	type GatheringForm,
+	useGatheringForm,
+	compressImage
+} from "~/routes/gatherings/-services";
+import { Icon } from "@iconify/react";
 
-export const Route = createFileRoute("/gatherings/$gatheringId/upsert")({
+export const Route = createFileRoute("/gatherings/$gatheringId/update")({
 	loader: async ({ params }) => {
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering | null = await getGathering(gatheringId);
@@ -14,19 +20,34 @@ export const Route = createFileRoute("/gatherings/$gatheringId/upsert")({
 	component: GatheringForm
 });
 
-type IGathering = Omit<Gathering, "bookings" | "gatheringCategoryDetails">;
-
 function GatheringForm(): JSX.Element {
-	const gathering: Gathering = Route.useLoaderData();
-	const defaultGathering: IGathering = gathering;
+	// need to separate file field as Tanstack Form does not support file upload
+	const [file, setFile] = useState<File | null>(null);
+	const coverSrc: string = file === null ? "" : URL.createObjectURL(file);
 
-	const form = useForm({
-		defaultValues: defaultGathering,
-		onSubmit: async ({ value }) => {
-			// Do something with form data
-			console.log(value);
+	const gathering: Gathering = Route.useLoaderData();
+	const defaultGathering: IGathering = {
+		...gathering,
+		coverImage: null
+	};
+	const onSubmit = async (values: IGathering): Promise<void> => {
+		const formData = new FormData();
+		for (const [key, value] of Object.entries(values)) {
+			formData.set(key, value);
 		}
-	});
+		if (file != null) {
+			formData.set("coverImg", file);
+		}
+		console.log(formData);
+	};
+	const form: GatheringForm = useGatheringForm(defaultGathering, onSubmit);
+	const fileName: string = form.state.values.coverImage?.name ?? "";
+
+	useEffect(() => {
+		// prevent memory leak
+		// https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static#memory_management
+		return () => URL.revokeObjectURL(coverSrc);
+	}, []);
 
 	return (
 		<div className="bg-base-200 mb-32 p-2 sm:mb-0 sm:h-full">
@@ -38,10 +59,10 @@ function GatheringForm(): JSX.Element {
 						</h2>
 
 						<form
-							onSubmit={(e) => {
+							onSubmit={async (e) => {
 								e.preventDefault();
 								e.stopPropagation();
-								void form.handleSubmit();
+								await form.handleSubmit();
 							}}
 						>
 							<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -148,7 +169,7 @@ function GatheringForm(): JSX.Element {
 													<span className="label-text font-semibold">Description</span>
 												</label>
 												<textarea
-													className="textarea textarea-bordered focus:textarea-primary h-32 resize-none"
+													className="textarea textarea-bordered focus:textarea-primary h-32 w-[350px] resize-none"
 													placeholder="Describe your event..."
 													value={field.state.value}
 													onBlur={field.handleBlur}
@@ -160,26 +181,38 @@ function GatheringForm(): JSX.Element {
 									/>
 
 									<form.Field
-										name="coverSrc"
+										name="coverImage"
 										children={(field) => (
-											<div className="form-control">
-												<label className="label">
-													<span className="label-text font-semibold">Cover Image URL</span>
+											<div>
+												<label className="btn mb-2">
+													<Icon height="24" icon="material-symbols:cloud-upload" width="24" />
+													<span>Upload Cover Image</span>
+													<input
+														accept="image/*"
+														type="file"
+														className="input input-bordered focus:input-primary hidden w-full cursor-pointer"
+														value={field.state.value?.name || ""}
+														onBlur={field.handleBlur}
+														onChange={async (e) => {
+															let file: File | null = e.target.files ? e.target.files[0] : null;
+															if (file != null) {
+																console.log("file is not null, compressing file");
+																file = await compressImage(file);
+																setFile(file);
+															}
+														}}
+													/>
 												</label>
-												<input
-													type="url"
-													placeholder="https://example.com/image.jpg"
-													className="input input-bordered focus:input-primary w-full"
-													value={field.state.value || ""}
-													onBlur={field.handleBlur}
-													onChange={(e) => field.handleChange(e.target.value)}
-												/>
-												<label className="label">
-													<span className="label-text-alt">
-														Optional: Add a cover image for your event
-													</span>
-												</label>
-												<FieldInfo field={field} />
+												<p className="">{fileName}</p>
+												{coverSrc != null && coverSrc.trim() !== "" && (
+													<img
+														src={coverSrc}
+														alt="Floor Plan"
+														width="350px"
+														height="350px"
+														className="block"
+													/>
+												)}
 											</div>
 										)}
 									/>

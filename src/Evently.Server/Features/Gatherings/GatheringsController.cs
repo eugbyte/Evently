@@ -17,7 +17,7 @@ namespace Evently.Server.Features.Gatherings;
 [Route("api/v1/[controller]")]
 public sealed class GatheringsController(
 	IGatheringService gatheringService,
-	IFileStorageService imageStorageService,
+	IFileStorageService fileStorageService,
 	IValidator<Gathering> validator) : ControllerBase {
 	[HttpGet("{gatheringId:long}", Name = "GetGathering")]
 	public async Task<ActionResult<Gathering>> GetGathering(long gatheringId) {
@@ -53,7 +53,7 @@ public sealed class GatheringsController(
 	}
 
 	[HttpPost("", Name = "CreateGathering")]
-	public async Task<ActionResult<Gathering>> CreateGathering(GatheringReqDto gatheringReqDto) {
+	public async Task<ActionResult<Gathering>> CreateGathering([FromForm] GatheringReqDto gatheringReqDto, [FromForm] IFormFile? coverImg) {
 		gatheringReqDto = gatheringReqDto with { GatheringId = 0 };
 		ValidationResult validationResult = await validator.ValidateAsync(gatheringReqDto.ToGathering());
 		if (!validationResult.IsValid) {
@@ -66,14 +66,19 @@ public sealed class GatheringsController(
 			return Unauthorized();
 		}
 
+		if (coverImg != null) {
+			Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg ?? throw new ArgumentNullException(nameof(coverImg)));
+			gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };
+		}
+
 		Gathering gathering = await gatheringService.CreateGathering(gatheringReqDto);
 		return Ok(gathering);
 	}
 
 	[HttpPut("{gatheringId:long}", Name = "UpdateGathering")]
-	public async Task<ActionResult> UpdateGathering(long gatheringId, [FromBody] GatheringReqDto gatheringReqDto) {
-		Gathering? exhibition = await gatheringService.GetGathering(gatheringId);
-		if (exhibition is null) {
+	public async Task<ActionResult> UpdateGathering(long gatheringId, [FromForm] GatheringReqDto gatheringReqDto, [FromForm] IFormFile? coverImg) {
+		Gathering? gathering = await gatheringService.GetGathering(gatheringId);
+		if (gathering is null) {
 			return NotFound();
 		}
 
@@ -82,12 +87,17 @@ public sealed class GatheringsController(
 			return BadRequest(result.Errors);
 		}
 
-		if (!await this.IsResourceOwner(exhibition.OrganiserId)) {
+		if (!await this.IsResourceOwner(gathering.OrganiserId)) {
 			return Forbid();
 		}
+		
+		if (coverImg != null) {
+			Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg ?? throw new ArgumentNullException(nameof(coverImg)));
+			gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };
+		}
 
-		exhibition = await gatheringService.UpdateGathering(gatheringId, gatheringReqDto);
-		return Ok(exhibition);
+		gathering = await gatheringService.UpdateGathering(gatheringId, gatheringReqDto);
+		return Ok(gathering);
 	}
 
 	[HttpDelete("{gatheringId:long}", Name = "DeleteGathering")]
@@ -105,26 +115,11 @@ public sealed class GatheringsController(
 		return NoContent();
 	}
 
-	[HttpPost("{gatheringId:long}/images", Name = "UploadImages")]
-	public async Task<IActionResult> UploadCoverImage(long gatheringId, [FromForm] IFormFile? coverImg) {
-		Gathering? gathering = await gatheringService.GetGathering(gatheringId);
-		if (gathering is null) {
-			return NotFound();
-		}
-
-		if (coverImg is not null) {
-			string fileName = $"gatherings/{gatheringId}/cover-image{Path.GetExtension(coverImg.FileName)}";
-			BinaryData binaryData = await coverImg.ToBinaryData();
-
-			Uri uri = await imageStorageService.UploadFile(fileName,
-				binaryData,
-				mimeType: MimeTypes.GetMimeType(coverImg.FileName));
-			gathering.CoverSrc = uri.AbsoluteUri;
-		}
-
-		gathering = await gatheringService.UpdateGathering(gatheringId, gatheringReqDto: gathering.ToGatheringDto());
-		return Ok(new {
-			coverUri = gathering.CoverSrc,
-		});
+	private async Task<Uri> UploadCoverImage(long gatheringId, IFormFile coverImg) {
+		string fileName = $"gatherings/{gatheringId}/cover-image{Path.GetExtension(coverImg.FileName)}";
+		BinaryData binaryData = await coverImg.ToBinaryData();
+		return await fileStorageService.UploadFile(fileName,
+			binaryData,
+			mimeType: MimeTypes.GetMimeType(coverImg.FileName));
 	}
 }

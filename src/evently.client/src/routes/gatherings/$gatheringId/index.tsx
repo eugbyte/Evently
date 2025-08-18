@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useRef } from "react";
 import { Account, Booking, Gathering } from "~/lib/domains/entities";
 import Placeholder from "~/lib/assets/event_placeholder.webp";
@@ -12,7 +12,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { BookingReqDto } from "~/lib/domains/models";
 import { useNavigate } from "@tanstack/react-router";
-import { CancellationDialog, Jumbotron, QrDialog } from "./-components";
+import { CancellationDialog, Jumbotron, QrDialog } from "~/routes/gatherings/-components";
 
 export const Route = createFileRoute("/gatherings/$gatheringId/")({
 	loader: async ({ params }) => {
@@ -105,7 +105,13 @@ export function GatheringPage(): JSX.Element {
 					{isOrganiser && gathering.cancellationDateTime == null && (
 						<>
 							<div className="card-actions justify-between">
-								<button className="btn btn-primary">Edit</button>
+								<Link
+									className="btn btn-primary"
+									to={`/gatherings/$gatheringId/update`}
+									params={{ gatheringId: gathering.gatheringId.toString() }}
+								>
+									Edit
+								</Link>
 								<button
 									className="btn btn-error"
 									onClick={() => cancellationDialogRef.current?.showModal()}
