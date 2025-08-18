@@ -17,6 +17,7 @@
     <PackageJsonDependenciesTanstackReactRouterDevtools Condition="$(PackageJsonDependenciesTanstackReactRouterDevtools) == ''">^1.131.7</PackageJsonDependenciesTanstackReactRouterDevtools>
     <PackageJsonDependenciesTanstackReactStore Condition="$(PackageJsonDependenciesTanstackReactStore) == ''">^0.7.3</PackageJsonDependenciesTanstackReactStore>
     <PackageJsonDependenciesAxios Condition="$(PackageJsonDependenciesAxios) == ''">^1.11.0</PackageJsonDependenciesAxios>
+    <PackageJsonDependenciesBrowserImageCompression Condition="$(PackageJsonDependenciesBrowserImageCompression) == ''">^2.0.2</PackageJsonDependenciesBrowserImageCompression>
     <PackageJsonDependenciesDaisyui Condition="$(PackageJsonDependenciesDaisyui) == ''">^5.0.50</PackageJsonDependenciesDaisyui>
     <PackageJsonDependenciesJsCookie Condition="$(PackageJsonDependenciesJsCookie) == ''">^3.0.5</PackageJsonDependenciesJsCookie>
     <PackageJsonDependenciesLodashClonedeep Condition="$(PackageJsonDependenciesLodashClonedeep) == ''">^4.5.0</PackageJsonDependenciesLodashClonedeep>

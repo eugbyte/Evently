@@ -19,8 +19,8 @@ export class GatheringReqDto {
 	public start = new Date();
 	public end = new Date();
 	public location = "";
-	public hostId = 0;
-	public coverSrc = "";
+	public organiserId = "";
+	public coverSrc?: string | null = null;
 
 	constructor(partial: Partial<GatheringReqDto> = {}) {
 		Object.assign(this, partial);

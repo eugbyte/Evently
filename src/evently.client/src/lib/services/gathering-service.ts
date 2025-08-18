@@ -1,5 +1,6 @@
 ﻿import type { Gathering } from "~/lib/domains/entities";
 import axios from "axios";
+import { GatheringReqDto } from "~/lib/domains/models";
 
 export interface GetGatheringsParams {
 	attendeeId?: string;
@@ -31,14 +32,14 @@ export async function getGathering(id: number): Promise<Gathering> {
 	return gathering;
 }
 
-export async function uploadCoverImg(exhibitionId: number, formData: FormData): Promise<string> {
-	const response = await axios.post<Record<string, string>>(
-		`/api/v1/Exhibitions/${exhibitionId}/images`,
-		formData,
-		{
-			headers: { "Content-Type": "multipart/form-data" }
-		}
-	);
-
-	return response.data["coverUri"];
+export async function updateGathering(
+	gatheringId: number,
+	gatheringDto: GatheringReqDto,
+	coverImg?: File | null
+): Promise<Gathering> {
+	const response = await axios.putForm<Gathering>(`/api/v1/Gatherings/${gatheringId}`, {
+		...gatheringDto,
+		coverImg
+	});
+	return response.data;
 }

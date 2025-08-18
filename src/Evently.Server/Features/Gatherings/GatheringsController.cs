@@ -90,11 +90,13 @@ public sealed class GatheringsController(
 		if (!await this.IsResourceOwner(gathering.OrganiserId)) {
 			return Forbid();
 		}
+
+		return Ok();
 		
-		if (coverImg != null) {
-			Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg ?? throw new ArgumentNullException(nameof(coverImg)));
-			gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };
-		}
+		// if (coverImg != null) {
+		// 	Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg ?? throw new ArgumentNullException(nameof(coverImg)));
+		// 	gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };
+		// }
 
 		gathering = await gatheringService.UpdateGathering(gatheringId, gatheringReqDto);
 		return Ok(gathering);
