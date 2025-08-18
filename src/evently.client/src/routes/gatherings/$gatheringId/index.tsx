@@ -12,7 +12,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { BookingReqDto } from "~/lib/domains/models";
 import { useNavigate } from "@tanstack/react-router";
-import { CancellationDialog, Jumbotron, QrDialog } from "~/routes/gatherings/-components";
+import { CancellationDialog, Jumbotron, QrDialog } from "./-components";
 
 export const Route = createFileRoute("/gatherings/$gatheringId/")({
 	loader: async ({ params }) => {
