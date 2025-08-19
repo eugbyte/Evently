@@ -2,6 +2,7 @@ import { useEffect, type JSX } from "react";
 import { compressImage, type GatheringForm as IGatheringForm } from "~/routes/gatherings/-services";
 import { FieldErrMsg as FieldInfo } from "~/routes/gatherings/-components/field-err-msg.tsx";
 import { Icon } from "@iconify/react";
+import { DateTime } from "luxon";
 import { GatheringReqDto } from "~/lib/domains/models";
 
 interface GatheringFormProps {
@@ -68,6 +69,11 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 
 									<form.Field
 										name="location"
+										validators={{
+											onBlur: ({ value }) => {
+												return value.trim() === "" ? "Location is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div className="form-control">
 												<label className="label">
@@ -89,6 +95,11 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 
 									<form.Field
 										name="start"
+										validators={{
+											onBlur: ({ value }) => {
+												return value == null ? "Start Date is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div className="form-control">
 												<label className="label">
@@ -99,12 +110,16 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 													type="datetime-local"
 													className="input input-bordered focus:input-primary w-full"
 													value={
-														field.state.value instanceof Date
-															? field.state.value.toISOString().slice(0, -1)
-															: field.state.value
+														field.state.value == null
+															? ""
+															: field.state.value.toISOString().slice(0, -1)
 													}
 													onBlur={field.handleBlur}
-													onChange={(e) => field.handleChange(new Date(e.target.value))}
+													onChange={(e) => {
+														const dateTime: DateTime<boolean> = DateTime.fromISO(e.target.value);
+														const date: Date | null = dateTime.isValid ? dateTime.toJSDate() : null;
+														field.handleChange(date as any);
+													}}
 												/>
 												<FieldInfo field={field} />
 											</div>
@@ -113,6 +128,11 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 
 									<form.Field
 										name="end"
+										validators={{
+											onBlur: ({ value }) => {
+												return value == null ? "End Date is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div className="form-control">
 												<label className="label">
@@ -123,12 +143,16 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 													type="datetime-local"
 													className="input input-bordered focus:input-primary w-full"
 													value={
-														field.state.value instanceof Date
-															? field.state.value.toISOString().slice(0, -1)
-															: field.state.value
+														field.state.value == null
+															? ""
+															: field.state.value.toISOString().slice(0, -1)
 													}
 													onBlur={field.handleBlur}
-													onChange={(e) => field.handleChange(new Date(e.target.value))}
+													onChange={(e) => {
+														const dateTime: DateTime<boolean> = DateTime.fromISO(e.target.value);
+														const date: Date | null = dateTime.isValid ? dateTime.toJSDate() : null;
+														field.handleChange(date as any);
+													}}
 												/>
 												<FieldInfo field={field} />
 											</div>
@@ -140,6 +164,11 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 								<div className="space-y-6">
 									<form.Field
 										name="description"
+										validators={{
+											onBlur: ({ value }) => {
+												return value.trim() === "" ? "Description is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div>
 												<label className="label block">
