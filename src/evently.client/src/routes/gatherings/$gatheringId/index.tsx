@@ -1,18 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useRef } from "react";
 import { Account, Booking, Gathering } from "~/lib/domains/entities";
-import Placeholder from "~/lib/assets/event_placeholder.webp";
 import {
 	cancelBooking,
 	createBooking,
 	getAccount,
 	getBookings,
-	getGathering
+	getGathering,
+	hashString
 } from "~/lib/services";
 import { useMutation } from "@tanstack/react-query";
 import { BookingReqDto } from "~/lib/domains/models";
 import { useNavigate } from "@tanstack/react-router";
 import { CancellationDialog, Jumbotron, QrDialog } from "./-components";
+import Placeholder1 from "~/lib/assets/event_placeholder_1.webp";
+import Placeholder2 from "~/lib/assets/event_placeholder_2.png";
 
 export const Route = createFileRoute("/gatherings/$gatheringId/")({
 	loader: async ({ params }) => {
@@ -42,8 +44,11 @@ export function GatheringPage(): JSX.Element {
 	const { gathering, account, booking: _booking } = Route.useLoaderData();
 	const navigate = useNavigate();
 
-	const { coverSrc } = gathering;
-	const imgSrc: string = coverSrc == null || coverSrc.length === 0 ? Placeholder : coverSrc;
+	let { coverSrc: imgSrc } = gathering;
+	if (imgSrc == null || imgSrc.trim().length === 0) {
+		const hash: number = hashString(gathering.name);
+		imgSrc = hash % 2 === 0 ? Placeholder1 : Placeholder2;
+	}
 
 	const { mutate: handleRegister, data } = useMutation({
 		mutationFn: () => {

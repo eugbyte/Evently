@@ -20,7 +20,7 @@ export function Navbar(): JSX.Element {
 	return (
 		<div className="bg-base-100 navbar shadow-sm">
 			<div className="navbar-start">
-				<Link className="hidden sm:block btn btn-ghost text-xl" to="/">
+				<Link className="btn btn-ghost hidden text-xl sm:block" to="/">
 					Evently
 				</Link>
 			</div>

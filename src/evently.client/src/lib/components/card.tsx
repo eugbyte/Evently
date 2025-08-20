@@ -1,9 +1,11 @@
-﻿import Placeholder from "~/lib/assets/event_placeholder.webp";
+﻿import Placeholder1 from "~/lib/assets/event_placeholder_1.webp";
+import Placeholder2 from "~/lib/assets/event_placeholder_2.png";
 import { type JSX } from "react";
 import { Link } from "@tanstack/react-router";
 import { Category, Gathering } from "~/lib/domains/entities";
 import { Icon } from "@iconify/react";
 import { DateTime } from "luxon";
+import { hashString } from "~/lib/services";
 
 export interface CardProps {
 	gathering: Gathering;
@@ -16,7 +18,12 @@ export function Card({ gathering, accountId }: CardProps): JSX.Element {
 		(detail) => detail.category
 	);
 
-	imgSrc = imgSrc == null || imgSrc.length === 0 ? Placeholder : imgSrc;
+	if (imgSrc == null || imgSrc.length === 0) {
+		const hash: number = hashString(gathering.name);
+		console.log({ hash });
+		imgSrc = hash % 2 === 0 ? Placeholder1 : Placeholder2;
+	}
+
 	if (title.length > 30) {
 		title = title.substring(0, 30) + "...";
 	}
