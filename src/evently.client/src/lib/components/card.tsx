@@ -20,7 +20,6 @@ export function Card({ gathering, accountId }: CardProps): JSX.Element {
 
 	if (imgSrc == null || imgSrc.length === 0) {
 		const hash: number = hashString(gathering.name);
-		console.log({ hash });
 		imgSrc = hash % 2 === 0 ? Placeholder1 : Placeholder2;
 	}
 

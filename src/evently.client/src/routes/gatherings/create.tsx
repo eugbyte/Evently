@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Gathering } from "~/lib/domains/entities";
 import { useState, type JSX } from "react";
-import { updateGathering } from "~/lib/services";
+import { createGathering } from "~/lib/services";
 import {
 	useGatheringForm,
 	type GatheringForm as IGatheringForm
@@ -22,7 +22,7 @@ function CreateGatheringPage(): JSX.Element {
 	const [file, setFile] = useState<File | null>(null);
 
 	const onSubmit = async (values: GatheringReqDto): Promise<void> => {
-		await updateGathering(values.gatheringId, values, file);
+		await createGathering(values, file);
 	};
 	const form: IGatheringForm = useGatheringForm(defaultGathering, onSubmit);
 	return <GatheringForm file={file} setFile={setFile} form={form} />;

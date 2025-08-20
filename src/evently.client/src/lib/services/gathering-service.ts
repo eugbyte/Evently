@@ -1,6 +1,6 @@
 ﻿import type { Gathering } from "~/lib/domains/entities";
 import axios from "axios";
-import { GatheringReqDto } from "~/lib/domains/models";
+import { GatheringReqDto, type PageResult } from "~/lib/domains/models";
 
 export interface GetGatheringsParams {
 	attendeeId?: string;
@@ -14,14 +14,20 @@ export interface GetGatheringsParams {
 	offset?: number;
 	limit?: number;
 }
-export async function getGatherings(params: GetGatheringsParams): Promise<Gathering[]> {
+export async function getGatherings(params: GetGatheringsParams): Promise<PageResult<Gathering[]>> {
 	const response = await axios.get<Gathering[]>("/api/v1/Gatherings", { params });
 	const gatherings: Gathering[] = response.data;
 	for (const gathering of gatherings) {
 		gathering.start = new Date(gathering.start);
 		gathering.end = new Date(gathering.end);
 	}
-	return gatherings;
+
+	const totalCount: number = parseInt(response.headers["x-total-count"]);
+	console.log({ totalCount });
+	return {
+		totalCount,
+		data: gatherings
+	};
 }
 
 export async function getGathering(id: number): Promise<Gathering> {
@@ -30,6 +36,26 @@ export async function getGathering(id: number): Promise<Gathering> {
 	gathering.start = new Date(gathering.start);
 	gathering.end = new Date(gathering.end);
 	return gathering;
+}
+
+export async function createGathering(
+	gatheringDto: GatheringReqDto,
+	coverImg?: File | null
+): Promise<Gathering> {
+	const formData = new FormData();
+	for (const [key, value] of Object.entries(gatheringDto)) {
+		formData.set(key, value);
+	}
+	if (coverImg != null) {
+		formData.set("coverImg", coverImg, coverImg.name);
+	}
+	formData.set("start", gatheringDto.start.toISOString());
+	formData.set("end", gatheringDto.end.toISOString());
+
+	const response = await axios.post<Gathering>(`/api/v1/Gatherings`, formData, {
+		headers: { "Content-Type": "multipart/form-data" }
+	});
+	return response.data;
 }
 
 export async function updateGathering(
