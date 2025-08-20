@@ -28,7 +28,7 @@ export function GatheringsPage(): JSX.Element {
 
 	return (
 		<div className="h-full">
-			<div className="flex flex-col justify-between space-y-5 pl-4 sm:flex-row">
+			<div className="flex flex-row justify-center mt-1">
 				<label className="input w-40">
 					<svg
 						className="h-[1em] opacity-50"
@@ -59,10 +59,17 @@ export function GatheringsPage(): JSX.Element {
 							gathering={gathering}
 							accountId={account?.id}
 						/>
-					))}
+					))}					
 				</div>
 			)}
-			<div className="none mb-20 sm:block"></div>
+			<div id="pagination" className="fixed left-1/2 bottom-20 -translate-x-1/2">
+				<div className=" join border border-primary rounded-sm">
+					<button className="join-item btn bg-base-100">«</button>
+					<button className="join-item btn bg-base-100">Page 22</button>
+					<button className="join-item btn bg-base-100">»</button>
+				</div>
+			</div>
+			<div className="h-40"></div>
 		</div>
 	);
 }
