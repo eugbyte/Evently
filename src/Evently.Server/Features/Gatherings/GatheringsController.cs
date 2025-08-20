@@ -90,13 +90,12 @@ public sealed class GatheringsController(
 		if (!await this.IsResourceOwner(gathering.OrganiserId)) {
 			return Forbid();
 		}
-
-		return Ok();
-
-		// if (coverImg != null) {
-		// 	Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg ?? throw new ArgumentNullException(nameof(coverImg)));
-		// 	gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };
-		// }
+		
+		if (coverImg != null) {
+			Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg);
+			gathering.CoverSrc = uri.AbsoluteUri;
+			gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };
+		}
 
 		gathering = await gatheringService.UpdateGathering(gatheringId, gatheringReqDto);
 		return Ok(gathering);
@@ -118,6 +117,7 @@ public sealed class GatheringsController(
 	}
 
 	private async Task<Uri> UploadCoverImage(long gatheringId, IFormFile coverImg) {
+		string t = coverImg.FileName;
 		string fileName = $"gatherings/{gatheringId}/cover-image{Path.GetExtension(coverImg.FileName)}";
 		BinaryData binaryData = await coverImg.ToBinaryData();
 		return await fileStorageService.UploadFile(fileName,

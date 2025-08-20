@@ -37,9 +37,18 @@ export async function updateGathering(
 	gatheringDto: GatheringReqDto,
 	coverImg?: File | null
 ): Promise<Gathering> {
-	const response = await axios.putForm<Gathering>(`/api/v1/Gatherings/${gatheringId}`, {
-		...gatheringDto,
-		coverImg
+	const formData = new FormData();
+	for (const [key, value] of Object.entries(gatheringDto)) {
+		formData.set(key, value);
+	}
+	if (coverImg != null) {
+		formData.set("coverImg", coverImg, coverImg.name);
+	}
+	formData.set("start", gatheringDto.start.toISOString());
+	formData.set("end", gatheringDto.end.toISOString());
+
+	const response = await axios.put<Gathering>(`/api/v1/Gatherings/${gatheringId}`, formData, {
+		headers: { "Content-Type": "multipart/form-data" }
 	});
 	return response.data;
 }

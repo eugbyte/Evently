@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Evently.Server.Common.Domains.Models;
 
 public sealed class Settings {
-	public ConnectionStringsSettings ConnectionStrings { get; init; } = new();
+	public StorageAccount StorageAccount { get; init; } = new();
 
 	[NotMapped] public AuthSetting Authentication { get; init; } = new();
 
@@ -12,7 +12,8 @@ public sealed class Settings {
 }
 
 [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
-public sealed class ConnectionStringsSettings {
+public sealed class StorageAccount {
+	public string AccountName { get; init; } = string.Empty;
 	public string AzureStorageConnectionString { get; init; } = string.Empty;
 }
 
