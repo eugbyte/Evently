@@ -1,10 +1,10 @@
-import { useEffect, type JSX } from "react";
+import { useEffect, useState, type JSX } from "react";
 import { compressImage, type GatheringForm as IGatheringForm } from "~/routes/gatherings/-services";
 import { FieldErrMsg as FieldInfo } from "~/routes/gatherings/-components/field-err-msg.tsx";
 import { Icon } from "@iconify/react";
 import { DateTime } from "luxon";
-import { GatheringReqDto } from "~/lib/domains/models";
-
+import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
+import { useRouter } from "@tanstack/react-router";
 interface GatheringFormProps {
 	file: File | null;
 	setFile: (file: File | null) => void;
@@ -12,15 +12,18 @@ interface GatheringFormProps {
 }
 
 export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.Element {
+	const router = useRouter();
 	const fileName: string = file?.name ?? "";
-	const coverSrc: string = file === null ? "" : URL.createObjectURL(file);
+	const coverSrc: string =
+		file != null ? URL.createObjectURL(file) : (form.state.values.coverSrc ?? "");
 	const gathering: GatheringReqDto = form.state.values;
+	const [toastMsg, setToastMsg] = useState(new ToastContent(false));
 
 	useEffect(() => {
 		// prevent memory leak
 		// https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static#memory_management
 		return () => URL.revokeObjectURL(coverSrc);
-	}, []);
+	}, [coverSrc]);
 
 	return (
 		<div className="bg-base-200 mb-32 p-2 sm:mb-0 sm:h-full">
@@ -198,7 +201,9 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 													let file: File | null = e.target.files ? e.target.files[0] : null;
 													if (file != null) {
 														console.log("file is not null, compressing file");
+														setToastMsg(new ToastContent(true, "Compressing image..."));
 														file = await compressImage(file);
+														setToastMsg(new ToastContent(false));
 														setFile(file);
 													}
 												}}
@@ -221,7 +226,11 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 							{/* Action Buttons */}
 							<div className="divider"></div>
 							<div className="card-actions justify-end gap-4">
-								<button type="button" className="btn btn-ghost">
+								<button
+									type="button"
+									className="btn btn-ghost"
+									onClick={() => router.history.back()}
+								>
 									Cancel
 								</button>
 								<button type="submit" className="btn btn-primary">
@@ -233,6 +242,13 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 				</div>
 			</div>
 			<div className="none mb-20 sm:block"></div>
+			{toastMsg.show && (
+				<div className="toast toast-center">
+					<div className="alert alert-info">
+						<span>{toastMsg.message}</span>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

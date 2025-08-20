@@ -1,13 +1,9 @@
 ﻿import { type JSX } from "react";
+import { TabState } from "./tab-state";
 
 export interface TabsProps {
 	tab: number;
 	handleTabChange: (tab: number) => void;
-}
-
-export enum TabState {
-	Upcoming = 0,
-	Past = 1
 }
 
 export function Tabs({ tab, handleTabChange }: TabsProps): JSX.Element {

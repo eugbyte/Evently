@@ -2,3 +2,4 @@
 export { Dock } from "./dock";
 export { Card } from "./card";
 export * from "./tabs";
+export * from "./tab-state.ts";

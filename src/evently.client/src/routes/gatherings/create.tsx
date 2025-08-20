@@ -15,7 +15,7 @@ export const Route = createFileRoute("/gatherings/create")({
 
 function CreateGatheringPage(): JSX.Element {
 	const gathering = new Gathering();
-	let defaultGathering: GatheringReqDto = {
+	const defaultGathering: GatheringReqDto = {
 		...gathering
 	};
 	// need to separate file field as Tanstack Form does not support file upload

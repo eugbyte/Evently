@@ -1,7 +1,7 @@
 import React, { useState, type JSX } from "react";
 import { Icon } from "@iconify/react";
 
-export interface FileEvent extends React.ChangeEvent<HTMLInputElement> {}
+export type FileEvent = React.ChangeEvent<HTMLInputElement>;
 
 interface FileUploadProps {
 	onChange: (event: FileEvent) => void;
