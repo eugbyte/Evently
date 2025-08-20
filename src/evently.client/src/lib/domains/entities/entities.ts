@@ -5,7 +5,7 @@
 	start = new Date();
 	end = new Date();
 	location = "";
-	coverSrc?: string = "";
+	coverSrc?: string | null = null;
 	organiserId = "";
 	cancellationDateTime: Date | null = null;
 	bookings: Booking[] = []; // You may want to replace 'any[]' with a proper Booking[] type

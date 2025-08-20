@@ -1,32 +1,29 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
-import { Gathering } from "~/lib/domains/entities";
-import { useForm } from "@tanstack/react-form";
-import { type JSX } from "react";
-import { FieldErrMsg as FieldInfo } from "~/routes/gatherings/-components";
-import { getGathering } from "~/lib/services";
+import { useEffect, useState, type JSX } from "react";
+import { compressImage, type GatheringForm as IGatheringForm } from "~/routes/gatherings/-services";
+import { FieldErrMsg as FieldInfo } from "~/routes/gatherings/-components/field-err-msg.tsx";
+import { Icon } from "@iconify/react";
+import { DateTime } from "luxon";
+import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
+import { useRouter } from "@tanstack/react-router";
+interface GatheringFormProps {
+	file: File | null;
+	setFile: (file: File | null) => void;
+	form: IGatheringForm;
+}
 
-export const Route = createFileRoute("/gatherings/$gatheringId/upsert")({
-	loader: async ({ params }) => {
-		const gatheringId: number = parseInt(params.gatheringId);
-		const gathering: Gathering | null = await getGathering(gatheringId);
-		return gathering ?? new Gathering();
-	},
-	component: GatheringForm
-});
+export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.Element {
+	const router = useRouter();
+	const fileName: string = file?.name ?? "";
+	const coverSrc: string =
+		file != null ? URL.createObjectURL(file) : (form.state.values.coverSrc ?? "");
+	const gathering: GatheringReqDto = form.state.values;
+	const [toastMsg, setToastMsg] = useState(new ToastContent(false));
 
-type IGathering = Omit<Gathering, "bookings" | "gatheringCategoryDetails">;
-
-function GatheringForm(): JSX.Element {
-	const gathering: Gathering = Route.useLoaderData();
-	const defaultGathering: IGathering = gathering;
-
-	const form = useForm({
-		defaultValues: defaultGathering,
-		onSubmit: async ({ value }) => {
-			// Do something with form data
-			console.log(value);
-		}
-	});
+	useEffect(() => {
+		// prevent memory leak
+		// https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static#memory_management
+		return () => URL.revokeObjectURL(coverSrc);
+	}, [coverSrc]);
 
 	return (
 		<div className="bg-base-200 mb-32 p-2 sm:mb-0 sm:h-full">
@@ -38,10 +35,10 @@ function GatheringForm(): JSX.Element {
 						</h2>
 
 						<form
-							onSubmit={(e) => {
+							onSubmit={async (e) => {
 								e.preventDefault();
 								e.stopPropagation();
-								void form.handleSubmit();
+								await form.handleSubmit();
 							}}
 						>
 							<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -49,6 +46,11 @@ function GatheringForm(): JSX.Element {
 								<div className="space-y-6">
 									<form.Field
 										name="name"
+										validators={{
+											onBlur: ({ value }) => {
+												return value.trim() === "" ? "Event name is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div className="form-control">
 												<label className="label">
@@ -70,6 +72,11 @@ function GatheringForm(): JSX.Element {
 
 									<form.Field
 										name="location"
+										validators={{
+											onBlur: ({ value }) => {
+												return value.trim() === "" ? "Location is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div className="form-control">
 												<label className="label">
@@ -91,6 +98,11 @@ function GatheringForm(): JSX.Element {
 
 									<form.Field
 										name="start"
+										validators={{
+											onBlur: ({ value }) => {
+												return value == null ? "Start Date is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div className="form-control">
 												<label className="label">
@@ -101,12 +113,16 @@ function GatheringForm(): JSX.Element {
 													type="datetime-local"
 													className="input input-bordered focus:input-primary w-full"
 													value={
-														field.state.value instanceof Date
-															? field.state.value.toISOString().slice(0, -1)
-															: field.state.value
+														field.state.value == null
+															? ""
+															: field.state.value.toISOString().slice(0, -1)
 													}
 													onBlur={field.handleBlur}
-													onChange={(e) => field.handleChange(new Date(e.target.value))}
+													onChange={(e) => {
+														const dateTime: DateTime<boolean> = DateTime.fromISO(e.target.value);
+														const date: Date | null = dateTime.isValid ? dateTime.toJSDate() : null;
+														field.handleChange(date as any);
+													}}
 												/>
 												<FieldInfo field={field} />
 											</div>
@@ -115,6 +131,11 @@ function GatheringForm(): JSX.Element {
 
 									<form.Field
 										name="end"
+										validators={{
+											onBlur: ({ value }) => {
+												return value == null ? "End Date is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div className="form-control">
 												<label className="label">
@@ -125,12 +146,16 @@ function GatheringForm(): JSX.Element {
 													type="datetime-local"
 													className="input input-bordered focus:input-primary w-full"
 													value={
-														field.state.value instanceof Date
-															? field.state.value.toISOString().slice(0, -1)
-															: field.state.value
+														field.state.value == null
+															? ""
+															: field.state.value.toISOString().slice(0, -1)
 													}
 													onBlur={field.handleBlur}
-													onChange={(e) => field.handleChange(new Date(e.target.value))}
+													onChange={(e) => {
+														const dateTime: DateTime<boolean> = DateTime.fromISO(e.target.value);
+														const date: Date | null = dateTime.isValid ? dateTime.toJSDate() : null;
+														field.handleChange(date as any);
+													}}
 												/>
 												<FieldInfo field={field} />
 											</div>
@@ -142,13 +167,18 @@ function GatheringForm(): JSX.Element {
 								<div className="space-y-6">
 									<form.Field
 										name="description"
+										validators={{
+											onBlur: ({ value }) => {
+												return value.trim() === "" ? "Description is required" : null;
+											}
+										}}
 										children={(field) => (
 											<div>
 												<label className="label block">
 													<span className="label-text font-semibold">Description</span>
 												</label>
 												<textarea
-													className="textarea textarea-bordered focus:textarea-primary h-32 resize-none"
+													className="textarea textarea-bordered focus:textarea-primary h-32 resize-none sm:w-[350px]"
 													placeholder="Describe your event..."
 													value={field.state.value}
 													onBlur={field.handleBlur}
@@ -159,37 +189,48 @@ function GatheringForm(): JSX.Element {
 										)}
 									/>
 
-									<form.Field
-										name="coverSrc"
-										children={(field) => (
-											<div className="form-control">
-												<label className="label">
-													<span className="label-text font-semibold">Cover Image URL</span>
-												</label>
-												<input
-													type="url"
-													placeholder="https://example.com/image.jpg"
-													className="input input-bordered focus:input-primary w-full"
-													value={field.state.value || ""}
-													onBlur={field.handleBlur}
-													onChange={(e) => field.handleChange(e.target.value)}
-												/>
-												<label className="label">
-													<span className="label-text-alt">
-														Optional: Add a cover image for your event
-													</span>
-												</label>
-												<FieldInfo field={field} />
-											</div>
+									<div>
+										<label className="btn mb-2">
+											<Icon height="24" icon="material-symbols:cloud-upload" width="24" />
+											<span>Upload Cover Image</span>
+											<input
+												accept="image/*"
+												type="file"
+												className="input input-bordered focus:input-primary hidden w-full cursor-pointer"
+												onChange={async (e) => {
+													let file: File | null = e.target.files ? e.target.files[0] : null;
+													if (file != null) {
+														console.log("file is not null, compressing file");
+														setToastMsg(new ToastContent(true, "Compressing image..."));
+														file = await compressImage(file);
+														setToastMsg(new ToastContent(false));
+														setFile(file);
+													}
+												}}
+											/>
+										</label>
+										<p className="">{fileName}</p>
+										{coverSrc != null && coverSrc.trim() !== "" && (
+											<img
+												src={coverSrc}
+												alt="Floor Plan"
+												width="350px"
+												height="350px"
+												className="block"
+											/>
 										)}
-									/>
+									</div>
 								</div>
 							</div>
 
 							{/* Action Buttons */}
 							<div className="divider"></div>
 							<div className="card-actions justify-end gap-4">
-								<button type="button" className="btn btn-ghost">
+								<button
+									type="button"
+									className="btn btn-ghost"
+									onClick={() => router.history.back()}
+								>
 									Cancel
 								</button>
 								<button type="submit" className="btn btn-primary">
@@ -201,6 +242,13 @@ function GatheringForm(): JSX.Element {
 				</div>
 			</div>
 			<div className="none mb-20 sm:block"></div>
+			{toastMsg.show && (
+				<div className="toast toast-center">
+					<div className="alert alert-info">
+						<span>{toastMsg.message}</span>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

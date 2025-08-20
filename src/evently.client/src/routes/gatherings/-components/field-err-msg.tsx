@@ -1,7 +1,11 @@
 ﻿import type { AnyFieldApi } from "@tanstack/react-form";
 import type { JSX } from "react";
 
-export function FieldErrMsg({ field }: { field: AnyFieldApi }): JSX.Element {
+interface FieldErrMsgProps {
+	field: AnyFieldApi;
+}
+
+export function FieldErrMsg({ field }: FieldErrMsgProps): JSX.Element {
 	return (
 		<>
 			{field.state.meta.isTouched && !field.state.meta.isValid ? (

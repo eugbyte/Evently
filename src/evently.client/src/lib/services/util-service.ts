@@ -3,3 +3,9 @@ export function camelCase(str: string): string {
 	letters[0] = letters[0].toUpperCase();
 	return letters.join("");
 }
+
+export function sleep(ms: number): Promise<void> {
+	return new Promise((resolve) => {
+		setTimeout(() => resolve(), ms);
+	});
+}

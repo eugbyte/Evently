@@ -24,6 +24,7 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 		DateTimeOffset? startDateAfter,
 		DateTimeOffset? endDateBefore,
 		DateTimeOffset? endDateAfter,
+		bool? isCancelled,
 		int? offset,
 		int? limit) {
 		IQueryable<Gathering> query = db.Gatherings
@@ -33,6 +34,7 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 			.Where((gathering) => endDateBefore == null || gathering.End <= endDateBefore)
 			.Where((gathering) => endDateAfter == null || gathering.End >= endDateAfter)
 			.Where((gathering) => organiserId == null || gathering.OrganiserId == organiserId)
+			.Where(gathering => isCancelled == null || gathering.CancellationDateTime.HasValue == isCancelled)
 			.Where((gathering) =>
 				attendeeId == null || gathering.Bookings.Any((be) => be.AccountId == attendeeId))
 			.Include(gathering => gathering.Bookings.Where((be) => be.AccountId == attendeeId))

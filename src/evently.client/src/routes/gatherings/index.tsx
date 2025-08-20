@@ -28,7 +28,7 @@ export function GatheringsPage(): JSX.Element {
 
 	return (
 		<div className="h-full">
-			<div className="flex flex-col justify-between space-y-5 sm:flex-row pl-4">
+			<div className="flex flex-col justify-between space-y-5 pl-4 sm:flex-row">
 				<label className="input w-40">
 					<svg
 						className="h-[1em] opacity-50"

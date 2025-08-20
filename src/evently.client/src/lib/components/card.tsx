@@ -26,14 +26,16 @@ export function Card({ gathering, accountId }: CardProps): JSX.Element {
 	const isOrganiser: boolean = gathering.organiserId === accountId;
 	const start: DateTime = DateTime.fromJSDate(gathering.start);
 	const end: DateTime = DateTime.fromJSDate(gathering.end);
+	const isCancelled: boolean = gathering.cancellationDateTime != null;
 	return (
 		<div className="card bg-base-200 w-96 text-white shadow-sm">
 			<figure>
 				<img src={imgSrc} alt="Event Image" className="h-48 w-96" />
 			</figure>
 			<div className="card-body">
-				<div className="flex flex-row justify-between">
+				<div className="flex flex-row flex-wrap justify-between">
 					<h2 className="card-title">{title}</h2>
+					{isCancelled && <div className="badge badge-outline">Cancelled</div>}
 					{isOrganiser && <div className="badge badge-outline badge-secondary">I'm the host</div>}
 				</div>
 				<p>{description}</p>

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useRef } from "react";
 import { Account, Booking, Gathering } from "~/lib/domains/entities";
 import Placeholder from "~/lib/assets/event_placeholder.webp";
@@ -12,7 +12,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { BookingReqDto } from "~/lib/domains/models";
 import { useNavigate } from "@tanstack/react-router";
-import { CancellationDialog, Jumbotron, QrDialog } from "~/routes/gatherings/-components";
+import { CancellationDialog, Jumbotron, QrDialog } from "./-components";
 
 export const Route = createFileRoute("/gatherings/$gatheringId/")({
 	loader: async ({ params }) => {
@@ -60,7 +60,7 @@ export function GatheringPage(): JSX.Element {
 
 	const qrDialogRef = useRef<HTMLDialogElement>(null);
 	const cancellationDialogRef = useRef<HTMLDialogElement>(null);
-	const handleCancel = async () => {
+	const cancelRegistration = async () => {
 		if (booking == null) {
 			return;
 		}
@@ -81,7 +81,7 @@ export function GatheringPage(): JSX.Element {
 					<Jumbotron gathering={gathering} accountId={account?.id} booking={booking} />
 					<div className="divider"></div>
 					{/*registered attendee*/}
-					{isAttendee && account != null && account.id === booking?.accountDto?.id && (
+					{isAttendee && booking != null && (
 						<div className="card-actions justify-between">
 							<button className="btn btn-info" onClick={() => qrDialogRef.current?.showModal()}>
 								View QR Ticket
@@ -95,17 +95,23 @@ export function GatheringPage(): JSX.Element {
 						</div>
 					)}
 					{/*unregistered attendee*/}
-					{isAttendee && !(account != null && account.id === booking?.accountDto?.id) && (
+					{isAttendee && booking == null && (
 						<div className="card-actions justify-between">
 							<button className="btn btn-primary" onClick={() => handleRegister()}>
 								Register
 							</button>
 						</div>
 					)}
-					{isOrganiser && booking != null && booking.cancellationDateTime == null && (
+					{isOrganiser && gathering.cancellationDateTime == null && (
 						<>
 							<div className="card-actions justify-between">
-								<button className="btn btn-primary">Edit</button>
+								<Link
+									className="btn btn-primary"
+									to={`/gatherings/$gatheringId/update`}
+									params={{ gatheringId: gathering.gatheringId.toString() }}
+								>
+									Edit
+								</Link>
 								<button
 									className="btn btn-error"
 									onClick={() => cancellationDialogRef.current?.showModal()}
@@ -121,7 +127,7 @@ export function GatheringPage(): JSX.Element {
 					<QrDialog qrDialogRef={qrDialogRef} booking={booking} />
 					<CancellationDialog
 						cancellationDialogRef={cancellationDialogRef}
-						handleCancel={handleCancel}
+						handleCancel={cancelRegistration}
 					/>
 				</div>
 			</div>
