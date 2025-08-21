@@ -7,7 +7,9 @@ namespace Evently.Server.Common.Domains.Entities;
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 [SuppressMessage("ReSharper", "CollectionNeverUpdated.Global")]
 public class Gathering {
-	[Key] public long GatheringId { get; set; }
+	[Key]
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	public long GatheringId { get; set; }
 
 	[StringLength(100)] public string Name { get; set; } = string.Empty;
 

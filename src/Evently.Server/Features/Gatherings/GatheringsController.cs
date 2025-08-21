@@ -53,7 +53,7 @@ public sealed class GatheringsController(
 
 	[HttpPost("", Name = "CreateGathering")]
 	public async Task<ActionResult<Gathering>> CreateGathering([FromForm] GatheringReqDto gatheringReqDto, [FromForm] IFormFile? coverImg) {
-		gatheringReqDto = gatheringReqDto with { GatheringId = 0 };
+		gatheringReqDto = gatheringReqDto with { GatheringId = 0L };
 
 		AuthenticateResult authenticationResult =
 			await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);

@@ -60,7 +60,7 @@ public sealed class GatheringService(AppDbContext db, IValidator<Gathering> vali
 
 	public async Task<Gathering> CreateGathering(GatheringReqDto gatheringReqDto) {
 		Gathering gathering = gatheringReqDto.ToGathering();
-		ValidationResult validationResult = await validator.ValidateAsync(gatheringReqDto.ToGathering());
+		ValidationResult validationResult = await validator.ValidateAsync(gathering);
 		if (!validationResult.IsValid) {
 			throw new ArgumentException(string.Join(", ", values: validationResult.Errors.Select(e => e.ErrorMessage)));
 		}
@@ -72,7 +72,7 @@ public sealed class GatheringService(AppDbContext db, IValidator<Gathering> vali
 
 	public async Task<Gathering> UpdateGathering(long gatheringId, GatheringReqDto gatheringReqDto) {
 		Gathering gathering = gatheringReqDto.ToGathering();
-		ValidationResult validationResult = await validator.ValidateAsync(gatheringReqDto.ToGathering());
+		ValidationResult validationResult = await validator.ValidateAsync(gathering);
 		if (!validationResult.IsValid) {
 			throw new ArgumentException(string.Join(", ", values: validationResult.Errors.Select(e => e.ErrorMessage)));
 		}

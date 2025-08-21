@@ -3,6 +3,7 @@ using System;
 using Evently.Server.Common.Adapters.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250821130754_GatheringIdAuto2")]
+    partial class GatheringIdAuto2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,24 +96,6 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "",
-                            Email = "empty@example.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = true,
-                            Name = "Empty User",
-                            NormalizedEmail = "EMPTY@EXAMPLE.COM",
-                            NormalizedUserName = "EMPTY_USER",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "empty_user"
-                        });
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Booking", b =>
@@ -145,7 +130,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasIndex("GatheringId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Category", b =>
@@ -167,7 +152,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Gathering", b =>
@@ -214,7 +199,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasKey("GatheringId");
 
-                    b.ToTable("Gatherings", (string)null);
+                    b.ToTable("Gatherings");
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.GatheringCategoryDetail", b =>
@@ -229,7 +214,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("GatheringCategoryDetails", (string)null);
+                    b.ToTable("GatheringCategoryDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
