@@ -32,7 +32,7 @@ export function GatheringsPage(): JSX.Element {
 	});
 	const gatherings: Gathering[] = data == null ? [] : data.data;
 	const totalCount: number = data == null ? 0 : data.totalCount;
-	console.log({ totalCount });
+
 
 	const [page, setPage] = useState(1);
 	const maxPage = Math.ceil(totalCount / pageSize);
@@ -41,13 +41,10 @@ export function GatheringsPage(): JSX.Element {
 		prevPage = Math.max(1, prevPage);
 		setPage(prevPage);
 
-		const offset = (prevPage - 1) * pageSize;
-		const limit = offset + pageSize;
-
 		setQueryParams({
 			...queryParams,
-			offset,
-			limit
+			offset: (prevPage - 1) * pageSize,
+			limit: pageSize
 		});
 	};
 
@@ -56,13 +53,10 @@ export function GatheringsPage(): JSX.Element {
 		nextPage = Math.min(maxPage, nextPage);
 		setPage(nextPage);
 
-		const offset = (nextPage - 1) * pageSize;
-		const limit = offset + pageSize;
-
 		setQueryParams({
 			...queryParams,
-			offset,
-			limit
+			offset: (nextPage - 1) * pageSize,
+			limit: pageSize
 		});
 	};
 
