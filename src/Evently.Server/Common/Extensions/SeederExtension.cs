@@ -89,7 +89,6 @@ public static class SeederExtension {
 		TimeSpan singaporeOffset = TimeSpan.Zero;
 
 		// Gatherings organized by account1 (host) and account2 (guest)
-		// Gatherings organized by account1 (host) and account2 (guest)
 		Gathering[] gatherings = [
 			new() {
 				GatheringId = 1,
@@ -230,7 +229,6 @@ public static class SeederExtension {
 		];
 
 
-		// Category details for gatherings
 		// Category details for gatherings
 		GatheringCategoryDetail[] gatheringCategoryDetails = [
 			new() {
