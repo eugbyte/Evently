@@ -10,10 +10,10 @@ export const Route = createFileRoute("/login/callback")({
 	}
 });
 export function LoginCallbackPage() {
-	const member: Account = Route.useLoaderData();
+	const account: Account = Route.useLoaderData();
 	store.setState((state: StoreState) => ({
 		...state,
-		identityUserId: member.id
+		account
 	}));
 
 	const navigate = useNavigate();

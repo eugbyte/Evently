@@ -4,6 +4,7 @@ using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
+using Evently.Server.Common.Middlewares;
 using Evently.Server.Features.Accounts.Services;
 using Evently.Server.Features.Bookings.Services;
 using Evently.Server.Features.Categories.Services;
@@ -111,6 +112,8 @@ builder.Services.AddAuthorizationBuilder()
 // Add razor pages support to render Blazor files
 builder.Services.AddRazorComponents()
 	.AddInteractiveServerComponents();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 WebApplication app = builder.Build();
 

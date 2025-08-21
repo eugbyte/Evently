@@ -4,7 +4,6 @@ using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
 using Evently.Server.Features.Accounts.Services;
 using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -55,10 +54,6 @@ public sealed class GatheringsController(
 	[HttpPost("", Name = "CreateGathering")]
 	public async Task<ActionResult<Gathering>> CreateGathering([FromForm] GatheringReqDto gatheringReqDto, [FromForm] IFormFile? coverImg) {
 		gatheringReqDto = gatheringReqDto with { GatheringId = 0 };
-		ValidationResult validationResult = await validator.ValidateAsync(gatheringReqDto.ToGathering());
-		if (!validationResult.IsValid) {
-			return BadRequest(validationResult.Errors);
-		}
 
 		AuthenticateResult authenticationResult =
 			await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
@@ -82,15 +77,10 @@ public sealed class GatheringsController(
 			return NotFound();
 		}
 
-		ValidationResult result = await validator.ValidateAsync(gatheringReqDto.ToGathering());
-		if (!result.IsValid) {
-			return BadRequest(result.Errors);
-		}
-
 		if (!await this.IsResourceOwner(gathering.OrganiserId)) {
 			return Forbid();
 		}
-		
+
 		if (coverImg != null) {
 			Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg);
 			gathering.CoverSrc = uri.AbsoluteUri;

@@ -13,10 +13,9 @@ export function App(): JSX.Element {
 	useEffect(() => {
 		(async () => {
 			const account: Account | null = await getAccount();
-			const identityUserId: string = account?.id?.trim() ?? "";
 			store.setState((state: StoreState) => ({
 				...state,
-				identityUserId
+				account
 			}));
 		})();
 	}, []);

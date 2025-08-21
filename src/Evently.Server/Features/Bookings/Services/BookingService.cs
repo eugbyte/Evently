@@ -4,15 +4,18 @@ using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
 using Evently.Server.Features.Emails.Views;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using NanoidDotNet;
 using System.Text.Json;
+using ValidationResult=FluentValidation.Results.ValidationResult;
 
 namespace Evently.Server.Features.Bookings.Services;
 
 public sealed class BookingService(
 	IMediaRenderer mediaRenderer,
 	IFileStorageService fileStorageService,
+	IValidator<Booking> validator,
 	AppDbContext db)
 	: IBookingService {
 	public async Task<Booking?> GetBooking(string bookingId) {
@@ -63,6 +66,11 @@ public sealed class BookingService(
 
 	public async Task<Booking> CreateBooking(BookingReqDto bookingReqDto) {
 		Booking booking = bookingReqDto.ToBooking();
+		ValidationResult validationResult = await validator.ValidateAsync(booking);
+		if (!validationResult.IsValid) {
+			throw new ArgumentException(string.Join("\n", values: validationResult.Errors.Select(e => e.ErrorMessage)));
+		}
+
 		booking.BookingId = $"book_{await Nanoid.GenerateAsync(size: 10)}";
 		await db.Bookings.AddAsync(booking);
 		await db.SaveChangesAsync();
@@ -71,6 +79,11 @@ public sealed class BookingService(
 
 	public async Task<Booking> UpdateBooking(string bookingId, BookingReqDto bookingReqDto) {
 		Booking booking = bookingReqDto.ToBooking();
+
+		ValidationResult validationResult = await validator.ValidateAsync(booking);
+		if (!validationResult.IsValid) {
+			throw new ArgumentException(string.Join("\n", values: validationResult.Errors.Select(e => e.ErrorMessage)));
+		}
 
 		Booking current = await db.Bookings.AsTracking()
 			                  .FirstOrDefaultAsync((be) => be.BookingId == bookingId)

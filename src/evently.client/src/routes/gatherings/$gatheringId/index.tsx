@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useRef } from "react";
-import { Account, Booking, Gathering } from "~/lib/domains/entities";
+import { Booking, Gathering } from "~/lib/domains/entities";
 import {
 	cancelBooking,
 	createBooking,
-	getAccount,
 	getBookings,
 	getGathering,
-	hashString
+	hashString,
+	store
 } from "~/lib/services";
 import { useMutation } from "@tanstack/react-query";
 import { BookingReqDto } from "~/lib/domains/models";
@@ -18,18 +18,18 @@ import Placeholder2 from "~/lib/assets/event_placeholder_2.png";
 
 export const Route = createFileRoute("/gatherings/$gatheringId/")({
 	loader: async ({ params }) => {
-		const account: Account | null = await getAccount();
+		const accountId: string | undefined = store.state.account?.id;
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering | null = await getGathering(gatheringId);
 		const bookings: Booking[] = await getBookings({
-			attendeeId: account?.id ?? "",
+			attendeeId: accountId ?? "",
 			gatheringId,
 			isCancelled: false
 		});
 		return {
 			gathering,
 			booking: bookings.length > 0 ? bookings[0] : null,
-			account
+			accountId
 		};
 	},
 	component: GatheringPage,
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/gatherings/$gatheringId/")({
 });
 
 export function GatheringPage(): JSX.Element {
-	const { gathering, account, booking: _booking } = Route.useLoaderData();
+	const { gathering, booking: _booking, accountId } = Route.useLoaderData();
 	const navigate = useNavigate();
 
 	let { coverSrc: imgSrc } = gathering;
@@ -53,14 +53,14 @@ export function GatheringPage(): JSX.Element {
 	const { mutate: handleRegister, data } = useMutation({
 		mutationFn: () => {
 			const dto = new BookingReqDto();
-			dto.attendeeId = account?.id ?? "";
+			dto.attendeeId = accountId ?? "";
 			dto.gatheringId = gathering.gatheringId;
 			return createBooking(dto);
 		}
 	});
 
 	const booking: Booking | null = data ?? _booking;
-	const isOrganiser: boolean = account != null && gathering.organiserId === account.id;
+	const isOrganiser: boolean = accountId != null && gathering.organiserId === accountId;
 	const isAttendee: boolean = !isOrganiser;
 
 	const qrDialogRef = useRef<HTMLDialogElement>(null);
@@ -83,7 +83,7 @@ export function GatheringPage(): JSX.Element {
 					<img src={imgSrc} alt="Event Image" className="h-60 w-120 rounded-lg" />
 				</figure>
 				<div className="card-body">
-					<Jumbotron gathering={gathering} accountId={account?.id} booking={booking} />
+					<Jumbotron gathering={gathering} accountId={accountId} booking={booking} />
 					<div className="divider"></div>
 					{/*registered attendee*/}
 					{isAttendee && booking != null && (

@@ -1,16 +1,14 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Account, Gathering } from "~/lib/domains/entities";
-import { getAccount, getGatherings, type GetGatheringsParams } from "~/lib/services";
+import { Gathering } from "~/lib/domains/entities";
+import { getGatherings, type GetGatheringsParams, store } from "~/lib/services";
 import { Card } from "~/lib/components";
 import type { PageResult } from "~/lib/domains/models";
+import { useStore } from "@tanstack/react-store";
 
 export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,
-	loader: async () => {
-		return getAccount();
-	},
 	pendingComponent: () => (
 		<div className="h-full">
 			<progress className="progress w-full"></progress>
@@ -19,7 +17,7 @@ export const Route = createFileRoute("/gatherings/")({
 });
 
 export function GatheringsPage(): JSX.Element {
-	const account: Account | null = Route.useLoaderData();
+	const accountId: string | undefined = useStore(store, (store) => store.account?.id);
 	const pageSize = 6;
 	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
 		startDateAfter: new Date(),
@@ -32,7 +30,6 @@ export function GatheringsPage(): JSX.Element {
 	});
 	const gatherings: Gathering[] = data == null ? [] : data.data;
 	const totalCount: number = data == null ? 0 : data.totalCount;
-
 
 	const [page, setPage] = useState(1);
 	const maxPage = Math.ceil(totalCount / pageSize);
@@ -63,7 +60,7 @@ export function GatheringsPage(): JSX.Element {
 	return (
 		<div className="h-full">
 			<div className="mt-1 flex flex-row justify-center">
-				<label className="input w-40">
+				<label className="input [w-200px]">
 					<svg
 						className="h-[1em] opacity-50"
 						xmlns="http://www.w3.org/2000/svg"
@@ -82,8 +79,8 @@ export function GatheringsPage(): JSX.Element {
 					</svg>
 					<input
 						type="search"
-						className="grow"
-						placeholder="Search"
+						className="w-full"
+						placeholder="Search Gatherings"
 						onChange={(e) => {
 							const text: string = e.target.value;
 							setQueryParams({
@@ -102,7 +99,7 @@ export function GatheringsPage(): JSX.Element {
 						<Card
 							key={gathering.gatheringId + "-" + index}
 							gathering={gathering}
-							accountId={account?.id}
+							accountId={accountId}
 						/>
 					))}
 				</div>
