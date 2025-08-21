@@ -27,7 +27,10 @@ export function GetHostedGatheringsPage(): JSX.Element {
 	});
 	const { data: _hostedGatherings, isLoading: isHostedGatheringLoading } = useQuery({
 		queryKey: ["getHostedGatherings", queryParams],
-		queryFn: (): Promise<Gathering[]> => getGatherings(queryParams)
+		queryFn: async (): Promise<Gathering[]> => {
+			const result = await getGatherings(queryParams);
+			return result.data;
+		}
 	});
 	const isLoading: boolean = isHostedGatheringLoading;
 

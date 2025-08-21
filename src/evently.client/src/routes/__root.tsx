@@ -1,6 +1,6 @@
 ﻿import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { Navbar, Dock } from "~/lib/components";
+import { Navbar } from "~/lib/components";
 import { type JSX, useEffect } from "react";
 import { getAccount, store, type StoreState } from "~/lib/services";
 import { Account } from "~/lib/domains/entities";
@@ -25,7 +25,6 @@ export function App(): JSX.Element {
 		<div className="h-screen">
 			<Navbar />
 			<Outlet />
-			<Dock />
 			<TanStackRouterDevtools />
 		</div>
 	);

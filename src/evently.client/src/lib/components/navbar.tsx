@@ -18,9 +18,9 @@ export function Navbar(): JSX.Element {
 		// await navigate({ to: "/" });
 	};
 	return (
-		<div className="bg-base-100 sm:navbar hidden shadow-sm">
+		<div className="bg-base-100 navbar shadow-sm">
 			<div className="navbar-start">
-				<Link className="btn btn-ghost text-xl" to="/">
+				<Link className="btn btn-ghost hidden text-xl sm:block" to="/">
 					Evently
 				</Link>
 			</div>
@@ -28,7 +28,7 @@ export function Navbar(): JSX.Element {
 				<ul className="menu menu-horizontal px-1">
 					<li>
 						<Link to="/gatherings" activeProps={{ className: "underline" }}>
-							Explore Gatherings
+							Gatherings
 						</Link>
 					</li>
 					{isAuth && (
@@ -49,11 +49,11 @@ export function Navbar(): JSX.Element {
 			</div>
 			<div className="navbar-end pr-5">
 				{!isAuth ? (
-					<Link to="/login" className="btn">
+					<Link to="/login" className="btn btn-sm">
 						Login
 					</Link>
 				) : (
-					<button className="btn" onClick={handleLogout}>
+					<button className="btn btn-sm" onClick={handleLogout}>
 						Logout
 					</button>
 				)}

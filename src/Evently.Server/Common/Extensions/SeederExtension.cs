@@ -144,7 +144,90 @@ public static class SeederExtension {
 				End = new DateTimeOffset(year: 2025, month: 12, day: 22, hour: 12, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = account2.Id,
 			},
+			// Additional gatherings for better pagination testing
+			new() {
+				GatheringId = 7,
+				Name = "Mobile App Development Bootcamp",
+				Description = "Intensive bootcamp covering iOS and Android development",
+				Location = "NUS School of Computing, Singapore",
+				Start = new DateTimeOffset(year: 2025, month: 12, day: 12, hour: 9, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2025, month: 12, day: 12, hour: 18, minute: 0, second: 0, singaporeOffset),
+				OrganiserId = account1.Id,
+			},
+			new() {
+				GatheringId = 8,
+				Name = "Investment & Finance Forum",
+				Description = "Learn about personal finance and investment strategies",
+				Location = "Suntec Singapore Convention Centre",
+				Start = new DateTimeOffset(year: 2025, month: 12, day: 25, hour: 14, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2025, month: 12, day: 25, hour: 17, minute: 30, second: 0, singaporeOffset),
+				OrganiserId = account1.Id,
+			},
+			new() {
+				GatheringId = 9,
+				Name = "Creative Writing Workshop",
+				Description = "Explore storytelling techniques and creative expression",
+				Location = "Esplanade Theatres, Singapore",
+				Start = new DateTimeOffset(year: 2025, month: 12, day: 28, hour: 10, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2025, month: 12, day: 28, hour: 15, minute: 0, second: 0, singaporeOffset),
+				OrganiserId = account2.Id,
+			},
+			new() {
+				GatheringId = 10,
+				Name = "Cloud Computing Conference",
+				Description = "Latest trends in cloud architecture and DevOps",
+				Location = "Singapore EXPO",
+				Start = new DateTimeOffset(year: 2025, month: 12, day: 30, hour: 9, minute: 30, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2025, month: 12, day: 30, hour: 17, minute: 30, second: 0, singaporeOffset),
+				OrganiserId = account1.Id,
+			},
+			new() {
+				GatheringId = 11,
+				Name = "E-commerce Mastery",
+				Description = "Build and scale your online business effectively",
+				Location = "Marina Bay Financial Centre, Singapore",
+				Start = new DateTimeOffset(year: 2026, month: 1, day: 3, hour: 13, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 1, day: 3, hour: 18, minute: 0, second: 0, singaporeOffset),
+				OrganiserId = account2.Id,
+			},
+			new() {
+				GatheringId = 12,
+				Name = "Contemporary Dance Performance",
+				Description = "An evening of modern dance and artistic expression",
+				Location = "Victoria Theatre, Singapore",
+				Start = new DateTimeOffset(year: 2026, month: 1, day: 5, hour: 19, minute: 30, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 1, day: 5, hour: 22, minute: 0, second: 0, singaporeOffset),
+				OrganiserId = account1.Id,
+			},
+			new() {
+				GatheringId = 13,
+				Name = "Cybersecurity Awareness Training",
+				Description = "Essential cybersecurity practices for businesses",
+				Location = "Singapore Management University",
+				Start = new DateTimeOffset(year: 2026, month: 1, day: 8, hour: 10, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 1, day: 8, hour: 16, minute: 0, second: 0, singaporeOffset),
+				OrganiserId = account2.Id,
+			},
+			new() {
+				GatheringId = 14,
+				Name = "Leadership Excellence Workshop",
+				Description = "Develop essential leadership skills for modern managers",
+				Location = "Orchard Hotel Singapore",
+				Start = new DateTimeOffset(year: 2026, month: 1, day: 10, hour: 9, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 1, day: 10, hour: 17, minute: 0, second: 0, singaporeOffset),
+				OrganiserId = account1.Id,
+			},
+			new() {
+				GatheringId = 15,
+				Name = "Film & Media Production Showcase",
+				Description = "Independent filmmakers present their latest works",
+				Location = "Singapore International Film Festival Venue",
+				Start = new DateTimeOffset(year: 2026, month: 1, day: 12, hour: 18, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 1, day: 12, hour: 23, minute: 0, second: 0, singaporeOffset),
+				OrganiserId = account2.Id,
+			},
 		];
+
 
 		// Category details for gatherings
 		GatheringCategoryDetail[] gatheringCategoryDetails = [
@@ -171,6 +254,42 @@ public static class SeederExtension {
 			new() {
 				GatheringId = 6,
 				CategoryId = category3.CategoryId, // Photography Masterclass -> Arts
+			},
+			new() {
+				GatheringId = 7,
+				CategoryId = category1.CategoryId, // Mobile App Development Bootcamp -> IT
+			},
+			new() {
+				GatheringId = 8,
+				CategoryId = category2.CategoryId, // Investment & Finance Forum -> Business
+			},
+			new() {
+				GatheringId = 9,
+				CategoryId = category3.CategoryId, // Creative Writing Workshop -> Arts
+			},
+			new() {
+				GatheringId = 10,
+				CategoryId = category1.CategoryId, // Cloud Computing Conference -> IT
+			},
+			new() {
+				GatheringId = 11,
+				CategoryId = category2.CategoryId, // E-commerce Mastery -> Business
+			},
+			new() {
+				GatheringId = 12,
+				CategoryId = category3.CategoryId, // Contemporary Dance Performance -> Arts
+			},
+			new() {
+				GatheringId = 13,
+				CategoryId = category1.CategoryId, // Cybersecurity Awareness Training -> IT
+			},
+			new() {
+				GatheringId = 14,
+				CategoryId = category2.CategoryId, // Leadership Excellence Workshop -> Business
+			},
+			new() {
+				GatheringId = 15,
+				CategoryId = category3.CategoryId, // Film & Media Production Showcase -> Arts
 			},
 		];
 
