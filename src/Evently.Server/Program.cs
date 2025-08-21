@@ -126,9 +126,6 @@ using (IServiceScope serviceScope = app.Services.CreateScope()) {
 	await dbContext.Database.MigrateAsync();
 }
 
-// must come after migration
-await app.SeedDatas();
-
 // To serve the Svelte SPA files
 app.UseFileServer();
 

@@ -97,9 +97,9 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "",
+                            Id = "empty-user-12345",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "",
+                            ConcurrencyStamp = "EMPTY-CONCURRENCY-STAMP-12345",
                             Email = "empty@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = true,
@@ -107,9 +107,25 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                             NormalizedEmail = "EMPTY@EXAMPLE.COM",
                             NormalizedUserName = "EMPTY_USER",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
+                            SecurityStamp = "EMPTY-SECURITY-STAMP-12345",
                             TwoFactorEnabled = false,
                             UserName = "empty_user"
+                        },
+                        new
+                        {
+                            Id = "guest-user-22222",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "EMPTY-CONCURRENCY-STAMP-12345",
+                            Email = "guest@example.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = true,
+                            Name = "Guest User",
+                            NormalizedEmail = "GUEST@EXAMPLE.COM",
+                            NormalizedUserName = "GUEST_USER_2",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "EMPTY-SECURITY-STAMP-12345",
+                            TwoFactorEnabled = false,
+                            UserName = "guest_user2"
                         });
                 });
 
@@ -145,7 +161,23 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasIndex("GatheringId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
+
+                    b.HasData(
+                        new
+                        {
+                            BookingId = "book_abc123456",
+                            AccountId = "guest-user-22222",
+                            CreationDateTime = new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            GatheringId = 1L
+                        },
+                        new
+                        {
+                            BookingId = "book_def789012",
+                            AccountId = "empty-user-12345",
+                            CreationDateTime = new DateTimeOffset(new DateTime(2024, 1, 1, 1, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            GatheringId = 2L
+                        });
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Category", b =>
@@ -167,7 +199,27 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1L,
+                            Approved = false,
+                            CategoryName = "Information Technology"
+                        },
+                        new
+                        {
+                            CategoryId = 2L,
+                            Approved = false,
+                            CategoryName = "Business & Networking"
+                        },
+                        new
+                        {
+                            CategoryId = 3L,
+                            Approved = false,
+                            CategoryName = "Arts & Culture"
+                        });
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.Gathering", b =>
@@ -214,7 +266,174 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasKey("GatheringId");
 
-                    b.ToTable("Gatherings", (string)null);
+                    b.ToTable("Gatherings");
+
+                    b.HasData(
+                        new
+                        {
+                            GatheringId = 1L,
+                            CoverSrc = "",
+                            Description = "A comprehensive summit exploring the latest in AI and machine learning",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 5, 17, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Marina Bay Sands Convention Centre, Singapore",
+                            Name = "Tech Innovation Summit",
+                            OrganiserId = "empty-user-12345",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 5, 9, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 2L,
+                            CoverSrc = "",
+                            Description = "Connect with fellow entrepreneurs and investors",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 10, 22, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Clarke Quay Central, Singapore",
+                            Name = "Startup Networking Night",
+                            OrganiserId = "empty-user-12345",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 10, 18, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 3L,
+                            CoverSrc = "",
+                            Description = "Showcasing contemporary digital art from emerging artists",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 15, 18, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "National Gallery Singapore",
+                            Name = "Digital Art Exhibition",
+                            OrganiserId = "empty-user-12345",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 4L,
+                            CoverSrc = "",
+                            Description = "Learn modern web development techniques and best practices",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 8, 17, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Singapore Science Centre",
+                            Name = "Web Development Workshop",
+                            OrganiserId = "guest-user-22222",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 8, 13, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 5L,
+                            CoverSrc = "",
+                            Description = "Advanced strategies for scaling your business",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 20, 16, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Raffles City Convention Centre, Singapore",
+                            Name = "Business Strategy Seminar",
+                            OrganiserId = "guest-user-22222",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 20, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 6L,
+                            CoverSrc = "",
+                            Description = "Professional photography techniques and portfolio building",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Gardens by the Bay, Singapore",
+                            Name = "Photography Masterclass",
+                            OrganiserId = "guest-user-22222",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 22, 8, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 7L,
+                            CoverSrc = "",
+                            Description = "Intensive bootcamp covering iOS and Android development",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 12, 18, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "NUS School of Computing, Singapore",
+                            Name = "Mobile App Development Bootcamp",
+                            OrganiserId = "empty-user-12345",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 12, 9, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 8L,
+                            CoverSrc = "",
+                            Description = "Learn about personal finance and investment strategies",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 25, 17, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Suntec Singapore Convention Centre",
+                            Name = "Investment & Finance Forum",
+                            OrganiserId = "empty-user-12345",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 25, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 9L,
+                            CoverSrc = "",
+                            Description = "Explore storytelling techniques and creative expression",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 28, 15, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Esplanade Theatres, Singapore",
+                            Name = "Creative Writing Workshop",
+                            OrganiserId = "guest-user-22222",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 28, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 10L,
+                            CoverSrc = "",
+                            Description = "Latest trends in cloud architecture and DevOps",
+                            End = new DateTimeOffset(new DateTime(2025, 12, 30, 17, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Singapore EXPO",
+                            Name = "Cloud Computing Conference",
+                            OrganiserId = "empty-user-12345",
+                            Start = new DateTimeOffset(new DateTime(2025, 12, 30, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 11L,
+                            CoverSrc = "",
+                            Description = "Build and scale your online business effectively",
+                            End = new DateTimeOffset(new DateTime(2026, 1, 3, 18, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Marina Bay Financial Centre, Singapore",
+                            Name = "E-commerce Mastery",
+                            OrganiserId = "guest-user-22222",
+                            Start = new DateTimeOffset(new DateTime(2026, 1, 3, 13, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 12L,
+                            CoverSrc = "",
+                            Description = "An evening of modern dance and artistic expression",
+                            End = new DateTimeOffset(new DateTime(2026, 1, 5, 22, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Victoria Theatre, Singapore",
+                            Name = "Contemporary Dance Performance",
+                            OrganiserId = "empty-user-12345",
+                            Start = new DateTimeOffset(new DateTime(2026, 1, 5, 19, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 13L,
+                            CoverSrc = "",
+                            Description = "Essential cybersecurity practices for businesses",
+                            End = new DateTimeOffset(new DateTime(2026, 1, 8, 16, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Singapore Management University",
+                            Name = "Cybersecurity Awareness Training",
+                            OrganiserId = "guest-user-22222",
+                            Start = new DateTimeOffset(new DateTime(2026, 1, 8, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 14L,
+                            CoverSrc = "",
+                            Description = "Develop essential leadership skills for modern managers",
+                            End = new DateTimeOffset(new DateTime(2026, 1, 10, 17, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Orchard Hotel Singapore",
+                            Name = "Leadership Excellence Workshop",
+                            OrganiserId = "empty-user-12345",
+                            Start = new DateTimeOffset(new DateTime(2026, 1, 10, 9, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            GatheringId = 15L,
+                            CoverSrc = "",
+                            Description = "Independent filmmakers present their latest works",
+                            End = new DateTimeOffset(new DateTime(2026, 1, 12, 23, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Location = "Singapore International Film Festival Venue",
+                            Name = "Film & Media Production Showcase",
+                            OrganiserId = "guest-user-22222",
+                            Start = new DateTimeOffset(new DateTime(2026, 1, 12, 18, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        });
                 });
 
             modelBuilder.Entity("Evently.Server.Common.Domains.Entities.GatheringCategoryDetail", b =>
@@ -229,7 +448,84 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("GatheringCategoryDetails", (string)null);
+                    b.ToTable("GatheringCategoryDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            GatheringId = 1L,
+                            CategoryId = 1L
+                        },
+                        new
+                        {
+                            GatheringId = 2L,
+                            CategoryId = 2L
+                        },
+                        new
+                        {
+                            GatheringId = 3L,
+                            CategoryId = 3L
+                        },
+                        new
+                        {
+                            GatheringId = 4L,
+                            CategoryId = 1L
+                        },
+                        new
+                        {
+                            GatheringId = 5L,
+                            CategoryId = 2L
+                        },
+                        new
+                        {
+                            GatheringId = 6L,
+                            CategoryId = 3L
+                        },
+                        new
+                        {
+                            GatheringId = 7L,
+                            CategoryId = 1L
+                        },
+                        new
+                        {
+                            GatheringId = 8L,
+                            CategoryId = 2L
+                        },
+                        new
+                        {
+                            GatheringId = 9L,
+                            CategoryId = 3L
+                        },
+                        new
+                        {
+                            GatheringId = 10L,
+                            CategoryId = 1L
+                        },
+                        new
+                        {
+                            GatheringId = 11L,
+                            CategoryId = 2L
+                        },
+                        new
+                        {
+                            GatheringId = 12L,
+                            CategoryId = 3L
+                        },
+                        new
+                        {
+                            GatheringId = 13L,
+                            CategoryId = 1L
+                        },
+                        new
+                        {
+                            GatheringId = 14L,
+                            CategoryId = 2L
+                        },
+                        new
+                        {
+                            GatheringId = 15L,
+                            CategoryId = 3L
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

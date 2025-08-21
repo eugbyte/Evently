@@ -46,4 +46,8 @@
         </ProjectReference>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Common\Adapters\Data\Migrations\"/>
+    </ItemGroup>
+
 </Project>
