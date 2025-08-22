@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250821135122_SeedInit")]
+    [Migration("20250822123522_SeedInit")]
     partial class SeedInit
     {
         /// <inheritdoc />

@@ -1,21 +1,15 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Account } from "~/lib/domains/entities";
 import { useEffect } from "react";
-import { store, getAccount, type StoreState } from "~/lib/services";
+import { getAccount } from "~/lib/services";
 
 export const Route = createFileRoute("/login/callback")({
 	component: LoginCallbackPage,
-	loader: async () => {
-		return (await getAccount()) ?? new Account();
+	beforeLoad: async () => {
+		const account = await getAccount();
+		return { account };
 	}
 });
 export function LoginCallbackPage() {
-	const account: Account = Route.useLoaderData();
-	store.setState((state: StoreState) => ({
-		...state,
-		account
-	}));
-
 	const navigate = useNavigate();
 	useEffect(() => {
 		navigate({ to: "/bookings/attending" }).then();

@@ -23,7 +23,6 @@ export async function getGatherings(params: GetGatheringsParams): Promise<PageRe
 	}
 
 	const totalCount: number = parseInt(response.headers["x-total-count"]);
-	console.log({ totalCount });
 	return {
 		totalCount,
 		data: gatherings
@@ -44,7 +43,9 @@ export async function createGathering(
 ): Promise<Gathering> {
 	const formData = new FormData();
 	for (const [key, value] of Object.entries(gatheringDto)) {
-		formData.set(key, value);
+		if (value != null) {
+			formData.set(key, value);
+		}
 	}
 	if (coverImg != null) {
 		formData.set("coverImg", coverImg, coverImg.name);
@@ -65,13 +66,18 @@ export async function updateGathering(
 ): Promise<Gathering> {
 	const formData = new FormData();
 	for (const [key, value] of Object.entries(gatheringDto)) {
-		formData.set(key, value);
+		if (value != null) {
+			formData.set(key, value);
+		}
 	}
 	if (coverImg != null) {
 		formData.set("coverImg", coverImg, coverImg.name);
 	}
 	formData.set("start", gatheringDto.start.toISOString());
 	formData.set("end", gatheringDto.end.toISOString());
+	if (gatheringDto.cancellationDateTime != null) {
+		formData.set("cancellationDateTime", gatheringDto.cancellationDateTime.toISOString());
+	}
 
 	const response = await axios.put<Gathering>(`/api/v1/Gatherings/${gatheringId}`, formData, {
 		headers: { "Content-Type": "multipart/form-data" }

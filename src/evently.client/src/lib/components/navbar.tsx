@@ -1,24 +1,23 @@
 ﻿import { type JSX } from "react";
-import { Link } from "@tanstack/react-router";
-import { useStore } from "@tanstack/react-store";
-import { store } from "~/lib/services";
+import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
 import { logout } from "~/lib/services/auth-service";
 
 export function Navbar(): JSX.Element {
-	const identityUserId = useStore(store, (s) => s.account?.id);
+	const router = useRouter();
+	const identityUserId: string | undefined = useRouteContext({
+		from: "__root__",
+		select: (context) => context.account?.id
+	});
+	console.log({ identityUserId });
+
 	let isAuth = false;
 	if (identityUserId != null) {
 		isAuth = identityUserId.trim().length > 0;
 	}
-	console.log({ identityUserId });
 
 	const handleLogout = async () => {
-		store.setState((state) => ({
-			...state,
-			identityUserId: ""
-		}));
+		await router.invalidate();
 		await logout("/");
-		// await navigate({ to: "/" });
 	};
 	return (
 		<div className="bg-base-100 navbar shadow-sm">

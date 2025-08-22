@@ -15,7 +15,12 @@ declare module "@tanstack/react-router" {
 
 const queryClient = new QueryClient();
 
-const router = createRouter({ routeTree });
+const router = createRouter({
+	routeTree,
+	context: {
+		account: undefined!
+	}
+});
 
 const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {

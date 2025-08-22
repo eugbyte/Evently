@@ -25,6 +25,14 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 		return () => URL.revokeObjectURL(coverSrc);
 	}, [coverSrc]);
 
+	const toIsoString = (date: Date | null): string => {
+		if (date == null) {
+			return "";
+		}
+		const dateTime: DateTime = DateTime.fromJSDate(date);
+		return dateTime.toFormat("yyyy-MM-dd'T'HH:mm");
+	};
+
 	return (
 		<div className="bg-base-200 mb-32 p-2 sm:mb-0 sm:h-full">
 			<div className="mx-auto max-w-4xl">
@@ -112,15 +120,11 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 												<input
 													type="datetime-local"
 													className="input input-bordered focus:input-primary w-full"
-													value={
-														field.state.value == null
-															? ""
-															: field.state.value.toISOString().slice(0, -1)
-													}
+													value={field.state.value == null ? "" : toIsoString(field.state.value)}
 													onBlur={field.handleBlur}
 													onChange={(e) => {
-														const dateTime: DateTime<boolean> = DateTime.fromISO(e.target.value);
-														const date: Date | null = dateTime.isValid ? dateTime.toJSDate() : null;
+														const value: DateTime<boolean> = DateTime.fromISO(e.target.value);
+														const date: Date | null = !value.isValid ? null : value.toJSDate();
 														field.handleChange(date as any);
 													}}
 												/>
@@ -145,15 +149,11 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 												<input
 													type="datetime-local"
 													className="input input-bordered focus:input-primary w-full"
-													value={
-														field.state.value == null
-															? ""
-															: field.state.value.toISOString().slice(0, -1)
-													}
+													value={field.state.value == null ? "" : toIsoString(field.state.value)}
 													onBlur={field.handleBlur}
 													onChange={(e) => {
-														const dateTime: DateTime<boolean> = DateTime.fromISO(e.target.value);
-														const date: Date | null = dateTime.isValid ? dateTime.toJSDate() : null;
+														const value: DateTime<boolean> = DateTime.fromISO(e.target.value);
+														const date: Date | null = !value.isValid ? null : value.toJSDate();
 														field.handleChange(date as any);
 													}}
 												/>

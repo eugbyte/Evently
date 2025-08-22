@@ -11,6 +11,7 @@ public static class MapperExtension {
 			Description = gatheringReqDto.Description,
 			Start = gatheringReqDto.Start,
 			End = gatheringReqDto.End,
+			CancellationDateTime = gatheringReqDto.CancellationDateTime,
 			Location = gatheringReqDto.Location,
 			OrganiserId = gatheringReqDto.OrganiserId,
 			CoverSrc = gatheringReqDto.CoverSrc,
@@ -25,6 +26,7 @@ public static class MapperExtension {
 			gathering.Description,
 			gathering.Start,
 			gathering.End,
+			gathering.CancellationDateTime,
 			gathering.Location,
 			gathering.OrganiserId,
 			gathering.CoverSrc
