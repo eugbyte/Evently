@@ -33,7 +33,6 @@ function CreateGatheringPage(): JSX.Element {
 		const { gatheringId } = await createGathering(values, file);
 		setToastMsg(new ToastContent(true, "Successfully created. Redirecting..."));
 		await sleep(1500);
-		navigate({ to: `/gatherings/${gathering.gatheringId}` });
 
 		navigate({ to: `/gatherings/${gatheringId}` });
 	};
