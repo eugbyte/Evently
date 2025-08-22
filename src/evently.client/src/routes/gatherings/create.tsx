@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Gathering } from "~/lib/domains/entities";
 import { useState, type JSX } from "react";
-import { createGathering } from "~/lib/services";
+import { createGathering, sleep } from "~/lib/services";
 import {
 	useGatheringForm,
 	type GatheringForm as IGatheringForm
 } from "~/routes/gatherings/-services";
-import { GatheringReqDto } from "~/lib/domains/models";
+import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
 import { GatheringForm } from "~/routes/gatherings/-components";
 
 export const Route = createFileRoute("/gatherings/create")({
@@ -26,11 +26,28 @@ function CreateGatheringPage(): JSX.Element {
 	};
 	// need to separate file field as Tanstack Form does not support file upload
 	const [file, setFile] = useState<File | null>(null);
+	const [toastMsg, setToastMsg] = useState(new ToastContent(false));
 
 	const onSubmit = async (values: GatheringReqDto): Promise<void> => {
+		setToastMsg(new ToastContent(true, "Creating..."));
 		const { gatheringId } = await createGathering(values, file);
+		setToastMsg(new ToastContent(true, "Successfully created. Redirecting..."));
+		await sleep(1500);
+		navigate({ to: `/gatherings/${gathering.gatheringId}` });
+
 		navigate({ to: `/gatherings/${gatheringId}` });
 	};
 	const form: IGatheringForm = useGatheringForm(defaultGathering, onSubmit);
-	return <GatheringForm file={file} setFile={setFile} form={form} />;
+	return (
+		<>
+			<GatheringForm file={file} setFile={setFile} form={form} />
+			{toastMsg.show && (
+				<div className="toast toast-center">
+					<div className="alert alert-success">
+						<span>{toastMsg.message}</span>
+					</div>
+				</div>
+			)}
+		</>
+	);
 }

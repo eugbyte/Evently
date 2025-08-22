@@ -187,6 +187,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("CategoryId"));
+                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("CategoryId"), 20L, null, null, null, null, null);
 
                     b.Property<bool>("Approved")
                         .HasColumnType("boolean");
@@ -228,6 +229,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("GatheringId"));
+                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("GatheringId"), 20L, null, null, null, null, null);
 
                     b.Property<DateTimeOffset?>("CancellationDateTime")
                         .HasColumnType("timestamp with time zone");

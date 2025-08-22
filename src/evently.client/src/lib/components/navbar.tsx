@@ -1,9 +1,9 @@
 ﻿import { type JSX } from "react";
-import {Link, useRouteContext, useRouter} from "@tanstack/react-router";
+import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
 import { logout } from "~/lib/services/auth-service";
 
 export function Navbar(): JSX.Element {
-	const router = useRouter()
+	const router = useRouter();
 	const identityUserId: string | undefined = useRouteContext({
 		from: "__root__",
 		select: (context) => context.account?.id

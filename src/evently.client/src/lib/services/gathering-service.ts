@@ -43,7 +43,9 @@ export async function createGathering(
 ): Promise<Gathering> {
 	const formData = new FormData();
 	for (const [key, value] of Object.entries(gatheringDto)) {
-		formData.set(key, value);
+		if (value != null) {
+			formData.set(key, value);
+		}
 	}
 	if (coverImg != null) {
 		formData.set("coverImg", coverImg, coverImg.name);
@@ -64,7 +66,9 @@ export async function updateGathering(
 ): Promise<Gathering> {
 	const formData = new FormData();
 	for (const [key, value] of Object.entries(gatheringDto)) {
-		formData.set(key, value);
+		if (value != null) {
+			formData.set(key, value);
+		}
 	}
 	if (coverImg != null) {
 		formData.set("coverImg", coverImg, coverImg.name);
