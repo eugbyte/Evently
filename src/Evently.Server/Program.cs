@@ -71,7 +71,6 @@ builder.Services.AddSingleton(channel.Writer);
 builder.Services.AddSingleton<IEmailerAdapter, EmailAdapter>();
 builder.Services.AddHostedService<EmailBackgroundService>();
 
-
 // Fluent validation dependency injection without automatic registration
 builder.Services.AddScoped<IValidator<Account>, AccountValidator>();
 builder.Services.AddScoped<IValidator<Gathering>, GatheringValidator>();

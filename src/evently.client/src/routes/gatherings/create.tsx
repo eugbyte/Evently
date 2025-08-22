@@ -16,6 +16,7 @@ export const Route = createFileRoute("/gatherings/create")({
 
 function CreateGatheringPage(): JSX.Element {
 	const accountId: string | undefined = useStore(store, (store) => store.account?.id);
+	const navigate = Route.useNavigate();
 
 	const gathering = new Gathering();
 	gathering.organiserId = accountId ?? "";
@@ -26,7 +27,8 @@ function CreateGatheringPage(): JSX.Element {
 	const [file, setFile] = useState<File | null>(null);
 
 	const onSubmit = async (values: GatheringReqDto): Promise<void> => {
-		await createGathering(values, file);
+		const { gatheringId } = await createGathering(values, file);
+		navigate({ to: `/gatherings/${gatheringId}`, reloadDocument: true });
 	};
 	const form: IGatheringForm = useGatheringForm(defaultGathering, onSubmit);
 	return <GatheringForm file={file} setFile={setFile} form={form} />;
