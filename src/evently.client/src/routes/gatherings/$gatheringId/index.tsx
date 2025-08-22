@@ -6,8 +6,7 @@ import {
 	createBooking,
 	getBookings,
 	getGathering,
-	hashString,
-	store
+	hashString
 } from "~/lib/services";
 import { useMutation } from "@tanstack/react-query";
 import { BookingReqDto } from "~/lib/domains/models";
@@ -17,8 +16,9 @@ import Placeholder1 from "~/lib/assets/event_placeholder_1.webp";
 import Placeholder2 from "~/lib/assets/event_placeholder_2.png";
 
 export const Route = createFileRoute("/gatherings/$gatheringId/")({
-	loader: async ({ params }) => {
-		const accountId: string | undefined = store.state.account?.id;
+	loader: async ({ params, context }) => {
+		const accountId: string | undefined = context.account?.id;
+		console.log({ accountId });
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering | null = await getGathering(gatheringId);
 		const bookings: Booking[] = await getBookings({
@@ -28,8 +28,7 @@ export const Route = createFileRoute("/gatherings/$gatheringId/")({
 		});
 		return {
 			gathering,
-			booking: bookings.length > 0 ? bookings[0] : null,
-			accountId
+			booking: bookings.length > 0 ? bookings[0] : null
 		};
 	},
 	component: GatheringPage,
@@ -41,7 +40,11 @@ export const Route = createFileRoute("/gatherings/$gatheringId/")({
 });
 
 export function GatheringPage(): JSX.Element {
-	const { gathering, booking: _booking, accountId } = Route.useLoaderData();
+	const { account } = Route.useRouteContext();
+	const accountId: string | undefined = account?.id;
+
+	const { gathering, booking: _booking } = Route.useLoaderData();
+	console.log({ accountId });
 	const navigate = useNavigate();
 
 	let { coverSrc: imgSrc } = gathering;

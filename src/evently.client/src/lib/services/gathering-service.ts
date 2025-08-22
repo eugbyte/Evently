@@ -23,7 +23,6 @@ export async function getGatherings(params: GetGatheringsParams): Promise<PageRe
 	}
 
 	const totalCount: number = parseInt(response.headers["x-total-count"]);
-	console.log({ totalCount });
 	return {
 		totalCount,
 		data: gatherings

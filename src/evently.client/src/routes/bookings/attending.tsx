@@ -1,13 +1,13 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { Booking, Gathering } from "~/lib/domains/entities";
-import { getBookings, type GetBookingsParams, store } from "~/lib/services";
+import { getBookings, type GetBookingsParams } from "~/lib/services";
 import { Card, Tabs, TabState } from "~/lib/components";
 import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
 
 export const Route = createFileRoute("/bookings/attending")({
+	loader: ({ context }) => ({ account: context.account }),
 	component: GetBookingsPage,
 	pendingComponent: () => (
 		<div className="h-full">
@@ -17,7 +17,9 @@ export const Route = createFileRoute("/bookings/attending")({
 });
 
 export function GetBookingsPage(): JSX.Element {
-	const accountId: string | undefined = useStore(store, (s) => s.account?.id);
+	const { account } = Route.useRouteContext();
+	const accountId: string | undefined = account?.id;
+
 	const [tab, setTab] = useState(0);
 
 	const [bkQueryParams, setBkQueryParams] = useState<GetBookingsParams>({

@@ -2,10 +2,9 @@
 import { type JSX, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Gathering } from "~/lib/domains/entities";
-import { getGatherings, type GetGatheringsParams, store } from "~/lib/services";
+import { getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card } from "~/lib/components";
 import type { PageResult } from "~/lib/domains/models";
-import { useStore } from "@tanstack/react-store";
 
 export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,
@@ -17,7 +16,9 @@ export const Route = createFileRoute("/gatherings/")({
 });
 
 export function GatheringsPage(): JSX.Element {
-	const accountId: string | undefined = useStore(store, (store) => store.account?.id);
+	const { account } = Route.useRouteContext();
+	const accountId: string | undefined = account?.id;
+
 	const pageSize = 6;
 	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
 		startDateAfter: new Date(),

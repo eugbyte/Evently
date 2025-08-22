@@ -1,16 +1,19 @@
 ﻿import { type JSX } from "react";
-import { Link } from "@tanstack/react-router";
-import { useStore } from "@tanstack/react-store";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { store } from "~/lib/services";
 import { logout } from "~/lib/services/auth-service";
 
 export function Navbar(): JSX.Element {
-	const identityUserId = useStore(store, (s) => s.account?.id);
+	const identityUserId: string | undefined = useRouteContext({
+		from: "__root__",
+		select: (context) => context.account?.id
+	});
+	console.log({ identityUserId });
+
 	let isAuth = false;
 	if (identityUserId != null) {
 		isAuth = identityUserId.trim().length > 0;
 	}
-	console.log({ identityUserId });
 
 	const handleLogout = async () => {
 		store.setState((state) => ({

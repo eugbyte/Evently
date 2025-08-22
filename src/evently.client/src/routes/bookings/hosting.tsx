@@ -1,11 +1,10 @@
 ﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { Gathering } from "~/lib/domains/entities";
-import { getAccount, getGatherings, type GetGatheringsParams, store } from "~/lib/services";
+import { getAccount, getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card, Tabs, TabState } from "~/lib/components";
 import { useQuery } from "@tanstack/react-query";
 import cloneDeep from "lodash.clonedeep";
-import { useStore } from "@tanstack/react-store";
 
 export const Route = createFileRoute("/bookings/hosting")({
 	component: GetHostedGatheringsPage,
@@ -18,7 +17,8 @@ export const Route = createFileRoute("/bookings/hosting")({
 });
 
 export function GetHostedGatheringsPage(): JSX.Element {
-	const accountId: string | undefined = useStore(store, (s) => s.account?.id);
+	const { account } = Route.useRouteContext();
+	const accountId: string | undefined = account?.id;
 
 	const [tab, setTab] = useState(0);
 

@@ -33,7 +33,7 @@ function UpdateGatheringPage(): JSX.Element {
 		await updateGathering(values.gatheringId, values, file);
 		setToastMsg(new ToastContent(true, "Successfully updated. Redirecting..."));
 		await sleep(1500);
-		navigate({ to: `/gatherings/${gathering.gatheringId}`, reloadDocument: true });
+		navigate({ to: `/gatherings/${gathering.gatheringId}` });
 	};
 	const form: IGatheringForm = useGatheringForm(defaultGathering, onSubmit);
 	return (
