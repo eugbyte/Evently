@@ -1,9 +1,9 @@
 ﻿import { type JSX } from "react";
-import { Link, useRouteContext } from "@tanstack/react-router";
-import { store } from "~/lib/services";
+import {Link, useRouteContext, useRouter} from "@tanstack/react-router";
 import { logout } from "~/lib/services/auth-service";
 
 export function Navbar(): JSX.Element {
+	const router = useRouter()
 	const identityUserId: string | undefined = useRouteContext({
 		from: "__root__",
 		select: (context) => context.account?.id
@@ -16,12 +16,8 @@ export function Navbar(): JSX.Element {
 	}
 
 	const handleLogout = async () => {
-		store.setState((state) => ({
-			...state,
-			identityUserId: ""
-		}));
+		await router.invalidate();
 		await logout("/");
-		// await navigate({ to: "/" });
 	};
 	return (
 		<div className="bg-base-100 navbar shadow-sm">
