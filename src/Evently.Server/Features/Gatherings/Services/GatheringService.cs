@@ -3,11 +3,13 @@ using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace Evently.Server.Features.Gatherings.Services;
 
-public sealed class GatheringService(AppDbContext db) : IGatheringService {
+public sealed class GatheringService(AppDbContext db, IValidator<Gathering> validator) : IGatheringService {
 	public async Task<Gathering?> GetGathering(long gatheringId) {
 		return await db.Gatherings
 			.Include(gathering => gathering.Bookings)
@@ -58,6 +60,11 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 
 	public async Task<Gathering> CreateGathering(GatheringReqDto gatheringReqDto) {
 		Gathering gathering = gatheringReqDto.ToGathering();
+		ValidationResult validationResult = await validator.ValidateAsync(gathering);
+		if (!validationResult.IsValid) {
+			throw new ArgumentException(string.Join(", ", values: validationResult.Errors.Select(e => e.ErrorMessage)));
+		}
+
 		db.Gatherings.Add(gathering);
 		await db.SaveChangesAsync();
 		return gathering;
@@ -65,6 +72,11 @@ public sealed class GatheringService(AppDbContext db) : IGatheringService {
 
 	public async Task<Gathering> UpdateGathering(long gatheringId, GatheringReqDto gatheringReqDto) {
 		Gathering gathering = gatheringReqDto.ToGathering();
+		ValidationResult validationResult = await validator.ValidateAsync(gathering);
+		if (!validationResult.IsValid) {
+			throw new ArgumentException(string.Join(", ", values: validationResult.Errors.Select(e => e.ErrorMessage)));
+		}
+
 		Gathering current = await db.Gatherings.AsTracking()
 			                    .FirstOrDefaultAsync((ex) => ex.GatheringId == gatheringId)
 		                    ?? throw new KeyNotFoundException($"{gatheringId} not found");

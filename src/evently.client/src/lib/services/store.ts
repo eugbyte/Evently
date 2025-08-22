@@ -1,9 +1,10 @@
 ﻿import { Store } from "@tanstack/react-store";
+import { Account } from "~/lib/domains/entities";
 
 export interface StoreState {
-	identityUserId: string;
+	account: Account | null;
 }
 
 export const store = new Store<StoreState>({
-	identityUserId: ""
+	account: null
 });

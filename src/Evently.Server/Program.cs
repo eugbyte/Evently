@@ -4,6 +4,7 @@ using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
+using Evently.Server.Common.Middlewares;
 using Evently.Server.Features.Accounts.Services;
 using Evently.Server.Features.Bookings.Services;
 using Evently.Server.Features.Categories.Services;
@@ -70,7 +71,6 @@ builder.Services.AddSingleton(channel.Writer);
 builder.Services.AddSingleton<IEmailerAdapter, EmailAdapter>();
 builder.Services.AddHostedService<EmailBackgroundService>();
 
-
 // Fluent validation dependency injection without automatic registration
 builder.Services.AddScoped<IValidator<Account>, AccountValidator>();
 builder.Services.AddScoped<IValidator<Gathering>, GatheringValidator>();
@@ -112,6 +112,8 @@ builder.Services.AddAuthorizationBuilder()
 builder.Services.AddRazorComponents()
 	.AddInteractiveServerComponents();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 WebApplication app = builder.Build();
 
 // Needed for heroku
@@ -122,9 +124,6 @@ using (IServiceScope serviceScope = app.Services.CreateScope()) {
 	AppDbContext dbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
 	await dbContext.Database.MigrateAsync();
 }
-
-// must come after migration
-await app.SeedDatas();
 
 // To serve the Svelte SPA files
 app.UseFileServer();

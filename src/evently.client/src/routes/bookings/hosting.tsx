@@ -1,10 +1,11 @@
 ﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
-import { Account, Gathering } from "~/lib/domains/entities";
-import { getAccount, getGatherings, type GetGatheringsParams } from "~/lib/services";
+import { Gathering } from "~/lib/domains/entities";
+import { getAccount, getGatherings, type GetGatheringsParams, store } from "~/lib/services";
 import { Card, Tabs, TabState } from "~/lib/components";
 import { useQuery } from "@tanstack/react-query";
 import cloneDeep from "lodash.clonedeep";
+import { useStore } from "@tanstack/react-store";
 
 export const Route = createFileRoute("/bookings/hosting")({
 	component: GetHostedGatheringsPage,
@@ -17,11 +18,12 @@ export const Route = createFileRoute("/bookings/hosting")({
 });
 
 export function GetHostedGatheringsPage(): JSX.Element {
-	const account: Account | null = Route.useLoaderData();
+	const accountId: string | undefined = useStore(store, (s) => s.account?.id);
+
 	const [tab, setTab] = useState(0);
 
 	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
-		organiserId: account?.id ?? "",
+		organiserId: accountId ?? "",
 		endDateAfter: new Date(),
 		isCancelled: false
 	});
@@ -43,7 +45,7 @@ export function GetHostedGatheringsPage(): JSX.Element {
 		switch (_tab) {
 			case TabState.Upcoming: {
 				setQueryParams({
-					organiserId: account?.id ?? "",
+					organiserId: accountId ?? "",
 					endDateAfter: new Date(),
 					isCancelled: false
 				});
@@ -51,7 +53,7 @@ export function GetHostedGatheringsPage(): JSX.Element {
 			}
 			case TabState.Past: {
 				setQueryParams({
-					organiserId: account?.id ?? "",
+					organiserId: accountId ?? "",
 					endDateBefore: new Date(),
 					isCancelled: false
 				});
@@ -74,7 +76,7 @@ export function GetHostedGatheringsPage(): JSX.Element {
 			) : (
 				<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
 					{gatherings.map((gathering) => (
-						<Card key={gathering.gatheringId} gathering={gathering} accountId={account?.id} />
+						<Card key={gathering.gatheringId} gathering={gathering} accountId={accountId} />
 					))}
 				</div>
 			)}

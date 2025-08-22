@@ -1,9 +1,7 @@
 using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
-using Evently.Server.Common.Extensions;
 using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Threading.Channels;
@@ -60,13 +58,7 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 
 	[HttpPost("", Name = "CreateBooking")]
 	public async Task<ActionResult<Booking>> CreateBooking([FromBody] BookingReqDto bookingReqDto) {
-		Booking booking = bookingReqDto.ToBooking();
-		ValidationResult validationResult = await validator.ValidateAsync(booking);
-		if (!validationResult.IsValid) {
-			return BadRequest(validationResult.Errors);
-		}
-
-		booking = await bookingService.CreateBooking(bookingReqDto);
+		Booking booking = await bookingService.CreateBooking(bookingReqDto);
 		await emailQueue.WriteAsync(booking.BookingId);
 		return Ok(booking);
 	}
@@ -74,11 +66,6 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 	[HttpPut("{bookingId}", Name = "UpdateBooking")]
 	public async Task<ActionResult> UpdateBooking(string bookingId,
 		[FromBody] BookingReqDto bookingReqDto) {
-		ValidationResult validationResult = await validator.ValidateAsync(bookingReqDto.ToBooking());
-		if (!validationResult.IsValid) {
-			return BadRequest(validationResult.Errors);
-		}
-
 		bool isExist = await bookingService.Exists(bookingId);
 		if (!isExist) {
 			return NotFound();

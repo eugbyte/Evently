@@ -1,14 +1,14 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
-import { Account, Booking, Gathering } from "~/lib/domains/entities";
-import { getAccount, getBookings, type GetBookingsParams } from "~/lib/services";
+import { Booking, Gathering } from "~/lib/domains/entities";
+import { getBookings, type GetBookingsParams, store } from "~/lib/services";
 import { Card, Tabs, TabState } from "~/lib/components";
 import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "@tanstack/react-query";
+import { useStore } from "@tanstack/react-store";
 
 export const Route = createFileRoute("/bookings/attending")({
 	component: GetBookingsPage,
-	loader: async () => getAccount(),
 	pendingComponent: () => (
 		<div className="h-full">
 			<progress className="progress w-full"></progress>
@@ -17,11 +17,11 @@ export const Route = createFileRoute("/bookings/attending")({
 });
 
 export function GetBookingsPage(): JSX.Element {
-	const account: Account | null = Route.useLoaderData();
+	const accountId: string | undefined = useStore(store, (s) => s.account?.id);
 	const [tab, setTab] = useState(0);
 
 	const [bkQueryParams, setBkQueryParams] = useState<GetBookingsParams>({
-		attendeeId: account?.id ?? "",
+		attendeeId: accountId,
 		gatheringEndAfter: new Date(),
 		isCancelled: false
 	});
@@ -39,14 +39,14 @@ export function GetBookingsPage(): JSX.Element {
 		switch (_tab) {
 			case TabState.Upcoming: {
 				setBkQueryParams({
-					attendeeId: account?.id,
+					attendeeId: accountId,
 					gatheringEndAfter: new Date(),
 					isCancelled: false
 				});
 				break;
 			}
 			case TabState.Past: {
-				setBkQueryParams({ attendeeId: account?.id, gatheringEndBefore: new Date() });
+				setBkQueryParams({ attendeeId: accountId, gatheringEndBefore: new Date() });
 				break;
 			}
 		}
@@ -61,7 +61,7 @@ export function GetBookingsPage(): JSX.Element {
 			) : (
 				<div className="my-4 grid grid-cols-1 content-evenly justify-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
 					{gatherings.map((gathering) => (
-						<Card key={gathering.gatheringId} gathering={gathering} accountId={account?.id} />
+						<Card key={gathering.gatheringId} gathering={gathering} accountId={accountId} />
 					))}
 				</div>
 			)}
