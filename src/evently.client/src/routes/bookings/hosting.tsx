@@ -1,14 +1,13 @@
 ﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { Gathering } from "~/lib/domains/entities";
-import { getAccount, getGatherings, type GetGatheringsParams } from "~/lib/services";
+import { getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card, Tabs, TabState } from "~/lib/components";
 import { useQuery } from "@tanstack/react-query";
 import cloneDeep from "lodash.clonedeep";
 
 export const Route = createFileRoute("/bookings/hosting")({
 	component: GetHostedGatheringsPage,
-	loader: async () => getAccount(),
 	pendingComponent: () => (
 		<div className="h-full">
 			<progress className="progress w-full"></progress>

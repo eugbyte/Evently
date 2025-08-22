@@ -21,6 +21,7 @@ export class GatheringReqDto {
 	public location = "";
 	public organiserId = "";
 	public coverSrc?: string | null = null;
+	public cancellationDateTime: Date | null = null;
 
 	constructor(partial: Partial<GatheringReqDto> = {}) {
 		Object.assign(this, partial);

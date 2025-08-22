@@ -9,7 +9,7 @@ export function CancellationDialog({ cancellationDialogRef, handleCancel }: QrDi
 	return (
 		<dialog className="modal" ref={cancellationDialogRef}>
 			<div className="modal-box">
-				<h3 className="text-lg font-bold">Cancel Registration?</h3>
+				<h3 className="text-lg font-bold">Confirm Cancel?</h3>
 				<div className="modal-action justify-between">
 					<button className="btn btn-error" onClick={handleCancel}>
 						Cancel

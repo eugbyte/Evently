@@ -6,6 +6,7 @@ public sealed record GatheringReqDto(
 	string Description,
 	DateTimeOffset Start,
 	DateTimeOffset End,
+	DateTimeOffset? CancellationDateTime,
 	string Location,
 	string OrganiserId,
 	string? CoverSrc

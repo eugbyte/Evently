@@ -6,10 +6,10 @@ import {
 	createBooking,
 	getBookings,
 	getGathering,
-	hashString
+	hashString, updateGathering
 } from "~/lib/services";
 import { useMutation } from "@tanstack/react-query";
-import { BookingReqDto } from "~/lib/domains/models";
+import {BookingReqDto, GatheringReqDto} from "~/lib/domains/models";
 import { useNavigate } from "@tanstack/react-router";
 import { CancellationDialog, Jumbotron, QrDialog } from "./-components";
 import Placeholder1 from "~/lib/assets/event_placeholder_1.webp";
@@ -78,6 +78,19 @@ export function GatheringPage(): JSX.Element {
 			reloadDocument: true
 		});
 	};
+	const cancelGathering = async () => {
+		if (!isOrganiser) {
+			return;
+		}
+		
+		const gatheringDto = new GatheringReqDto(gathering);
+		gatheringDto.cancellationDateTime = new Date();
+		await updateGathering(gathering.gatheringId, gatheringDto);
+		await navigate({
+			to: `/gatherings/${gathering.gatheringId}`,
+			reloadDocument: true
+		});
+	}
 
 	return (
 		<div className="p-2">
@@ -135,7 +148,13 @@ export function GatheringPage(): JSX.Element {
 					<QrDialog qrDialogRef={qrDialogRef} booking={booking} />
 					<CancellationDialog
 						cancellationDialogRef={cancellationDialogRef}
-						handleCancel={cancelRegistration}
+						handleCancel={async () => {
+							if (isOrganiser) {
+								await cancelGathering();
+							} else if (isAttendee) {
+								await cancelRegistration();
+							}						
+						}}
 					/>
 				</div>
 			</div>

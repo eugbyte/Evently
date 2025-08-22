@@ -15,12 +15,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 		base.OnModelCreating(modelBuilder);
 
 		// Postgres identity configuration
-		modelBuilder.Entity<Gathering>().Property(g => g.GatheringId)
-			.HasIdentityOptions(startValue: 20);
+		// modelBuilder.Entity<Gathering>().Property(g => g.GatheringId)
+		// 	.HasIdentityOptions(startValue: 20);
+		//
+		// modelBuilder.Entity<Category>().Property(c => c.CategoryId)
+		// 	.HasIdentityOptions(startValue: 20);
 
-		modelBuilder.Entity<Category>().Property(c => c.CategoryId)
-			.HasIdentityOptions(startValue: 20);
+		SeedData(modelBuilder);
+	}
 
+	private static void SeedData(ModelBuilder modelBuilder) {
 		// Fixed Account IDs for referencing
 		const string hostUserId = "empty-user-12345";
 		const string guestUserId = "guest-user-22222";
@@ -255,7 +259,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				CancellationDateTime = null,
 			}
 		);
-
-
 	}
+	
 }

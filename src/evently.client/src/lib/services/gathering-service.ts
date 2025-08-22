@@ -71,6 +71,9 @@ export async function updateGathering(
 	}
 	formData.set("start", gatheringDto.start.toISOString());
 	formData.set("end", gatheringDto.end.toISOString());
+	if (gatheringDto.cancellationDateTime != null) {
+		formData.set("cancellationDateTime", gatheringDto.cancellationDateTime.toISOString());
+	}
 
 	const response = await axios.put<Gathering>(`/api/v1/Gatherings/${gatheringId}`, formData, {
 		headers: { "Content-Type": "multipart/form-data" }
