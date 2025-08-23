@@ -35,6 +35,8 @@ function RouteComponent() {
 				await sleep(1000);
 			} catch (e) {
 				console.error(e);
+				setToast(new ToastContent(true, "Invalid QR code", ToastStatus.Error));
+				await sleep(1000);
 			}
 			setToast(new ToastContent(false));
 			setPending(false);
@@ -57,11 +59,6 @@ function RouteComponent() {
 			await handleSubmit();
 		} catch (error) {
 			console.error(error);
-			setToast(new ToastContent(true, "Invalid QR code", ToastStatus.Error));
-			await sleep(1000);
-		} finally {
-			setToast(new ToastContent(false));
-			setPending(false);
 		}
 	};
 	// eslint-disable-next-line react-hooks/exhaustive-deps
