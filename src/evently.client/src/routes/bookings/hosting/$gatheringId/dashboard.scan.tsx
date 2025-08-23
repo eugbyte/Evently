@@ -44,7 +44,7 @@ function RouteComponent() {
 	});
 	const { handleSubmit } = form;
 
-	const onSuccess = async (data: string) => {
+	const onScanSuccess = async (data: string) => {
 		if (isPending || data == null || data.trim().length === 0) {
 			return;
 		}
@@ -61,19 +61,13 @@ function RouteComponent() {
 			console.error(error);
 		}
 	};
-	const memoOnSuccess = useCallback(onSuccess, [isPending, form, handleSubmit]);
-	const memoOnError = useCallback(() => {}, []);
 
 	const toggleCamera = () => {
 		setShowCamera(!showCamera);
 	};
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const memoOnSuccess = useCallback(onSuccess, []);
-	const memoOnError = useCallback(() => {}, []);
-
-	const toggleCamera = () => {
-		setShowCamera(!showCamera);
-	};
+	const memoOnScanSuccess = useCallback(onScanSuccess, []);
+	const memoOnScanError = useCallback(() => {}, []);
 
 	return (
 		<div>
@@ -83,8 +77,8 @@ function RouteComponent() {
 				<div className="flex flex-col items-center justify-center gap-4">
 					<section>
 						<Scanner
-							memoizedOnSuccess={memoOnSuccess}
-							memoizedOnDecodeError={memoOnError}
+							memoizedOnSuccess={memoOnScanSuccess}
+							memoizedOnDecodeError={memoOnScanError}
 							showCamera={showCamera}
 						/>
 						<button
