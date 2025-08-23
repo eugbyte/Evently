@@ -2,11 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useRef } from "react";
 import { Booking, Gathering } from "~/lib/domains/entities";
 import {
-	cancelBooking,
 	createBooking,
 	getBookings,
 	getGathering,
 	hashString,
+	updateBooking,
 	updateGathering
 } from "~/lib/services";
 import { useMutation } from "@tanstack/react-query";
@@ -19,10 +19,9 @@ import Placeholder2 from "~/lib/assets/event_placeholder_2.png";
 export const Route = createFileRoute("/gatherings/$gatheringId/")({
 	loader: async ({ params, context }) => {
 		const accountId: string | undefined = context.account?.id;
-		console.log({ accountId });
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering | null = await getGathering(gatheringId);
-		const bookings: Booking[] = await getBookings({
+		const { data: bookings } = await getBookings({
 			attendeeId: accountId ?? "",
 			gatheringId,
 			isCancelled: false
@@ -73,7 +72,13 @@ export function GatheringPage(): JSX.Element {
 		if (booking == null) {
 			return;
 		}
-		await cancelBooking(booking?.bookingId ?? "", booking);
+
+		const bookingDto: BookingReqDto = {
+			...booking,
+			attendeeId: booking.accountDto.id,
+			cancellationDateTime: new Date()
+		};
+		await updateBooking(booking?.bookingId ?? "", bookingDto);
 		navigate({
 			to: `/gatherings/${gathering.gatheringId}`,
 			reloadDocument: true
@@ -142,7 +147,13 @@ export function GatheringPage(): JSX.Element {
 								</button>
 							</div>
 							<div className="card-actions my-2 justify-between">
-								<button className="btn btn-outline btn-primary btn-sm">Manage Registrations</button>
+								<Link
+									to="/bookings/hosting/$gatheringId/dashboard"
+									params={{ gatheringId: gathering.gatheringId.toString() }}
+									className="btn btn-outline btn-accent"
+								>
+									Manage Registrations
+								</Link>
 							</div>
 						</>
 					)}

@@ -6,7 +6,7 @@ import { Card, Tabs, TabState } from "~/lib/components";
 import { useQuery } from "@tanstack/react-query";
 import cloneDeep from "lodash.clonedeep";
 
-export const Route = createFileRoute("/bookings/hosting")({
+export const Route = createFileRoute("/bookings/hosting/")({
 	component: GetHostedGatheringsPage,
 	pendingComponent: () => (
 		<div className="h-full">

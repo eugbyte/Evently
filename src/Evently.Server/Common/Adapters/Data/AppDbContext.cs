@@ -17,7 +17,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 		// Postgres identity configuration
 		modelBuilder.Entity<Gathering>().Property(g => g.GatheringId)
 			.HasIdentityOptions(startValue: 20);
-		
+
 		modelBuilder.Entity<Category>().Property(c => c.CategoryId)
 			.HasIdentityOptions(startValue: 20);
 
@@ -260,5 +260,4 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 			}
 		);
 	}
-	
 }

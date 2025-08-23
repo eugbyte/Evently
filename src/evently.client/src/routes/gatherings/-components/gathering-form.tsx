@@ -1,10 +1,11 @@
 import { useEffect, useState, type JSX } from "react";
 import { compressImage, type GatheringForm as IGatheringForm } from "~/routes/gatherings/-services";
-import { FieldErrMsg as FieldInfo } from "~/routes/gatherings/-components/field-err-msg.tsx";
+import { FieldErrMsg as FieldInfo } from "~/lib/components";
 import { Icon } from "@iconify/react";
 import { DateTime } from "luxon";
 import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
 import { useRouter } from "@tanstack/react-router";
+import { toIsoString } from "~/lib/services";
 interface GatheringFormProps {
 	file: File | null;
 	setFile: (file: File | null) => void;
@@ -24,14 +25,6 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 		// https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static#memory_management
 		return () => URL.revokeObjectURL(coverSrc);
 	}, [coverSrc]);
-
-	const toIsoString = (date: Date | null): string => {
-		if (date == null) {
-			return "";
-		}
-		const dateTime: DateTime = DateTime.fromJSDate(date);
-		return dateTime.toFormat("yyyy-MM-dd'T'HH:mm");
-	};
 
 	return (
 		<div className="bg-base-200 mb-32 p-2 sm:mb-0 sm:h-full">

@@ -6,7 +6,7 @@ import { Card, Tabs, TabState } from "~/lib/components";
 import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "@tanstack/react-query";
 
-export const Route = createFileRoute("/bookings/attending")({
+export const Route = createFileRoute("/bookings/attending/")({
 	loader: ({ context }) => ({ account: context.account }),
 	component: GetBookingsPage,
 	pendingComponent: () => (
@@ -29,7 +29,10 @@ export function GetBookingsPage(): JSX.Element {
 	});
 	const { data: _bookings, isLoading } = useQuery({
 		queryKey: ["getBookings", bkQueryParams, tab],
-		queryFn: (): Promise<Booking[]> => getBookings(bkQueryParams)
+		queryFn: async (): Promise<Booking[]> => {
+			const { data: bookings } = await getBookings(bkQueryParams);
+			return bookings;
+		}
 	});
 
 	let gatherings: Gathering[] = cloneDeep(_bookings ?? []).map((booking) => booking.gathering);

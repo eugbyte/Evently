@@ -47,6 +47,18 @@ public static class MapperExtension {
 		};
 	}
 
+	public static BookingReqDto ToBookingDto(this Booking booking) {
+		return new BookingReqDto(
+			booking.BookingId,
+			booking.AccountId,
+			booking.GatheringId,
+			booking.CreationDateTime,
+			booking.CheckInDateTime,
+			booking.CheckoutDateTime,
+			booking.CancellationDateTime
+		);
+	}
+
 	public static AccountDto ToAccountDto(this Account account) {
 		return new AccountDto(
 			account.Id,
