@@ -67,6 +67,13 @@ function RouteComponent() {
 	const toggleCamera = () => {
 		setShowCamera(!showCamera);
 	};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const memoOnSuccess = useCallback(onSuccess, [gatheringId]);
+	const memoOnError = useCallback(() => {}, []);
+
+	const toggleCamera = () => {
+		setShowCamera(!showCamera);
+	};
 
 	return (
 		<div>
