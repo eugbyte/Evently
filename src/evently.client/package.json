@@ -20,9 +20,7 @@
 		"axios": "^1.11.0",
 		"browser-image-compression": "^2.0.2",
 		"daisyui": "^5.0.50",
-		"js-cookie": "^3.0.5",
 		"json-2-csv": "^5.5.9",
-		"json2csv": "6.0.0-alpha.2",
 		"lodash.clonedeep": "^4.5.0",
 		"lodash.uniqby": "^4.7.0",
 		"luxon": "^3.7.1",
@@ -32,14 +30,12 @@
 		"react-dom": "^19.1.1",
 		"reflect-metadata": "^0.2.2",
 		"tailwindcss": "^4.1.11",
-		"typedi": "^0.10.0",
-		"wouter": "^3.7.1"
+		"usehooks-ts": "^3.1.1"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.32.0",
 		"@iconify/react": "^6.0.0",
 		"@tanstack/router-plugin": "^1.131.7",
-		"@types/js-cookie": "^3.0.6",
 		"@types/lodash.clonedeep": "^4.5.9",
 		"@types/lodash.uniqby": "^4.7.9",
 		"@types/luxon": "^3.7.1",
