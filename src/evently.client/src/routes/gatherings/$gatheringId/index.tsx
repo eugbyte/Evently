@@ -150,7 +150,7 @@ export function GatheringPage(): JSX.Element {
 								<Link
 									to="/bookings/hosting/$gatheringId/dashboard"
 									params={{ gatheringId: gathering.gatheringId.toString() }}
-									className="btn btn-outline btn-primary btn-sm"
+									className="btn btn-outline btn-accent"
 								>
 									Manage Registrations
 								</Link>

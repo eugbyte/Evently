@@ -2,7 +2,7 @@ using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
-using FluentValidation;
+using Evently.Server.Features.Accounts.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Threading.Channels;
@@ -11,7 +11,7 @@ namespace Evently.Server.Features.Bookings;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public sealed class BookingsController(IBookingService bookingService, ChannelWriter<string> emailQueue, IValidator<Booking> validator)
+public sealed class BookingsController(IBookingService bookingService, ChannelWriter<string> emailQueue, ILogger<BookingsController> logger)
 	: ControllerBase {
 	[HttpGet("{bookingId}", Name = "GetBooking")]
 	public async Task<ActionResult<Booking>> GetBooking(string bookingId) {
@@ -75,16 +75,24 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 		Booking booking = await bookingService.UpdateBooking(bookingId, bookingReqDto);
 		return Ok(booking);
 	}
-	
+
 	[HttpPatch("{bookingId}/checkIn", Name = "CheckInBooking")]
 	public async Task<ActionResult> CheckInBooking(string bookingId) {
 		Booking? booking = await bookingService.GetBooking(bookingId);
-		if (booking is null) {
+		if (booking?.Gathering is null) {
 			return NotFound();
 		}
 
+		Gathering gathering = booking.Gathering;
+		bool isAuth = await this.IsResourceOwner(gathering.OrganiserId);
+		logger.LogInformation("isAuth: {}", isAuth);
+		// Silence for now
+		// if (!isAuth) {
+		// 	return Forbid();
+		// }
+
 		booking.CheckInDateTime = DateTimeOffset.UtcNow;
-		booking = await bookingService.UpdateBooking(bookingId, booking.ToBookingDto());
+		booking = await bookingService.UpdateBooking(bookingId, bookingReqDto: booking.ToBookingDto());
 		return Ok(booking);
 	}
 }

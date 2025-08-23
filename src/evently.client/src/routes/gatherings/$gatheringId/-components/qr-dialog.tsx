@@ -17,7 +17,7 @@ export function QrDialog({ qrDialogRef, booking }: QrDialogProps): JSX.Element {
 
 		const url = new URL(
 			`gatherings/${booking.gatheringId}/?bookingId=${booking.bookingId}`,
-			window.location.href
+			window.location.origin
 		);
 		QRCode.toCanvas(canvasRef.current, url.href, (error) => {
 			if (error) {

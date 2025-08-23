@@ -17,7 +17,8 @@ export function Scanner({
 	const [isScanning, setIsScanning] = useState(false);
 
 	useEffect(() => {
-		const initializeScanner = async () => {
+		// initialize scanner
+		(async () => {
 			if (!videoRef.current) return;
 
 			const scanner: QrScanner = new QrScanner(
@@ -53,17 +54,17 @@ export function Scanner({
 			} catch (error) {
 				console.error("Failed to start scanner:", error);
 			}
-		};
+		})();
+	}, [onSuccess, onError]);
 
-		initializeScanner();
-
+	useEffect(() => {
 		// Cleanup function
 		return () => {
 			if (qrScanner != null) {
 				qrScanner.destroy();
 			}
 		};
-	}, [onSuccess, onError]);
+	}, [qrScanner]);
 
 	const handleClick = async () => {
 		if (qrScanner == null) {
@@ -81,7 +82,7 @@ export function Scanner({
 			qrScanner.stop();
 			setIsScanning(false);
 		}
-	}
+	};
 
 	return (
 		<div className={`${className} space-y-2`}>
