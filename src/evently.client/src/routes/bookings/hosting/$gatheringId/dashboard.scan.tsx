@@ -28,11 +28,8 @@ function RouteComponent() {
 		const _gatheringId: string = url.pathname.match(urlRegex)?.[1] ?? "";
 
 		if (gatheringId !== _gatheringId) {
-			setPending(false);
-			setToast(new ToastContent(true, `You are not the organiser`, ToastStatus.Error));
-			await sleep(1000);
-			setToast(new ToastContent(false));
-			return;
+			// silence for now
+			console.warn("Scanner is not the organiser");
 		}
 
 		try {

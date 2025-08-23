@@ -19,7 +19,9 @@ export function Scanner({
 	useEffect(() => {
 		// initialize scanner
 		(async () => {
-			if (!videoRef.current) return;
+			if (!videoRef.current) {
+				return;
+			};
 
 			const scanner: QrScanner = new QrScanner(
 				videoRef.current,
@@ -55,18 +57,14 @@ export function Scanner({
 				console.error("Failed to start scanner:", error);
 			}
 		})();
-	}, [onSuccess, onError]);
 
-	useEffect(() => {
 		// Cleanup function
 		return () => {
-			if (qrScanner != null) {
-				qrScanner.destroy();
-			}
+			qrScanner?.destroy();
 		};
-	}, [qrScanner]);
+	}, [onSuccess, onError]);
 
-	const handleClick = async () => {
+	const toggleScan = async () => {
 		if (qrScanner == null) {
 			return;
 		}
@@ -88,12 +86,12 @@ export function Scanner({
 		<div className={`${className} space-y-2`}>
 			<video ref={videoRef} className="mx-auto">
 				Video stream not available.
-				<track default kind="captions" src="" />
+				<track default kind="captions" />
 			</video>
 
 			<button
 				className="variant-filled btn mx-auto block w-3/4 sm:w-1/2"
-				onClick={handleClick}
+				onClick={toggleScan}
 				type="button"
 			>
 				{!isScanning ? <p>Scan</p> : <p>Stop Scan</p>}
