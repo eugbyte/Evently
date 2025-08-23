@@ -30,10 +30,10 @@ function RouteComponent() {
 	};
 	return (
 		<div>
-			<Scanner onSuccess={onSuccess} />
+			<Scanner onSuccess={onSuccess} onDecodeError={() => {}} />
 			{toast.show && (
 				<div className="toast toast-center">
-					<div className={`alert ${toastStyles[toast.toastStatus]}`}>
+					<div className={`${toastStyles[toast.toastStatus]}`}>
 						<span>{toast.message}</span>
 					</div>
 				</div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 import QrScanner from "qr-scanner";
 
 interface ScannerProps {
@@ -13,28 +13,22 @@ export function Scanner({
 	onDecodeError: onError
 }: ScannerProps): JSX.Element {
 	const videoRef = useRef<HTMLVideoElement>(null);
-	const qrScannerRef = useRef<QrScanner | null>(null);
+	const [qrScanner, setQrScanner] = useState<QrScanner | null>(null);
 	const [isScanning, setIsScanning] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		const initializeScanner = async () => {
 			if (!videoRef.current) return;
 
-			qrScannerRef.current = new QrScanner(
+			const scanner: QrScanner = new QrScanner(
 				videoRef.current,
 				async (result) => {
-					if (isLoading) {
-						return;
-					}
-					qrScannerRef.current?.stop();
-					setIsLoading(true);
+					qrScanner?.stop();
 
 					const data: string = result.data;
 					try {
 						onSuccess(data);
 					} catch {
-						setIsLoading(false);
 						setIsScanning(false);
 					}
 				},
@@ -51,9 +45,10 @@ export function Scanner({
 					}
 				}
 			);
+			setQrScanner(scanner);
 
 			try {
-				await qrScannerRef.current.start();
+				await scanner.start();
 				setIsScanning(true);
 			} catch (error) {
 				console.error("Failed to start scanner:", error);
@@ -64,44 +59,44 @@ export function Scanner({
 
 		// Cleanup function
 		return () => {
-			if (qrScannerRef.current) {
-				qrScannerRef.current.destroy();
+			if (qrScanner != null) {
+				qrScanner.destroy();
 			}
 		};
-	}, [onSuccess, onError, isLoading]);
+	}, [onSuccess, onError]);
 
-	const handleClick = useCallback(async () => {
-		if (!qrScannerRef.current) return;
+	const handleClick = async () => {
+		if (qrScanner == null) {
+			return;
+		}
 
 		if (!isScanning) {
 			try {
-				await qrScannerRef.current.start();
+				await qrScanner.start();
 				setIsScanning(true);
 			} catch (error) {
 				console.error("Failed to start scanner:", error);
 			}
 		} else {
-			qrScannerRef.current.stop();
+			qrScanner.stop();
 			setIsScanning(false);
 		}
-	}, [isScanning]);
+	}
 
 	return (
-		<div className={className}>
-			<video ref={videoRef} className="mx-auto mb-10">
+		<div className={`${className} space-y-2`}>
+			<video ref={videoRef} className="mx-auto">
 				Video stream not available.
 				<track default kind="captions" src="" />
 			</video>
 
 			<button
-				className="variant-filled btn mx-auto mb-10 block w-3/4 sm:w-1/2"
+				className="variant-filled btn mx-auto block w-3/4 sm:w-1/2"
 				onClick={handleClick}
 				type="button"
 			>
-				{!isScanning ? <p>Scan</p> : <p>Stop</p>}
+				{!isScanning ? <p>Scan</p> : <p>Stop Scan</p>}
 			</button>
 		</div>
 	);
 }
-
-export default Scanner;
