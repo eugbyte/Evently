@@ -8,289 +8,293 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as LoginIndexRouteImport } from "./routes/login/index";
-import { Route as HealthcheckIndexRouteImport } from "./routes/healthcheck/index";
-import { Route as GatheringsIndexRouteImport } from "./routes/gatherings/index";
-import { Route as LoginCallbackRouteImport } from "./routes/login/callback";
-import { Route as GatheringsCreateRouteImport } from "./routes/gatherings/create";
-import { Route as GatheringsGatheringIdIndexRouteImport } from "./routes/gatherings/$gatheringId/index";
-import { Route as BookingsHostingIndexRouteImport } from "./routes/bookings/hosting/index";
-import { Route as BookingsAttendingIndexRouteImport } from "./routes/bookings/attending/index";
-import { Route as GatheringsGatheringIdUpdateRouteImport } from "./routes/gatherings/$gatheringId/update";
-import { Route as BookingsHostingGatheringIdDashboardIndexRouteImport } from "./routes/bookings/hosting/$gatheringId/dashboard.index";
-import { Route as BookingsHostingGatheringIdDashboardScanRouteImport } from "./routes/bookings/hosting/$gatheringId/dashboard.scan";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index'
+import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
+import { Route as LoginCallbackRouteImport } from './routes/login/callback'
+import { Route as GatheringsCreateRouteImport } from './routes/gatherings/create'
+import { Route as GatheringsGatheringIdIndexRouteImport } from './routes/gatherings/$gatheringId/index'
+import { Route as BookingsHostingIndexRouteImport } from './routes/bookings/hosting/index'
+import { Route as BookingsAttendingIndexRouteImport } from './routes/bookings/attending/index'
+import { Route as GatheringsGatheringIdUpdateRouteImport } from './routes/gatherings/$gatheringId/update'
+import { Route as BookingsHostingGatheringIdDashboardIndexRouteImport } from './routes/bookings/hosting/$gatheringId/dashboard.index'
+import { Route as BookingsHostingGatheringIdDashboardScanRouteImport } from './routes/bookings/hosting/$gatheringId/dashboard.scan'
 
 const IndexRoute = IndexRouteImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
-	id: "/login/",
-	path: "/login/",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HealthcheckIndexRoute = HealthcheckIndexRouteImport.update({
-	id: "/healthcheck/",
-	path: "/healthcheck/",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/healthcheck/',
+  path: '/healthcheck/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GatheringsIndexRoute = GatheringsIndexRouteImport.update({
-	id: "/gatherings/",
-	path: "/gatherings/",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/gatherings/',
+  path: '/gatherings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginCallbackRoute = LoginCallbackRouteImport.update({
-	id: "/login/callback",
-	path: "/login/callback",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/login/callback',
+  path: '/login/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GatheringsCreateRoute = GatheringsCreateRouteImport.update({
-	id: "/gatherings/create",
-	path: "/gatherings/create",
-	getParentRoute: () => rootRouteImport
-} as any);
-const GatheringsGatheringIdIndexRoute = GatheringsGatheringIdIndexRouteImport.update({
-	id: "/gatherings/$gatheringId/",
-	path: "/gatherings/$gatheringId/",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/gatherings/create',
+  path: '/gatherings/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GatheringsGatheringIdIndexRoute =
+  GatheringsGatheringIdIndexRouteImport.update({
+    id: '/gatherings/$gatheringId/',
+    path: '/gatherings/$gatheringId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const BookingsHostingIndexRoute = BookingsHostingIndexRouteImport.update({
-	id: "/bookings/hosting/",
-	path: "/bookings/hosting/",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/bookings/hosting/',
+  path: '/bookings/hosting/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BookingsAttendingIndexRoute = BookingsAttendingIndexRouteImport.update({
-	id: "/bookings/attending/",
-	path: "/bookings/attending/",
-	getParentRoute: () => rootRouteImport
-} as any);
-const GatheringsGatheringIdUpdateRoute = GatheringsGatheringIdUpdateRouteImport.update({
-	id: "/gatherings/$gatheringId/update",
-	path: "/gatherings/$gatheringId/update",
-	getParentRoute: () => rootRouteImport
-} as any);
+  id: '/bookings/attending/',
+  path: '/bookings/attending/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GatheringsGatheringIdUpdateRoute =
+  GatheringsGatheringIdUpdateRouteImport.update({
+    id: '/gatherings/$gatheringId/update',
+    path: '/gatherings/$gatheringId/update',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const BookingsHostingGatheringIdDashboardIndexRoute =
-	BookingsHostingGatheringIdDashboardIndexRouteImport.update({
-		id: "/bookings/hosting/$gatheringId/dashboard/",
-		path: "/bookings/hosting/$gatheringId/dashboard/",
-		getParentRoute: () => rootRouteImport
-	} as any);
+  BookingsHostingGatheringIdDashboardIndexRouteImport.update({
+    id: '/bookings/hosting/$gatheringId/dashboard/',
+    path: '/bookings/hosting/$gatheringId/dashboard/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const BookingsHostingGatheringIdDashboardScanRoute =
-	BookingsHostingGatheringIdDashboardScanRouteImport.update({
-		id: "/bookings/hosting/$gatheringId/dashboard/scan",
-		path: "/bookings/hosting/$gatheringId/dashboard/scan",
-		getParentRoute: () => rootRouteImport
-	} as any);
+  BookingsHostingGatheringIdDashboardScanRouteImport.update({
+    id: '/bookings/hosting/$gatheringId/dashboard/scan',
+    path: '/bookings/hosting/$gatheringId/dashboard/scan',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
-	"/": typeof IndexRoute;
-	"/gatherings/create": typeof GatheringsCreateRoute;
-	"/login/callback": typeof LoginCallbackRoute;
-	"/gatherings": typeof GatheringsIndexRoute;
-	"/healthcheck": typeof HealthcheckIndexRoute;
-	"/login": typeof LoginIndexRoute;
-	"/gatherings/$gatheringId/update": typeof GatheringsGatheringIdUpdateRoute;
-	"/bookings/attending": typeof BookingsAttendingIndexRoute;
-	"/bookings/hosting": typeof BookingsHostingIndexRoute;
-	"/gatherings/$gatheringId": typeof GatheringsGatheringIdIndexRoute;
-	"/bookings/hosting/$gatheringId/dashboard/scan": typeof BookingsHostingGatheringIdDashboardScanRoute;
-	"/bookings/hosting/$gatheringId/dashboard": typeof BookingsHostingGatheringIdDashboardIndexRoute;
+  '/': typeof IndexRoute
+  '/gatherings/create': typeof GatheringsCreateRoute
+  '/login/callback': typeof LoginCallbackRoute
+  '/gatherings': typeof GatheringsIndexRoute
+  '/healthcheck': typeof HealthcheckIndexRoute
+  '/login': typeof LoginIndexRoute
+  '/gatherings/$gatheringId/update': typeof GatheringsGatheringIdUpdateRoute
+  '/bookings/attending': typeof BookingsAttendingIndexRoute
+  '/bookings/hosting': typeof BookingsHostingIndexRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdIndexRoute
+  '/bookings/hosting/$gatheringId/dashboard/scan': typeof BookingsHostingGatheringIdDashboardScanRoute
+  '/bookings/hosting/$gatheringId/dashboard': typeof BookingsHostingGatheringIdDashboardIndexRoute
 }
 export interface FileRoutesByTo {
-	"/": typeof IndexRoute;
-	"/gatherings/create": typeof GatheringsCreateRoute;
-	"/login/callback": typeof LoginCallbackRoute;
-	"/gatherings": typeof GatheringsIndexRoute;
-	"/healthcheck": typeof HealthcheckIndexRoute;
-	"/login": typeof LoginIndexRoute;
-	"/gatherings/$gatheringId/update": typeof GatheringsGatheringIdUpdateRoute;
-	"/bookings/attending": typeof BookingsAttendingIndexRoute;
-	"/bookings/hosting": typeof BookingsHostingIndexRoute;
-	"/gatherings/$gatheringId": typeof GatheringsGatheringIdIndexRoute;
-	"/bookings/hosting/$gatheringId/dashboard/scan": typeof BookingsHostingGatheringIdDashboardScanRoute;
-	"/bookings/hosting/$gatheringId/dashboard": typeof BookingsHostingGatheringIdDashboardIndexRoute;
+  '/': typeof IndexRoute
+  '/gatherings/create': typeof GatheringsCreateRoute
+  '/login/callback': typeof LoginCallbackRoute
+  '/gatherings': typeof GatheringsIndexRoute
+  '/healthcheck': typeof HealthcheckIndexRoute
+  '/login': typeof LoginIndexRoute
+  '/gatherings/$gatheringId/update': typeof GatheringsGatheringIdUpdateRoute
+  '/bookings/attending': typeof BookingsAttendingIndexRoute
+  '/bookings/hosting': typeof BookingsHostingIndexRoute
+  '/gatherings/$gatheringId': typeof GatheringsGatheringIdIndexRoute
+  '/bookings/hosting/$gatheringId/dashboard/scan': typeof BookingsHostingGatheringIdDashboardScanRoute
+  '/bookings/hosting/$gatheringId/dashboard': typeof BookingsHostingGatheringIdDashboardIndexRoute
 }
 export interface FileRoutesById {
-	__root__: typeof rootRouteImport;
-	"/": typeof IndexRoute;
-	"/gatherings/create": typeof GatheringsCreateRoute;
-	"/login/callback": typeof LoginCallbackRoute;
-	"/gatherings/": typeof GatheringsIndexRoute;
-	"/healthcheck/": typeof HealthcheckIndexRoute;
-	"/login/": typeof LoginIndexRoute;
-	"/gatherings/$gatheringId/update": typeof GatheringsGatheringIdUpdateRoute;
-	"/bookings/attending/": typeof BookingsAttendingIndexRoute;
-	"/bookings/hosting/": typeof BookingsHostingIndexRoute;
-	"/gatherings/$gatheringId/": typeof GatheringsGatheringIdIndexRoute;
-	"/bookings/hosting/$gatheringId/dashboard/scan": typeof BookingsHostingGatheringIdDashboardScanRoute;
-	"/bookings/hosting/$gatheringId/dashboard/": typeof BookingsHostingGatheringIdDashboardIndexRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/gatherings/create': typeof GatheringsCreateRoute
+  '/login/callback': typeof LoginCallbackRoute
+  '/gatherings/': typeof GatheringsIndexRoute
+  '/healthcheck/': typeof HealthcheckIndexRoute
+  '/login/': typeof LoginIndexRoute
+  '/gatherings/$gatheringId/update': typeof GatheringsGatheringIdUpdateRoute
+  '/bookings/attending/': typeof BookingsAttendingIndexRoute
+  '/bookings/hosting/': typeof BookingsHostingIndexRoute
+  '/gatherings/$gatheringId/': typeof GatheringsGatheringIdIndexRoute
+  '/bookings/hosting/$gatheringId/dashboard/scan': typeof BookingsHostingGatheringIdDashboardScanRoute
+  '/bookings/hosting/$gatheringId/dashboard/': typeof BookingsHostingGatheringIdDashboardIndexRoute
 }
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths:
-		| "/"
-		| "/gatherings/create"
-		| "/login/callback"
-		| "/gatherings"
-		| "/healthcheck"
-		| "/login"
-		| "/gatherings/$gatheringId/update"
-		| "/bookings/attending"
-		| "/bookings/hosting"
-		| "/gatherings/$gatheringId"
-		| "/bookings/hosting/$gatheringId/dashboard/scan"
-		| "/bookings/hosting/$gatheringId/dashboard";
-	fileRoutesByTo: FileRoutesByTo;
-	to:
-		| "/"
-		| "/gatherings/create"
-		| "/login/callback"
-		| "/gatherings"
-		| "/healthcheck"
-		| "/login"
-		| "/gatherings/$gatheringId/update"
-		| "/bookings/attending"
-		| "/bookings/hosting"
-		| "/gatherings/$gatheringId"
-		| "/bookings/hosting/$gatheringId/dashboard/scan"
-		| "/bookings/hosting/$gatheringId/dashboard";
-	id:
-		| "__root__"
-		| "/"
-		| "/gatherings/create"
-		| "/login/callback"
-		| "/gatherings/"
-		| "/healthcheck/"
-		| "/login/"
-		| "/gatherings/$gatheringId/update"
-		| "/bookings/attending/"
-		| "/bookings/hosting/"
-		| "/gatherings/$gatheringId/"
-		| "/bookings/hosting/$gatheringId/dashboard/scan"
-		| "/bookings/hosting/$gatheringId/dashboard/";
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/gatherings/create'
+    | '/login/callback'
+    | '/gatherings'
+    | '/healthcheck'
+    | '/login'
+    | '/gatherings/$gatheringId/update'
+    | '/bookings/attending'
+    | '/bookings/hosting'
+    | '/gatherings/$gatheringId'
+    | '/bookings/hosting/$gatheringId/dashboard/scan'
+    | '/bookings/hosting/$gatheringId/dashboard'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/gatherings/create'
+    | '/login/callback'
+    | '/gatherings'
+    | '/healthcheck'
+    | '/login'
+    | '/gatherings/$gatheringId/update'
+    | '/bookings/attending'
+    | '/bookings/hosting'
+    | '/gatherings/$gatheringId'
+    | '/bookings/hosting/$gatheringId/dashboard/scan'
+    | '/bookings/hosting/$gatheringId/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/gatherings/create'
+    | '/login/callback'
+    | '/gatherings/'
+    | '/healthcheck/'
+    | '/login/'
+    | '/gatherings/$gatheringId/update'
+    | '/bookings/attending/'
+    | '/bookings/hosting/'
+    | '/gatherings/$gatheringId/'
+    | '/bookings/hosting/$gatheringId/dashboard/scan'
+    | '/bookings/hosting/$gatheringId/dashboard/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute;
-	GatheringsCreateRoute: typeof GatheringsCreateRoute;
-	LoginCallbackRoute: typeof LoginCallbackRoute;
-	GatheringsIndexRoute: typeof GatheringsIndexRoute;
-	HealthcheckIndexRoute: typeof HealthcheckIndexRoute;
-	LoginIndexRoute: typeof LoginIndexRoute;
-	GatheringsGatheringIdUpdateRoute: typeof GatheringsGatheringIdUpdateRoute;
-	BookingsAttendingIndexRoute: typeof BookingsAttendingIndexRoute;
-	BookingsHostingIndexRoute: typeof BookingsHostingIndexRoute;
-	GatheringsGatheringIdIndexRoute: typeof GatheringsGatheringIdIndexRoute;
-	BookingsHostingGatheringIdDashboardScanRoute: typeof BookingsHostingGatheringIdDashboardScanRoute;
-	BookingsHostingGatheringIdDashboardIndexRoute: typeof BookingsHostingGatheringIdDashboardIndexRoute;
+  IndexRoute: typeof IndexRoute
+  GatheringsCreateRoute: typeof GatheringsCreateRoute
+  LoginCallbackRoute: typeof LoginCallbackRoute
+  GatheringsIndexRoute: typeof GatheringsIndexRoute
+  HealthcheckIndexRoute: typeof HealthcheckIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
+  GatheringsGatheringIdUpdateRoute: typeof GatheringsGatheringIdUpdateRoute
+  BookingsAttendingIndexRoute: typeof BookingsAttendingIndexRoute
+  BookingsHostingIndexRoute: typeof BookingsHostingIndexRoute
+  GatheringsGatheringIdIndexRoute: typeof GatheringsGatheringIdIndexRoute
+  BookingsHostingGatheringIdDashboardScanRoute: typeof BookingsHostingGatheringIdDashboardScanRoute
+  BookingsHostingGatheringIdDashboardIndexRoute: typeof BookingsHostingGatheringIdDashboardIndexRoute
 }
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/": {
-			id: "/";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof IndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/login/": {
-			id: "/login/";
-			path: "/login";
-			fullPath: "/login";
-			preLoaderRoute: typeof LoginIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/healthcheck/": {
-			id: "/healthcheck/";
-			path: "/healthcheck";
-			fullPath: "/healthcheck";
-			preLoaderRoute: typeof HealthcheckIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/gatherings/": {
-			id: "/gatherings/";
-			path: "/gatherings";
-			fullPath: "/gatherings";
-			preLoaderRoute: typeof GatheringsIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/login/callback": {
-			id: "/login/callback";
-			path: "/login/callback";
-			fullPath: "/login/callback";
-			preLoaderRoute: typeof LoginCallbackRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/gatherings/create": {
-			id: "/gatherings/create";
-			path: "/gatherings/create";
-			fullPath: "/gatherings/create";
-			preLoaderRoute: typeof GatheringsCreateRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/gatherings/$gatheringId/": {
-			id: "/gatherings/$gatheringId/";
-			path: "/gatherings/$gatheringId";
-			fullPath: "/gatherings/$gatheringId";
-			preLoaderRoute: typeof GatheringsGatheringIdIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/bookings/hosting/": {
-			id: "/bookings/hosting/";
-			path: "/bookings/hosting";
-			fullPath: "/bookings/hosting";
-			preLoaderRoute: typeof BookingsHostingIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/bookings/attending/": {
-			id: "/bookings/attending/";
-			path: "/bookings/attending";
-			fullPath: "/bookings/attending";
-			preLoaderRoute: typeof BookingsAttendingIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/gatherings/$gatheringId/update": {
-			id: "/gatherings/$gatheringId/update";
-			path: "/gatherings/$gatheringId/update";
-			fullPath: "/gatherings/$gatheringId/update";
-			preLoaderRoute: typeof GatheringsGatheringIdUpdateRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/bookings/hosting/$gatheringId/dashboard/": {
-			id: "/bookings/hosting/$gatheringId/dashboard/";
-			path: "/bookings/hosting/$gatheringId/dashboard";
-			fullPath: "/bookings/hosting/$gatheringId/dashboard";
-			preLoaderRoute: typeof BookingsHostingGatheringIdDashboardIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/bookings/hosting/$gatheringId/dashboard/scan": {
-			id: "/bookings/hosting/$gatheringId/dashboard/scan";
-			path: "/bookings/hosting/$gatheringId/dashboard/scan";
-			fullPath: "/bookings/hosting/$gatheringId/dashboard/scan";
-			preLoaderRoute: typeof BookingsHostingGatheringIdDashboardScanRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/healthcheck/': {
+      id: '/healthcheck/'
+      path: '/healthcheck'
+      fullPath: '/healthcheck'
+      preLoaderRoute: typeof HealthcheckIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gatherings/': {
+      id: '/gatherings/'
+      path: '/gatherings'
+      fullPath: '/gatherings'
+      preLoaderRoute: typeof GatheringsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/callback': {
+      id: '/login/callback'
+      path: '/login/callback'
+      fullPath: '/login/callback'
+      preLoaderRoute: typeof LoginCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gatherings/create': {
+      id: '/gatherings/create'
+      path: '/gatherings/create'
+      fullPath: '/gatherings/create'
+      preLoaderRoute: typeof GatheringsCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gatherings/$gatheringId/': {
+      id: '/gatherings/$gatheringId/'
+      path: '/gatherings/$gatheringId'
+      fullPath: '/gatherings/$gatheringId'
+      preLoaderRoute: typeof GatheringsGatheringIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings/hosting/': {
+      id: '/bookings/hosting/'
+      path: '/bookings/hosting'
+      fullPath: '/bookings/hosting'
+      preLoaderRoute: typeof BookingsHostingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings/attending/': {
+      id: '/bookings/attending/'
+      path: '/bookings/attending'
+      fullPath: '/bookings/attending'
+      preLoaderRoute: typeof BookingsAttendingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gatherings/$gatheringId/update': {
+      id: '/gatherings/$gatheringId/update'
+      path: '/gatherings/$gatheringId/update'
+      fullPath: '/gatherings/$gatheringId/update'
+      preLoaderRoute: typeof GatheringsGatheringIdUpdateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings/hosting/$gatheringId/dashboard/': {
+      id: '/bookings/hosting/$gatheringId/dashboard/'
+      path: '/bookings/hosting/$gatheringId/dashboard'
+      fullPath: '/bookings/hosting/$gatheringId/dashboard'
+      preLoaderRoute: typeof BookingsHostingGatheringIdDashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings/hosting/$gatheringId/dashboard/scan': {
+      id: '/bookings/hosting/$gatheringId/dashboard/scan'
+      path: '/bookings/hosting/$gatheringId/dashboard/scan'
+      fullPath: '/bookings/hosting/$gatheringId/dashboard/scan'
+      preLoaderRoute: typeof BookingsHostingGatheringIdDashboardScanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	GatheringsCreateRoute: GatheringsCreateRoute,
-	LoginCallbackRoute: LoginCallbackRoute,
-	GatheringsIndexRoute: GatheringsIndexRoute,
-	HealthcheckIndexRoute: HealthcheckIndexRoute,
-	LoginIndexRoute: LoginIndexRoute,
-	GatheringsGatheringIdUpdateRoute: GatheringsGatheringIdUpdateRoute,
-	BookingsAttendingIndexRoute: BookingsAttendingIndexRoute,
-	BookingsHostingIndexRoute: BookingsHostingIndexRoute,
-	GatheringsGatheringIdIndexRoute: GatheringsGatheringIdIndexRoute,
-	BookingsHostingGatheringIdDashboardScanRoute: BookingsHostingGatheringIdDashboardScanRoute,
-	BookingsHostingGatheringIdDashboardIndexRoute: BookingsHostingGatheringIdDashboardIndexRoute
-};
+  IndexRoute: IndexRoute,
+  GatheringsCreateRoute: GatheringsCreateRoute,
+  LoginCallbackRoute: LoginCallbackRoute,
+  GatheringsIndexRoute: GatheringsIndexRoute,
+  HealthcheckIndexRoute: HealthcheckIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
+  GatheringsGatheringIdUpdateRoute: GatheringsGatheringIdUpdateRoute,
+  BookingsAttendingIndexRoute: BookingsAttendingIndexRoute,
+  BookingsHostingIndexRoute: BookingsHostingIndexRoute,
+  GatheringsGatheringIdIndexRoute: GatheringsGatheringIdIndexRoute,
+  BookingsHostingGatheringIdDashboardScanRoute:
+    BookingsHostingGatheringIdDashboardScanRoute,
+  BookingsHostingGatheringIdDashboardIndexRoute:
+    BookingsHostingGatheringIdDashboardIndexRoute,
+}
 export const routeTree = rootRouteImport
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
