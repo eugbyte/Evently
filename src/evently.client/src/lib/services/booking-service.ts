@@ -66,6 +66,6 @@ export async function updateBooking(
 }
 
 export async function checkInBooking(bookingId: string): Promise<Booking> {
-	const response = await axios.patch<Booking>(`/api/v1/Bookings/${bookingId}`);
+	const response = await axios.patch<Booking>(`/api/v1/Bookings/${bookingId}/checkIn`);
 	return response.data;
 }

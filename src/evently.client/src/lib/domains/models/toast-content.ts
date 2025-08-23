@@ -6,10 +6,10 @@ export enum ToastStatus {
 }
 
 export const toastStyles = {
-	[ToastStatus.Success]: "alert-success",
-	[ToastStatus.Info]: "alert-info",
-	[ToastStatus.Warning]: "alert-warning",
-	[ToastStatus.Error]: "alert-error"
+	[ToastStatus.Success]: "alert alert-success",
+	[ToastStatus.Info]: "alert alert-info",
+	[ToastStatus.Warning]: "alert alert-warning",
+	[ToastStatus.Error]: "alert alert-error"
 };
 
 export class ToastContent {
