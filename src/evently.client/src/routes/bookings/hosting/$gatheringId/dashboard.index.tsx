@@ -49,7 +49,7 @@ export function DashboardPage(): JSX.Element {
 	};
 
 	return (
-		<div className="bg-base-100 min-h-screen p-4 md:p-6">
+		<div className="bg-base-100 h-full p-4 md:p-6">
 			<div className="mx-auto max-w-6xl">
 				{isLoading && <progress className="progress w-full"></progress>}
 				{/* Header Section */}
@@ -68,6 +68,15 @@ export function DashboardPage(): JSX.Element {
 							</h2>
 
 							<div className="mt-4 space-y-4">
+								<Link
+									className="btn btn-accent btn-outline btn-block justify-start gap-3"
+									to="/bookings/hosting/$gatheringId/dashboard/scan"
+									params={{ gatheringId: gathering.gatheringId.toString() }}
+								>
+									<Icon icon="material-symbols:qr-code-scanner" width="20" height="20" />
+									QR Scanner
+								</Link>
+
 								<button
 									className="btn btn-primary btn-block justify-start gap-3"
 									onClick={downloadCsv}
@@ -84,15 +93,6 @@ export function DashboardPage(): JSX.Element {
 									<Icon icon="material-symbols:refresh" width="20" height="20" />
 									Refresh Data
 								</button>
-
-								<Link
-									className="btn btn-accent btn-outline btn-block justify-start gap-3"
-									to="/bookings/hosting/$gatheringId/dashboard/scan"
-									params={{ gatheringId: gathering.gatheringId.toString() }}
-								>
-									<Icon icon="material-symbols:qr-code-scanner" width="20" height="20" />
-									QR Scanner
-								</Link>
 							</div>
 
 							<div className="divider"></div>

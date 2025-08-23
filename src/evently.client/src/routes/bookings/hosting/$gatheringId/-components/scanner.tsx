@@ -2,26 +2,31 @@ import { useEffect, useRef, useState, type JSX } from "react";
 import QrScanner from "qr-scanner";
 
 interface ScannerProps {
-	onSuccess: (data: string) => void;
-	onDecodeError?: (e: string | Error) => void;
+	showCamera: boolean;
+	// rmb to wrap it in useCallBack()
+	memoizedOnSuccess: (data: string) => void;
+	// rmb to wrap it in useCallBack()
+	memoizedOnDecodeError?: (e: string | Error) => void;
 	className?: string;
 }
 
 export function Scanner({
-	onSuccess,
+	showCamera,
+	memoizedOnSuccess: onSuccess,
 	className,
-	onDecodeError: onError
+	memoizedOnDecodeError: onError
 }: ScannerProps): JSX.Element {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const [qrScanner, setQrScanner] = useState<QrScanner | null>(null);
-	const [isScanning, setIsScanning] = useState(false);
 
 	useEffect(() => {
 		// initialize scanner
+		console.log("creating scanner");
+
 		(async () => {
 			if (!videoRef.current) {
 				return;
-			};
+			}
 
 			const scanner: QrScanner = new QrScanner(
 				videoRef.current,
@@ -29,11 +34,7 @@ export function Scanner({
 					qrScanner?.stop();
 
 					const data: string = result.data;
-					try {
-						onSuccess(data);
-					} catch {
-						setIsScanning(false);
-					}
+					onSuccess(data);
 				},
 				{
 					preferredCamera: "environment",
@@ -50,52 +51,39 @@ export function Scanner({
 			);
 			setQrScanner(scanner);
 
-			try {
-				await scanner.start();
-				setIsScanning(true);
-			} catch (error) {
-				console.error("Failed to start scanner:", error);
-			}
+			return () => {
+				qrScanner?.destroy();
+			};
 		})();
-
-		// Cleanup function
-		return () => {
-			qrScanner?.destroy();
-		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [onSuccess, onError]);
 
-	const toggleScan = async () => {
+	useEffect(() => {
 		if (qrScanner == null) {
 			return;
 		}
-
-		if (!isScanning) {
-			try {
-				await qrScanner.start();
-				setIsScanning(true);
-			} catch (error) {
-				console.error("Failed to start scanner:", error);
-			}
+		if (showCamera) {
+			qrScanner.start();
 		} else {
 			qrScanner.stop();
-			setIsScanning(false);
+			// hacky way to resolve the bug that a highlighted region still shows (https://github.com/nimiq/qr-scanner/issues/169)
+			const elements = Array.from(
+				document.getElementsByClassName("scan-region-highlight")
+			) as HTMLElement[];
+			for (const element of elements) {
+				element.style.display = "none";
+			}
 		}
-	};
+	}, [showCamera, qrScanner]);
 
 	return (
-		<div className={`${className} space-y-2`}>
-			<video ref={videoRef} className="mx-auto">
-				Video stream not available.
-				<track default kind="captions" />
-			</video>
-
-			<button
-				className="variant-filled btn mx-auto block w-3/4 sm:w-1/2"
-				onClick={toggleScan}
-				type="button"
-			>
-				{!isScanning ? <p>Scan</p> : <p>Stop Scan</p>}
-			</button>
+		<div className={`${className}`}>
+			<div className="flex h-64 justify-center sm:h-80 md:h-96">
+				<video ref={videoRef}>
+					Video stream not available.
+					<track default kind="captions" />
+				</video>
+			</div>
 		</div>
 	);
 }

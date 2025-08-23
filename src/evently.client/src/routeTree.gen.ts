@@ -15,9 +15,9 @@ import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index
 import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
 import { Route as LoginCallbackRouteImport } from './routes/login/callback'
 import { Route as GatheringsCreateRouteImport } from './routes/gatherings/create'
-import { Route as BookingsAttendingRouteImport } from './routes/bookings/attending'
 import { Route as GatheringsGatheringIdIndexRouteImport } from './routes/gatherings/$gatheringId/index'
 import { Route as BookingsHostingIndexRouteImport } from './routes/bookings/hosting/index'
+import { Route as BookingsAttendingIndexRouteImport } from './routes/bookings/attending/index'
 import { Route as GatheringsGatheringIdUpdateRouteImport } from './routes/gatherings/$gatheringId/update'
 import { Route as BookingsHostingGatheringIdDashboardIndexRouteImport } from './routes/bookings/hosting/$gatheringId/dashboard.index'
 import { Route as BookingsHostingGatheringIdDashboardScanRouteImport } from './routes/bookings/hosting/$gatheringId/dashboard.scan'
@@ -52,11 +52,6 @@ const GatheringsCreateRoute = GatheringsCreateRouteImport.update({
   path: '/gatherings/create',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BookingsAttendingRoute = BookingsAttendingRouteImport.update({
-  id: '/bookings/attending',
-  path: '/bookings/attending',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const GatheringsGatheringIdIndexRoute =
   GatheringsGatheringIdIndexRouteImport.update({
     id: '/gatherings/$gatheringId/',
@@ -66,6 +61,11 @@ const GatheringsGatheringIdIndexRoute =
 const BookingsHostingIndexRoute = BookingsHostingIndexRouteImport.update({
   id: '/bookings/hosting/',
   path: '/bookings/hosting/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookingsAttendingIndexRoute = BookingsAttendingIndexRouteImport.update({
+  id: '/bookings/attending/',
+  path: '/bookings/attending/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GatheringsGatheringIdUpdateRoute =
@@ -89,13 +89,13 @@ const BookingsHostingGatheringIdDashboardScanRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/bookings/attending': typeof BookingsAttendingRoute
   '/gatherings/create': typeof GatheringsCreateRoute
   '/login/callback': typeof LoginCallbackRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
   '/gatherings/$gatheringId/update': typeof GatheringsGatheringIdUpdateRoute
+  '/bookings/attending': typeof BookingsAttendingIndexRoute
   '/bookings/hosting': typeof BookingsHostingIndexRoute
   '/gatherings/$gatheringId': typeof GatheringsGatheringIdIndexRoute
   '/bookings/hosting/$gatheringId/dashboard/scan': typeof BookingsHostingGatheringIdDashboardScanRoute
@@ -103,13 +103,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/bookings/attending': typeof BookingsAttendingRoute
   '/gatherings/create': typeof GatheringsCreateRoute
   '/login/callback': typeof LoginCallbackRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
   '/gatherings/$gatheringId/update': typeof GatheringsGatheringIdUpdateRoute
+  '/bookings/attending': typeof BookingsAttendingIndexRoute
   '/bookings/hosting': typeof BookingsHostingIndexRoute
   '/gatherings/$gatheringId': typeof GatheringsGatheringIdIndexRoute
   '/bookings/hosting/$gatheringId/dashboard/scan': typeof BookingsHostingGatheringIdDashboardScanRoute
@@ -118,13 +118,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/bookings/attending': typeof BookingsAttendingRoute
   '/gatherings/create': typeof GatheringsCreateRoute
   '/login/callback': typeof LoginCallbackRoute
   '/gatherings/': typeof GatheringsIndexRoute
   '/healthcheck/': typeof HealthcheckIndexRoute
   '/login/': typeof LoginIndexRoute
   '/gatherings/$gatheringId/update': typeof GatheringsGatheringIdUpdateRoute
+  '/bookings/attending/': typeof BookingsAttendingIndexRoute
   '/bookings/hosting/': typeof BookingsHostingIndexRoute
   '/gatherings/$gatheringId/': typeof GatheringsGatheringIdIndexRoute
   '/bookings/hosting/$gatheringId/dashboard/scan': typeof BookingsHostingGatheringIdDashboardScanRoute
@@ -134,13 +134,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/bookings/attending'
     | '/gatherings/create'
     | '/login/callback'
     | '/gatherings'
     | '/healthcheck'
     | '/login'
     | '/gatherings/$gatheringId/update'
+    | '/bookings/attending'
     | '/bookings/hosting'
     | '/gatherings/$gatheringId'
     | '/bookings/hosting/$gatheringId/dashboard/scan'
@@ -148,13 +148,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/bookings/attending'
     | '/gatherings/create'
     | '/login/callback'
     | '/gatherings'
     | '/healthcheck'
     | '/login'
     | '/gatherings/$gatheringId/update'
+    | '/bookings/attending'
     | '/bookings/hosting'
     | '/gatherings/$gatheringId'
     | '/bookings/hosting/$gatheringId/dashboard/scan'
@@ -162,13 +162,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/bookings/attending'
     | '/gatherings/create'
     | '/login/callback'
     | '/gatherings/'
     | '/healthcheck/'
     | '/login/'
     | '/gatherings/$gatheringId/update'
+    | '/bookings/attending/'
     | '/bookings/hosting/'
     | '/gatherings/$gatheringId/'
     | '/bookings/hosting/$gatheringId/dashboard/scan'
@@ -177,13 +177,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BookingsAttendingRoute: typeof BookingsAttendingRoute
   GatheringsCreateRoute: typeof GatheringsCreateRoute
   LoginCallbackRoute: typeof LoginCallbackRoute
   GatheringsIndexRoute: typeof GatheringsIndexRoute
   HealthcheckIndexRoute: typeof HealthcheckIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   GatheringsGatheringIdUpdateRoute: typeof GatheringsGatheringIdUpdateRoute
+  BookingsAttendingIndexRoute: typeof BookingsAttendingIndexRoute
   BookingsHostingIndexRoute: typeof BookingsHostingIndexRoute
   GatheringsGatheringIdIndexRoute: typeof GatheringsGatheringIdIndexRoute
   BookingsHostingGatheringIdDashboardScanRoute: typeof BookingsHostingGatheringIdDashboardScanRoute
@@ -234,13 +234,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GatheringsCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/bookings/attending': {
-      id: '/bookings/attending'
-      path: '/bookings/attending'
-      fullPath: '/bookings/attending'
-      preLoaderRoute: typeof BookingsAttendingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/gatherings/$gatheringId/': {
       id: '/gatherings/$gatheringId/'
       path: '/gatherings/$gatheringId'
@@ -253,6 +246,13 @@ declare module '@tanstack/react-router' {
       path: '/bookings/hosting'
       fullPath: '/bookings/hosting'
       preLoaderRoute: typeof BookingsHostingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings/attending/': {
+      id: '/bookings/attending/'
+      path: '/bookings/attending'
+      fullPath: '/bookings/attending'
+      preLoaderRoute: typeof BookingsAttendingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gatherings/$gatheringId/update': {
@@ -281,13 +281,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BookingsAttendingRoute: BookingsAttendingRoute,
   GatheringsCreateRoute: GatheringsCreateRoute,
   LoginCallbackRoute: LoginCallbackRoute,
   GatheringsIndexRoute: GatheringsIndexRoute,
   HealthcheckIndexRoute: HealthcheckIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   GatheringsGatheringIdUpdateRoute: GatheringsGatheringIdUpdateRoute,
+  BookingsAttendingIndexRoute: BookingsAttendingIndexRoute,
   BookingsHostingIndexRoute: BookingsHostingIndexRoute,
   GatheringsGatheringIdIndexRoute: GatheringsGatheringIdIndexRoute,
   BookingsHostingGatheringIdDashboardScanRoute:
