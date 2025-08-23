@@ -120,7 +120,6 @@ export function GatheringsPage(): JSX.Element {
 					</button>
 				</div>
 			</div>
-			<div className="h-40"></div>
 		</div>
 	);
 }

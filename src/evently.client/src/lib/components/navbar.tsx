@@ -29,7 +29,7 @@ export function Navbar(): JSX.Element {
 	const isHomePage = router.state.location.pathname === "/";
 
 	return (
-		<div className="bg-base-100 navbar shadow-sm fixed top-0 left-0 right-0 z-50">
+		<div className="bg-base-100 navbar fixed top-0 right-0 left-0 z-50 shadow-sm">
 			<div className="navbar-start">
 				{/* Mobile: Hamburger menu and back button */}
 				<div className="flex items-center gap-2 lg:hidden">
@@ -40,7 +40,7 @@ export function Navbar(): JSX.Element {
 						</div>
 						<ul
 							tabIndex={0}
-							className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+							className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 space-y-4 p-2 shadow"
 						>
 							<li>
 								<Link to="/gatherings" activeProps={{ className: "underline" }}>
@@ -50,18 +50,12 @@ export function Navbar(): JSX.Element {
 							{isAuth && (
 								<>
 									<li>
-										<Link
-											to="/bookings/attending"
-											activeProps={{ className: "underline" }}
-										>
+										<Link to="/bookings/attending" activeProps={{ className: "underline" }}>
 											Attending
 										</Link>
 									</li>
 									<li>
-										<Link
-											to="/bookings/hosting"
-											activeProps={{ className: "underline" }}
-										>
+										<Link to="/bookings/hosting" activeProps={{ className: "underline" }}>
 											Hosting
 										</Link>
 									</li>
@@ -88,28 +82,19 @@ export function Navbar(): JSX.Element {
 			<div className="navbar-center hidden lg:flex">
 				<ul className="menu menu-horizontal px-1">
 					<li>
-						<Link
-							to="/gatherings"
-							activeProps={{ className: "underline" }}
-						>
+						<Link to="/gatherings" activeProps={{ className: "underline" }}>
 							Gatherings
 						</Link>
 					</li>
 					{isAuth && (
 						<>
 							<li>
-								<Link
-									to="/bookings/attending"
-									activeProps={{ className: "underline" }}
-								>
+								<Link to="/bookings/attending" activeProps={{ className: "underline" }}>
 									Attending
 								</Link>
 							</li>
 							<li>
-								<Link
-									to="/bookings/hosting"
-									activeProps={{ className: "underline" }}
-								>
+								<Link to="/bookings/hosting" activeProps={{ className: "underline" }}>
 									Hosting
 								</Link>
 							</li>
