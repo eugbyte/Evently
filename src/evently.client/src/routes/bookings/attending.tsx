@@ -29,7 +29,10 @@ export function GetBookingsPage(): JSX.Element {
 	});
 	const { data: _bookings, isLoading } = useQuery({
 		queryKey: ["getBookings", bkQueryParams, tab],
-		queryFn: (): Promise<Booking[]> => getBookings(bkQueryParams)
+		queryFn: async (): Promise<Booking[]> => {
+			const { data: bookings } = await getBookings(bkQueryParams);
+			return bookings;
+		}
 	});
 
 	let gatherings: Gathering[] = cloneDeep(_bookings ?? []).map((booking) => booking.gathering);

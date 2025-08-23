@@ -37,12 +37,24 @@ importers:
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
+      json-2-csv:
+        specifier: ^5.5.9
+        version: 5.5.9
+      json2csv:
+        specifier: 6.0.0-alpha.2
+        version: 6.0.0-alpha.2
       lodash.clonedeep:
         specifier: ^4.5.0
         version: 4.5.0
+      lodash.uniqby:
+        specifier: ^4.7.0
+        version: 4.7.0
       luxon:
         specifier: ^3.7.1
         version: 3.7.1
+      qr-scanner:
+        specifier: ^1.4.2
+        version: 1.4.2
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4
@@ -80,6 +92,9 @@ importers:
       "@types/lodash.clonedeep":
         specifier: ^4.5.9
         version: 4.5.9
+      "@types/lodash.uniqby":
+        specifier: ^4.7.9
+        version: 4.7.9
       "@types/luxon":
         specifier: ^3.7.1
         version: 3.7.1
@@ -932,6 +947,12 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  "@streamparser/json@0.0.6":
+    resolution:
+      {
+        integrity: sha512-vL9EVn/v+OhZ+Wcs6O4iKE9EUpwHUqHmCtNUMWjqp+6dr85+XPOSGTEsqYNq1Vn04uk9SWlOVmx9J48ggJVT2Q==
+      }
+
   "@tailwindcss/node@4.1.11":
     resolution:
       {
@@ -1257,6 +1278,12 @@ packages:
         integrity: sha512-19429mWC+FyaAhOLzsS8kZUsI+/GmBAQ0HFiCPsKGU+7pBXOQWhyrY6xNNDwUSX8SMZMJvuFVMF9O5dQOlQK9Q==
       }
 
+  "@types/lodash.uniqby@4.7.9":
+    resolution:
+      {
+        integrity: sha512-rjrXji/seS6BZJRgXrU2h6FqxRVufsbq/HE0Tx0SdgbtlWr2YmD/M64BlYEYYlaMcpZwy32IYVkMfUMYlPuv0w==
+      }
+
   "@types/lodash@4.17.20":
     resolution:
       {
@@ -1273,6 +1300,12 @@ packages:
     resolution:
       {
         integrity: sha512-y3tBaz+rjspDTylNjAX37jEC3TETEFGNJL6uQDxwF9/8GLLIjW1rvVHlynyuUKMnMr1Roq8jOv3vkopBjC4/VA==
+      }
+
+  "@types/offscreencanvas@2019.7.3":
+    resolution:
+      {
+        integrity: sha512-ieXiYmgSRXUDeOntE1InxjWyvEelZGP63M+cGuquuRLuIKKT1osnkXjxev9B7d1nXSug5vpunx+gNlbVxMlC9A==
       }
 
   "@types/qrcode@1.5.5":
@@ -1601,6 +1634,13 @@ packages:
       }
     engines: { node: ">= 0.8" }
 
+  commander@6.2.1:
+    resolution:
+      {
+        integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
+      }
+    engines: { node: ">= 6" }
+
   concat-map@0.0.1:
     resolution:
       {
@@ -1663,6 +1703,13 @@ packages:
         integrity: sha512-q5uwOjR3Um5YD+ZWPOF/1sGHVW9A5rCrRwITQChRXlmPkxDFBqCm4jNTIVdGHNH9OnR+V9MoZVgRhsFb+ARbUw==
       }
 
+  deeks@3.1.0:
+    resolution:
+      {
+        integrity: sha512-e7oWH1LzIdv/prMQ7pmlDlaVoL64glqzvNgkgQNgyec9ORPHrT2jaOqMtRyqJuwWjtfb6v+2rk9pmaHj+F137A==
+      }
+    engines: { node: ">= 16" }
+
   deep-is@0.1.4:
     resolution:
       {
@@ -1701,6 +1748,13 @@ packages:
       {
         integrity: sha512-qiSlmBq9+BCdCA/L46dw8Uy93mloxsPSbwnm5yrKn2vMPiy8KyAskTF6zuV/j5BMsmOGZDPs7KjU+mjb670kfA==
       }
+
+  doc-path@4.1.1:
+    resolution:
+      {
+        integrity: sha512-h1ErTglQAVv2gCnOpD3sFS6uolDbOKHDU1BZq+Kl3npPqroU3dYL42lUgMfd5UimlwtRgp7C9dLGwqQ5D2HYgQ==
+      }
+    engines: { node: ">=16" }
 
   dunder-proto@1.0.1:
     resolution:
@@ -2216,6 +2270,13 @@ packages:
     engines: { node: ">=6" }
     hasBin: true
 
+  json-2-csv@5.5.9:
+    resolution:
+      {
+        integrity: sha512-l4g6GZVHrsN+5SKkpOmGNSvho+saDZwXzj/xmcO0lJAgklzwsiqy70HS5tA9djcRvBEybZ9IF6R1MDFTEsaOGQ==
+      }
+    engines: { node: ">= 16" }
+
   json-buffer@3.0.1:
     resolution:
       {
@@ -2233,6 +2294,14 @@ packages:
       {
         integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==
       }
+
+  json2csv@6.0.0-alpha.2:
+    resolution:
+      {
+        integrity: sha512-nJ3oP6QxN8z69IT1HmrJdfVxhU1kLTBVgMfRnNZc37YEY+jZ4nU27rBGxT4vaqM/KUCavLRhntmTuBFqZLBUcA==
+      }
+    engines: { node: ">= 12", npm: ">= 6.13.0" }
+    hasBin: true
 
   json5@2.2.3:
     resolution:
@@ -2372,10 +2441,23 @@ packages:
         integrity: sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==
       }
 
+  lodash.get@4.4.2:
+    resolution:
+      {
+        integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==
+      }
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
+
   lodash.merge@4.6.2:
     resolution:
       {
         integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
+      }
+
+  lodash.uniqby@4.7.0:
+    resolution:
+      {
+        integrity: sha512-e/zcLx6CSbmaEgFHCA7BnoQKyCtKMxnuWrJygbwPs/AIn+IMKl66L8/s+wBUn5LRw2pZx3bUHibiV1b6aTWIww==
       }
 
   lru-cache@5.1.1:
@@ -2694,6 +2776,12 @@ packages:
         integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==
       }
     engines: { node: ">=6" }
+
+  qr-scanner@1.4.2:
+    resolution:
+      {
+        integrity: sha512-kV1yQUe2FENvn59tMZW6mOVfpq9mGxGf8l6+EGaXUOd4RBOLg7tRC83OrirM5AtDvZRpdjdlXURsHreAOSPOUw==
+      }
 
   qrcode@1.5.4:
     resolution:
@@ -3626,6 +3714,8 @@ snapshots:
   "@rollup/rollup-win32-x64-msvc@4.46.2":
     optional: true
 
+  "@streamparser/json@0.0.6": {}
+
   "@tailwindcss/node@4.1.11":
     dependencies:
       "@ampproject/remapping": 2.3.0
@@ -3851,6 +3941,10 @@ snapshots:
     dependencies:
       "@types/lodash": 4.17.20
 
+  "@types/lodash.uniqby@4.7.9":
+    dependencies:
+      "@types/lodash": 4.17.20
+
   "@types/lodash@4.17.20": {}
 
   "@types/luxon@3.7.1": {}
@@ -3858,6 +3952,8 @@ snapshots:
   "@types/node@22.17.1":
     dependencies:
       undici-types: 6.21.0
+
+  "@types/offscreencanvas@2019.7.3": {}
 
   "@types/qrcode@1.5.5":
     dependencies:
@@ -4103,6 +4199,8 @@ snapshots:
     dependencies:
       delayed-stream: 1.0.0
 
+  commander@6.2.1: {}
+
   concat-map@0.0.1: {}
 
   convert-source-map@2.0.0: {}
@@ -4127,6 +4225,8 @@ snapshots:
 
   decode-formdata@0.9.0: {}
 
+  deeks@3.1.0: {}
+
   deep-is@0.1.4: {}
 
   delayed-stream@1.0.0: {}
@@ -4138,6 +4238,8 @@ snapshots:
   diff@8.0.2: {}
 
   dijkstrajs@1.0.3: {}
+
+  doc-path@4.1.1: {}
 
   dunder-proto@1.0.1:
     dependencies:
@@ -4444,11 +4546,22 @@ snapshots:
 
   jsesc@3.1.0: {}
 
+  json-2-csv@5.5.9:
+    dependencies:
+      deeks: 3.1.0
+      doc-path: 4.1.1
+
   json-buffer@3.0.1: {}
 
   json-schema-traverse@0.4.1: {}
 
   json-stable-stringify-without-jsonify@1.0.1: {}
+
+  json2csv@6.0.0-alpha.2:
+    dependencies:
+      "@streamparser/json": 0.0.6
+      commander: 6.2.1
+      lodash.get: 4.4.2
 
   json5@2.2.3: {}
 
@@ -4516,7 +4629,11 @@ snapshots:
 
   lodash.clonedeep@4.5.0: {}
 
+  lodash.get@4.4.2: {}
+
   lodash.merge@4.6.2: {}
+
+  lodash.uniqby@4.7.0: {}
 
   lru-cache@5.1.1:
     dependencies:
@@ -4631,6 +4748,10 @@ snapshots:
   proxy-from-env@1.1.0: {}
 
   punycode@2.3.1: {}
+
+  qr-scanner@1.4.2:
+    dependencies:
+      "@types/offscreencanvas": 2019.7.3
 
   qrcode@1.5.4:
     dependencies:

@@ -1,6 +1,6 @@
 ﻿import axios from "axios";
 import { Booking } from "~/lib/domains/entities";
-import { BookingReqDto } from "~/lib/domains/models";
+import { BookingReqDto, type PageResult } from "~/lib/domains/models";
 
 export interface GetBookingsParams {
 	attendeeId?: string;
@@ -16,7 +16,7 @@ export interface GetBookingsParams {
 	limit?: number;
 }
 
-export async function getBookings(params: GetBookingsParams): Promise<Booking[]> {
+export async function getBookings(params: GetBookingsParams): Promise<PageResult<Booking[]>> {
 	const response = await axios.get<Booking[]>("/api/v1/Bookings", { params });
 	const bookings: Booking[] = response.data;
 	for (const booking of bookings) {
@@ -32,7 +32,12 @@ export async function getBookings(params: GetBookingsParams): Promise<Booking[]>
 			booking.gathering.end = new Date(booking.gathering.end);
 		}
 	}
-	return bookings;
+
+	const totalCount: number = parseInt(response.headers["x-total-count"]);
+	return {
+		totalCount,
+		data: bookings
+	};
 }
 
 export async function createBooking(bookingReqDto: BookingReqDto): Promise<Booking> {
@@ -52,13 +57,15 @@ export async function getBooking(bookingId: string): Promise<Booking> {
 	return booking;
 }
 
-export async function cancelBooking(bookingId: string, booking: Booking): Promise<Booking> {
-	console.log({ getBk: booking });
-	const bookingDto: BookingReqDto = {
-		...booking,
-		attendeeId: booking.accountDto.id,
-		cancellationDateTime: new Date()
-	};
-	booking = await axios.put(`/api/v1/Bookings/${bookingId}`, bookingDto);
-	return booking;
+export async function updateBooking(
+	bookingId: string,
+	bookingDto: BookingReqDto
+): Promise<Booking> {
+	const response = await axios.put<Booking>(`/api/v1/Bookings/${bookingId}`, bookingDto);
+	return response.data;
+}
+
+export async function checkInBooking(bookingId: string): Promise<Booking> {
+	const response = await axios.patch<Booking>(`/api/v1/Bookings/${bookingId}`);
+	return response.data;
 }

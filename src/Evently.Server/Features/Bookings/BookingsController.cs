@@ -1,6 +1,7 @@
 using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
+using Evently.Server.Common.Extensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -72,6 +73,18 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 		}
 
 		Booking booking = await bookingService.UpdateBooking(bookingId, bookingReqDto);
+		return Ok(booking);
+	}
+	
+	[HttpPatch("{bookingId}/checkIn", Name = "CheckInBooking")]
+	public async Task<ActionResult> CheckInBooking(string bookingId) {
+		Booking? booking = await bookingService.GetBooking(bookingId);
+		if (booking is null) {
+			return NotFound();
+		}
+
+		booking.CheckInDateTime = DateTimeOffset.UtcNow;
+		booking = await bookingService.UpdateBooking(bookingId, booking.ToBookingDto());
 		return Ok(booking);
 	}
 }

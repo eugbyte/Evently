@@ -15,10 +15,12 @@ import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index
 import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
 import { Route as LoginCallbackRouteImport } from './routes/login/callback'
 import { Route as GatheringsCreateRouteImport } from './routes/gatherings/create'
-import { Route as BookingsHostingRouteImport } from './routes/bookings/hosting'
 import { Route as BookingsAttendingRouteImport } from './routes/bookings/attending'
 import { Route as GatheringsGatheringIdIndexRouteImport } from './routes/gatherings/$gatheringId/index'
+import { Route as BookingsHostingIndexRouteImport } from './routes/bookings/hosting/index'
 import { Route as GatheringsGatheringIdUpdateRouteImport } from './routes/gatherings/$gatheringId/update'
+import { Route as BookingsHostingGatheringIdDashboardIndexRouteImport } from './routes/bookings/hosting/$gatheringId/dashboard/index'
+import { Route as BookingsHostingGatheringIdDashboardScanRouteImport } from './routes/bookings/hosting/$gatheringId/dashboard/scan'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -50,11 +52,6 @@ const GatheringsCreateRoute = GatheringsCreateRouteImport.update({
   path: '/gatherings/create',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BookingsHostingRoute = BookingsHostingRouteImport.update({
-  id: '/bookings/hosting',
-  path: '/bookings/hosting',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BookingsAttendingRoute = BookingsAttendingRouteImport.update({
   id: '/bookings/attending',
   path: '/bookings/attending',
@@ -66,100 +63,131 @@ const GatheringsGatheringIdIndexRoute =
     path: '/gatherings/$gatheringId/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const BookingsHostingIndexRoute = BookingsHostingIndexRouteImport.update({
+  id: '/bookings/hosting/',
+  path: '/bookings/hosting/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GatheringsGatheringIdUpdateRoute =
   GatheringsGatheringIdUpdateRouteImport.update({
     id: '/gatherings/$gatheringId/update',
     path: '/gatherings/$gatheringId/update',
     getParentRoute: () => rootRouteImport,
   } as any)
+const BookingsHostingGatheringIdDashboardIndexRoute =
+  BookingsHostingGatheringIdDashboardIndexRouteImport.update({
+    id: '/bookings/hosting/$gatheringId/dashboard/',
+    path: '/bookings/hosting/$gatheringId/dashboard/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const BookingsHostingGatheringIdDashboardScanRoute =
+  BookingsHostingGatheringIdDashboardScanRouteImport.update({
+    id: '/bookings/hosting/$gatheringId/dashboard/scan',
+    path: '/bookings/hosting/$gatheringId/dashboard/scan',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bookings/attending': typeof BookingsAttendingRoute
-  '/bookings/hosting': typeof BookingsHostingRoute
   '/gatherings/create': typeof GatheringsCreateRoute
   '/login/callback': typeof LoginCallbackRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
   '/gatherings/$gatheringId/update': typeof GatheringsGatheringIdUpdateRoute
+  '/bookings/hosting': typeof BookingsHostingIndexRoute
   '/gatherings/$gatheringId': typeof GatheringsGatheringIdIndexRoute
+  '/bookings/hosting/$gatheringId/dashboard/scan': typeof BookingsHostingGatheringIdDashboardScanRoute
+  '/bookings/hosting/$gatheringId/dashboard': typeof BookingsHostingGatheringIdDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bookings/attending': typeof BookingsAttendingRoute
-  '/bookings/hosting': typeof BookingsHostingRoute
   '/gatherings/create': typeof GatheringsCreateRoute
   '/login/callback': typeof LoginCallbackRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
   '/gatherings/$gatheringId/update': typeof GatheringsGatheringIdUpdateRoute
+  '/bookings/hosting': typeof BookingsHostingIndexRoute
   '/gatherings/$gatheringId': typeof GatheringsGatheringIdIndexRoute
+  '/bookings/hosting/$gatheringId/dashboard/scan': typeof BookingsHostingGatheringIdDashboardScanRoute
+  '/bookings/hosting/$gatheringId/dashboard': typeof BookingsHostingGatheringIdDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/bookings/attending': typeof BookingsAttendingRoute
-  '/bookings/hosting': typeof BookingsHostingRoute
   '/gatherings/create': typeof GatheringsCreateRoute
   '/login/callback': typeof LoginCallbackRoute
   '/gatherings/': typeof GatheringsIndexRoute
   '/healthcheck/': typeof HealthcheckIndexRoute
   '/login/': typeof LoginIndexRoute
   '/gatherings/$gatheringId/update': typeof GatheringsGatheringIdUpdateRoute
+  '/bookings/hosting/': typeof BookingsHostingIndexRoute
   '/gatherings/$gatheringId/': typeof GatheringsGatheringIdIndexRoute
+  '/bookings/hosting/$gatheringId/dashboard/scan': typeof BookingsHostingGatheringIdDashboardScanRoute
+  '/bookings/hosting/$gatheringId/dashboard/': typeof BookingsHostingGatheringIdDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/bookings/attending'
-    | '/bookings/hosting'
     | '/gatherings/create'
     | '/login/callback'
     | '/gatherings'
     | '/healthcheck'
     | '/login'
     | '/gatherings/$gatheringId/update'
+    | '/bookings/hosting'
     | '/gatherings/$gatheringId'
+    | '/bookings/hosting/$gatheringId/dashboard/scan'
+    | '/bookings/hosting/$gatheringId/dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/bookings/attending'
-    | '/bookings/hosting'
     | '/gatherings/create'
     | '/login/callback'
     | '/gatherings'
     | '/healthcheck'
     | '/login'
     | '/gatherings/$gatheringId/update'
+    | '/bookings/hosting'
     | '/gatherings/$gatheringId'
+    | '/bookings/hosting/$gatheringId/dashboard/scan'
+    | '/bookings/hosting/$gatheringId/dashboard'
   id:
     | '__root__'
     | '/'
     | '/bookings/attending'
-    | '/bookings/hosting'
     | '/gatherings/create'
     | '/login/callback'
     | '/gatherings/'
     | '/healthcheck/'
     | '/login/'
     | '/gatherings/$gatheringId/update'
+    | '/bookings/hosting/'
     | '/gatherings/$gatheringId/'
+    | '/bookings/hosting/$gatheringId/dashboard/scan'
+    | '/bookings/hosting/$gatheringId/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BookingsAttendingRoute: typeof BookingsAttendingRoute
-  BookingsHostingRoute: typeof BookingsHostingRoute
   GatheringsCreateRoute: typeof GatheringsCreateRoute
   LoginCallbackRoute: typeof LoginCallbackRoute
   GatheringsIndexRoute: typeof GatheringsIndexRoute
   HealthcheckIndexRoute: typeof HealthcheckIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   GatheringsGatheringIdUpdateRoute: typeof GatheringsGatheringIdUpdateRoute
+  BookingsHostingIndexRoute: typeof BookingsHostingIndexRoute
   GatheringsGatheringIdIndexRoute: typeof GatheringsGatheringIdIndexRoute
+  BookingsHostingGatheringIdDashboardScanRoute: typeof BookingsHostingGatheringIdDashboardScanRoute
+  BookingsHostingGatheringIdDashboardIndexRoute: typeof BookingsHostingGatheringIdDashboardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -206,13 +234,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GatheringsCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/bookings/hosting': {
-      id: '/bookings/hosting'
-      path: '/bookings/hosting'
-      fullPath: '/bookings/hosting'
-      preLoaderRoute: typeof BookingsHostingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/bookings/attending': {
       id: '/bookings/attending'
       path: '/bookings/attending'
@@ -227,11 +248,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GatheringsGatheringIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bookings/hosting/': {
+      id: '/bookings/hosting/'
+      path: '/bookings/hosting'
+      fullPath: '/bookings/hosting'
+      preLoaderRoute: typeof BookingsHostingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gatherings/$gatheringId/update': {
       id: '/gatherings/$gatheringId/update'
       path: '/gatherings/$gatheringId/update'
       fullPath: '/gatherings/$gatheringId/update'
       preLoaderRoute: typeof GatheringsGatheringIdUpdateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings/hosting/$gatheringId/dashboard/': {
+      id: '/bookings/hosting/$gatheringId/dashboard/'
+      path: '/bookings/hosting/$gatheringId/dashboard'
+      fullPath: '/bookings/hosting/$gatheringId/dashboard'
+      preLoaderRoute: typeof BookingsHostingGatheringIdDashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings/hosting/$gatheringId/dashboard/scan': {
+      id: '/bookings/hosting/$gatheringId/dashboard/scan'
+      path: '/bookings/hosting/$gatheringId/dashboard/scan'
+      fullPath: '/bookings/hosting/$gatheringId/dashboard/scan'
+      preLoaderRoute: typeof BookingsHostingGatheringIdDashboardScanRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -240,14 +282,18 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BookingsAttendingRoute: BookingsAttendingRoute,
-  BookingsHostingRoute: BookingsHostingRoute,
   GatheringsCreateRoute: GatheringsCreateRoute,
   LoginCallbackRoute: LoginCallbackRoute,
   GatheringsIndexRoute: GatheringsIndexRoute,
   HealthcheckIndexRoute: HealthcheckIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   GatheringsGatheringIdUpdateRoute: GatheringsGatheringIdUpdateRoute,
+  BookingsHostingIndexRoute: BookingsHostingIndexRoute,
   GatheringsGatheringIdIndexRoute: GatheringsGatheringIdIndexRoute,
+  BookingsHostingGatheringIdDashboardScanRoute:
+    BookingsHostingGatheringIdDashboardScanRoute,
+  BookingsHostingGatheringIdDashboardIndexRoute:
+    BookingsHostingGatheringIdDashboardIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

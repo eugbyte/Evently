@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export function camelCase(str: string): string {
 	const letters: string[] = str.split("");
 	letters[0] = letters[0].toUpperCase();
@@ -26,4 +28,22 @@ export function hashString(text: string): number {
 		hash = (hash * P + charValue) % M;
 	}
 	return hash;
+}
+
+export function downloadFile(blob: Blob, fileName = ""): void {
+	const objUrl: string = URL.createObjectURL(blob);
+	const link = document.createElement("a");
+	link.setAttribute("download", fileName);
+	link.href = objUrl;
+	document.body.appendChild(link);
+	link.click();
+	link.remove();
+}
+
+export function toIsoString(date: Date | null): string {
+	if (date == null) {
+		return "";
+	}
+	const dateTime: DateTime = DateTime.fromJSDate(date);
+	return dateTime.toFormat("yyyy-MM-dd'T'HH:mm");
 }
