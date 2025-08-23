@@ -10,6 +10,7 @@ import { downloadFile } from "~/lib/services";
 import type { PageResult } from "~/lib/domains/models";
 import { useQuery } from "@tanstack/react-query";
 import { BookingsTable, Jumbotron, StatsCard } from "./-components";
+import { useInterval } from "usehooks-ts";
 
 export const Route = createFileRoute("/bookings/hosting/$gatheringId/dashboard/")({
 	loader: async ({ params }) => {
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/bookings/hosting/$gatheringId/dashboard/"
 
 export function DashboardPage(): JSX.Element {
 	const { gathering } = Route.useLoaderData();
+	const oneMinute = 60 * 1000;
 
 	const [queryParams] = useState<GetBookingsParams>({ gatheringId: gathering.gatheringId });
 	const { data, refetch, isLoading } = useQuery({
@@ -34,6 +36,10 @@ export function DashboardPage(): JSX.Element {
 	uniqby(bookings, (b) => b.bookingId);
 	const registrationCount = data?.totalCount ?? 0;
 	const checkInCount = bookings.filter((b) => b.checkInDateTime !== null).length;
+
+	useInterval(async () => {
+		await refetch();
+	}, oneMinute);
 
 	const downloadCsv = () => {
 		const rows = bookings.map((booking) => ({
@@ -99,7 +105,7 @@ export function DashboardPage(): JSX.Element {
 
 							<div className="alert alert-info">
 								<Icon icon="material-symbols:info" />
-								<span className="text-sm">Data refreshes automatically every 30 seconds</span>
+								<span className="text-sm">Data refreshes automatically every minute</span>
 							</div>
 						</div>
 					</div>

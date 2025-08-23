@@ -11,7 +11,7 @@ export function StatsCard({ checkInCount, registrationCount }: StatsCardProps) {
 			<div className="card-body">
 				<h2 className="card-title flex items-center gap-2">
 					<Icon icon="material-symbols:analytics" className="text-primary" />
-					Registrations
+					Check Ins
 				</h2>
 
 				<div className="my-4">

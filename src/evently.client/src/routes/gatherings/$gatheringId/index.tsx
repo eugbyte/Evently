@@ -152,7 +152,7 @@ export function GatheringPage(): JSX.Element {
 									params={{ gatheringId: gathering.gatheringId.toString() }}
 									className="btn btn-outline btn-accent"
 								>
-									Manage Registrations
+									Manage Registrations and Check Ins
 								</Link>
 							</div>
 						</>

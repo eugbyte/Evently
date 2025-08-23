@@ -33,6 +33,7 @@
 		"reflect-metadata": "^0.2.2",
 		"tailwindcss": "^4.1.11",
 		"typedi": "^0.10.0",
+		"usehooks-ts": "^3.1.1",
 		"wouter": "^3.7.1"
 	},
 	"devDependencies": {
