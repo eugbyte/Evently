@@ -49,14 +49,14 @@ public static class MapperExtension {
 
 	public static BookingReqDto ToBookingDto(this Booking booking) {
 		return new BookingReqDto(
-			booking.BookingId,
-			booking.AccountId,
-			booking.GatheringId,
-			booking.CreationDateTime,
-			booking.CheckInDateTime,
-			booking.CheckoutDateTime,
-			booking.CancellationDateTime
-		);
+			BookingId: booking.BookingId,
+			AttendeeId: booking.AccountId,
+			GatheringId: booking.GatheringId,
+			CreationDateTime: booking.CreationDateTime,
+			CheckInDateTime: booking.CheckInDateTime,
+			CheckoutDateTime: booking.CheckoutDateTime,
+			CancellationDateTime: booking.CancellationDateTime
+			);
 	}
 
 	public static AccountDto ToAccountDto(this Account account) {
