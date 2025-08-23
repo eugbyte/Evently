@@ -1,4 +1,4 @@
-﻿import { createFileRoute, redirect } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { Gathering } from "~/lib/domains/entities";
 import { useState, type JSX } from "react";
 import { getGathering, sleep, updateGathering } from "~/lib/services";
@@ -10,18 +10,6 @@ import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
 import { GatheringForm } from "~/routes/(auth)/gatherings/-components";
 
 export const Route = createFileRoute("/(auth)/gatherings/$gatheringId/update")({
-	beforeLoad: ({ context }) => {
-		console.log("in AuthLayout");
-		if (context.account == null) {
-			throw redirect({
-				to: "/login",
-				replace: true,
-				search: {
-					redirect: location.href
-				}
-			});
-		}
-	},
 	loader: async ({ params }) => {
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering | null = await getGathering(gatheringId);
