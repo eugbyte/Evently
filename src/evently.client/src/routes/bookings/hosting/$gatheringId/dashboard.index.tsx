@@ -65,6 +65,9 @@ export function DashboardPage(): JSX.Element {
 
 				{/* Main Dashboard Card */}
 				<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+					{/* Registration Progress Card */}
+					<StatsCard checkInCount={checkInCount} registrationCount={registrationCount} />
+
 					{/* Actions Card */}
 					<div className="card bg-base-200 shadow-xl">
 						<div className="card-body">
@@ -109,9 +112,6 @@ export function DashboardPage(): JSX.Element {
 							</div>
 						</div>
 					</div>
-
-					{/* Registration Progress Card */}
-					<StatsCard checkInCount={checkInCount} registrationCount={registrationCount} />
 				</div>
 
 				{/* Recent Activity Card (Optional - if you want to show recent registrations) */}

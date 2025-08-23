@@ -1,4 +1,4 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { Booking, Gathering } from "~/lib/domains/entities";
 import { getBookings, type GetBookingsParams } from "~/lib/services";

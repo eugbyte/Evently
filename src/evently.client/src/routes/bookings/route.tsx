@@ -1,0 +1,25 @@
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/bookings")({
+	beforeLoad: ({ context }) => {
+		console.log("in AuthLayout");
+		if (context.account == null) {
+			throw redirect({
+				to: "/login",
+				replace: true,
+				search: {
+					redirect: location.href
+				}
+			});
+		}
+	},
+	component: AuthLayout
+});
+
+function AuthLayout() {
+	return (
+		<>
+			<Outlet />
+		</>
+	);
+}
