@@ -1,23 +1,47 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Scanner } from "./-components";
 import { checkInBooking, sleep } from "~/lib/services";
-import { Account, Booking } from "~/lib/domains/entities";
-import { useState, useCallback } from "react";
+import { Booking } from "~/lib/domains/entities";
+import { useCallback, useState } from "react";
 import { ToastContent, ToastStatus, toastStyles } from "~/lib/domains/models";
+import { useForm } from "@tanstack/react-form";
+import { FieldErrMsg as FieldInfo } from "~/lib/components";
 
 export const Route = createFileRoute("/bookings/hosting/$gatheringId/dashboard/scan")({
 	component: RouteComponent
 });
 
 function RouteComponent() {
-	const { gatheringId } = Route.useParams();
 	const [toast, setToast] = useState(new ToastContent(false));
 	const [showCamera, setShowCamera] = useState(true);
 	// throttle the scan
 	const [isPending, setPending] = useState(false);
 
+	const form = useForm({
+		defaultValues: {
+			bookingId: ""
+		},
+		onSubmit: async ({ value }) => {
+			// Do something with form data
+			const { bookingId } = value;
+
+			setPending(true);
+			try {
+				const booking: Booking = await checkInBooking(bookingId);
+				setToast(
+					new ToastContent(true, `Registered ${booking.accountDto.email}`, ToastStatus.Success)
+				);
+				await sleep(1000);
+			} catch (e) {
+				console.error(e);
+			}
+			setPending(false);
+		}
+	});
+	const { handleSubmit } = form;
+
 	const onSuccess = async (data: string) => {
-		if (isPending) {
+		if (isPending || data == null || data.trim().length === 0) {
 			return;
 		}
 
@@ -27,11 +51,8 @@ function RouteComponent() {
 			// https://localhost:50071/gatherings/1/?bookingId=book_TEiqUReukK
 			const url = new URL(data);
 			const bookingId: string = url.searchParams.get("bookingId") ?? "";
-
-			const booking: Booking = await checkInBooking(bookingId);
-			const account: Account = booking.accountDto;
-			setToast(new ToastContent(true, `Registered ${account.email}`, ToastStatus.Success));
-			await sleep(1000);
+			form.setFieldValue("bookingId", bookingId);
+			await handleSubmit();
 		} catch (error) {
 			console.error(error);
 			setToast(new ToastContent(true, "Invalid QR code", ToastStatus.Error));
@@ -42,7 +63,7 @@ function RouteComponent() {
 		}
 	};
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const memoOnSuccess = useCallback(onSuccess, [gatheringId]);
+	const memoOnSuccess = useCallback(onSuccess, []);
 	const memoOnError = useCallback(() => {}, []);
 
 	const toggleCamera = () => {
@@ -73,11 +94,43 @@ function RouteComponent() {
 					<h3 className="card-title mb-4 text-center text-lg font-semibold">Manual Check-In</h3>
 
 					<div className="flex flex-row items-end">
-						<label className="floating-label">
-							<span>Booking Id</span>
-							<input type="text" className="input input-primary" placeholder="Booking Id" />
-						</label>
-						<button className="btn btn-primary" type="button">
+						<form
+							onSubmit={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								form.handleSubmit();
+							}}
+						>
+							<form.Field
+								name="bookingId"
+								validators={{
+									onChange: ({ value }) => {
+										return value.trim().length === 0
+											? "First name must be at least 3 characters"
+											: undefined;
+									}
+								}}
+								children={(field) => (
+									<>
+										<label className="floating-label">
+											<span>Booking Id</span>
+											<input
+												type="text"
+												className="input input-primary"
+												placeholder="Booking Id"
+												id={field.name}
+												name={field.name}
+												value={field.state.value}
+												onBlur={field.handleBlur}
+												onChange={(e) => field.handleChange(e.target.value)}
+											/>
+										</label>
+										<FieldInfo field={field} />
+									</>
+								)}
+							/>
+						</form>
+						<button className="btn btn-primary" type="button" onClick={handleSubmit}>
 							Check In
 						</button>
 					</div>

@@ -1,6 +1,6 @@
 import { useEffect, useState, type JSX } from "react";
 import { compressImage, type GatheringForm as IGatheringForm } from "~/routes/gatherings/-services";
-import { FieldErrMsg as FieldInfo } from "~/routes/gatherings/-components/field-err-msg.tsx";
+import { FieldErrMsg as FieldInfo } from "~/lib/components";
 import { Icon } from "@iconify/react";
 import { DateTime } from "luxon";
 import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
