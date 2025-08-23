@@ -1,8 +1,7 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/bookings")({
+export const Route = createFileRoute("/(auth)/bookings")({
 	beforeLoad: ({ context }) => {
-		console.log("in AuthLayout");
 		if (context.account == null) {
 			throw redirect({
 				to: "/login",

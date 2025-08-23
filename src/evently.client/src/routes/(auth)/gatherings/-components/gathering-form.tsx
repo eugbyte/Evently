@@ -1,5 +1,5 @@
 import { useEffect, useState, type JSX } from "react";
-import { compressImage, type GatheringForm as IGatheringForm } from "~/routes/gatherings/-services";
+import { compressImage, type GatheringForm as IGatheringForm } from "../-services";
 import { FieldErrMsg as FieldInfo } from "~/lib/components";
 import { Icon } from "@iconify/react";
 import { DateTime } from "luxon";

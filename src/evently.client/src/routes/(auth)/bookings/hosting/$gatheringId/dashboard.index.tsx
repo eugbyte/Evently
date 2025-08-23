@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { BookingsTable, Jumbotron, StatsCard } from "./-components";
 import { useInterval } from "usehooks-ts";
 
-export const Route = createFileRoute("/bookings/hosting/$gatheringId/dashboard/")({
+export const Route = createFileRoute("/(auth)/bookings/hosting/$gatheringId/dashboard/")({
 	loader: async ({ params }) => {
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering = (await getGathering(gatheringId)) ?? new Gathering();

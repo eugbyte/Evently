@@ -5,11 +5,11 @@ import { getGathering, sleep, updateGathering } from "~/lib/services";
 import {
 	useGatheringForm,
 	type GatheringForm as IGatheringForm
-} from "~/routes/gatherings/-services";
+} from "~/routes/(auth)/gatherings/-services";
 import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
-import { GatheringForm } from "~/routes/gatherings/-components";
+import { GatheringForm } from "~/routes/(auth)/gatherings/-components";
 
-export const Route = createFileRoute("/gatherings/$gatheringId/update")({
+export const Route = createFileRoute("/(auth)/gatherings/$gatheringId/update")({
 	beforeLoad: ({ context }) => {
 		console.log("in AuthLayout");
 		if (context.account == null) {
