@@ -1,4 +1,4 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import type { JSX } from "react";
 
 export const Route = createFileRoute("/")({
@@ -19,10 +19,15 @@ export function HomePage(): JSX.Element {
 							QR code technology.
 						</p>
 						<div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-							<button className="btn btn-accent btn-lg">Create Your First Event</button>
-							<button className="btn btn-outline btn-lg text-primary-content hover:bg-primary-content hover:text-primary">
+							<Link to="/gatherings/create" className="btn btn-accent btn-lg">
+								Create Your First Event
+							</Link>
+							<Link
+								to="/gatherings"
+								className="btn btn-outline btn-lg text-primary-content hover:bg-primary-content hover:text-primary"
+							>
 								Explore Events
-							</button>
+							</Link>
 						</div>
 					</div>
 				</div>

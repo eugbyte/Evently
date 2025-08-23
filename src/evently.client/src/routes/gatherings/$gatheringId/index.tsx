@@ -170,7 +170,6 @@ export function GatheringPage(): JSX.Element {
 					/>
 				</div>
 			</div>
-			<div className="none mb-20 sm:block"></div>
 		</div>
 	);
 }

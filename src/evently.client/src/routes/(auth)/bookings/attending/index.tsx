@@ -1,4 +1,4 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { Booking, Gathering } from "~/lib/domains/entities";
 import { getBookings, type GetBookingsParams } from "~/lib/services";
@@ -6,7 +6,7 @@ import { Card, Tabs, TabState } from "~/lib/components";
 import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "@tanstack/react-query";
 
-export const Route = createFileRoute("/bookings/attending/")({
+export const Route = createFileRoute("/(auth)/bookings/attending/")({
 	loader: ({ context }) => ({ account: context.account }),
 	component: GetBookingsPage,
 	pendingComponent: () => (

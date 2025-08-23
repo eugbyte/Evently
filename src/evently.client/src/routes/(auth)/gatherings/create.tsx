@@ -2,14 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Gathering } from "~/lib/domains/entities";
 import { useState, type JSX } from "react";
 import { createGathering, sleep } from "~/lib/services";
-import {
-	useGatheringForm,
-	type GatheringForm as IGatheringForm
-} from "~/routes/gatherings/-services";
+import { useGatheringForm, type GatheringForm as IGatheringForm } from "./-services";
 import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
-import { GatheringForm } from "~/routes/gatherings/-components";
+import { GatheringForm } from "~/routes/(auth)/gatherings/-components";
 
-export const Route = createFileRoute("/gatherings/create")({
+export const Route = createFileRoute("/(auth)/gatherings/create")({
 	component: CreateGatheringPage
 });
 

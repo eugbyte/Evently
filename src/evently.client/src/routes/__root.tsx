@@ -22,7 +22,9 @@ export function App(): JSX.Element {
 	return (
 		<div className="h-screen">
 			<Navbar />
-			<Outlet />
+			<div className="pt-16 h-full">
+				<Outlet />
+			</div>
 			<TanStackRouterDevtools />
 		</div>
 	);

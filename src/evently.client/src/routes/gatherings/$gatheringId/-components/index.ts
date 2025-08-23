@@ -1,3 +1,3 @@
-export { Jumbotron } from "./jumbotron";
-export { QrDialog } from "./qr-dialog";
-export { CancellationDialog } from "./cancellation-dialog";
+export { Jumbotron } from "./jumbotron.tsx";
+export { CancellationDialog } from "./cancellation-dialog.tsx";
+export { QrDialog } from "./qr-dialog.tsx";
