@@ -16,6 +16,7 @@ function RouteComponent() {
 	const [showCamera, setShowCamera] = useState(true);
 	// throttle the scan
 	const [isPending, setPending] = useState(false);
+	const [showAccordion, setShowAccordion] = useState(false);
 
 	const form = useForm({
 		defaultValues: {
@@ -35,6 +36,7 @@ function RouteComponent() {
 			} catch (e) {
 				console.error(e);
 			}
+			setToast(new ToastContent(false));
 			setPending(false);
 		}
 	});
@@ -76,64 +78,79 @@ function RouteComponent() {
 				<progress className="progress w-full"></progress>
 			) : (
 				<div className="flex flex-col items-center justify-center gap-4">
-					<Scanner
-						memoizedOnSuccess={memoOnSuccess}
-						memoizedOnDecodeError={memoOnError}
-						showCamera={showCamera}
-					/>
-					<button
-						className="variant-filled btn btn-primary btn-lg mx-auto mt-4 block"
-						onClick={toggleCamera}
-						type="button"
-					>
-						{!showCamera ? <p>Scan</p> : <p>Stop Scan</p>}
-					</button>
+					<section>
+						<Scanner
+							memoizedOnSuccess={memoOnSuccess}
+							memoizedOnDecodeError={memoOnError}
+							showCamera={showCamera}
+						/>
+						<button
+							className="variant-filled btn btn-primary btn-lg mx-auto mt-4 block"
+							onClick={toggleCamera}
+							type="button"
+						>
+							{!showCamera ? <p>Scan</p> : <p>Stop Scan</p>}
+						</button>
+					</section>
 
 					<div className="divider my-10">OR</div>
 
-					<h3 className="card-title mb-4 text-center text-lg font-semibold">Manual Check-In</h3>
-
-					<div className="flex flex-row items-end">
-						<form
-							onSubmit={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-								form.handleSubmit();
-							}}
+					<section>
+						<div
+							tabIndex={0}
+							className="collapse-arrow bg-base-100 border-base-300 collapse border"
 						>
-							<form.Field
-								name="bookingId"
-								validators={{
-									onChange: ({ value }) => {
-										return value.trim().length === 0
-											? "First name must be at least 3 characters"
-											: undefined;
-									}
-								}}
-								children={(field) => (
-									<>
-										<label className="floating-label">
-											<span>Booking Id</span>
-											<input
-												type="text"
-												className="input input-primary"
-												placeholder="Booking Id"
-												id={field.name}
-												name={field.name}
-												value={field.state.value}
-												onBlur={field.handleBlur}
-												onChange={(e) => field.handleChange(e.target.value)}
-											/>
-										</label>
-										<FieldInfo field={field} />
-									</>
-								)}
+							<input
+								type="checkbox"
+								checked={showAccordion}
+								onChange={(e) => setShowAccordion(e.target.checked)}
 							/>
-						</form>
-						<button className="btn btn-primary" type="button" onClick={handleSubmit}>
-							Check In
-						</button>
-					</div>
+							<div className="collapse-title font-semibold">Manual Check-In</div>
+							<div className="collapse-content justify-center text-sm">
+								<div className="flex flex-row items-end">
+									<form
+										onSubmit={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
+											form.handleSubmit();
+										}}
+									>
+										<form.Field
+											name="bookingId"
+											validators={{
+												onChange: ({ value }) => {
+													return value.trim().length === 0
+														? "First name must be at least 3 characters"
+														: undefined;
+												}
+											}}
+											children={(field) => (
+												<>
+													<label className="floating-label">
+														<span>Booking Id</span>
+														<input
+															type="text"
+															className="input input-primary"
+															placeholder="Booking Id"
+															id={field.name}
+															name={field.name}
+															value={field.state.value}
+															onBlur={field.handleBlur}
+															onChange={(e) => field.handleChange(e.target.value)}
+														/>
+													</label>
+													<FieldInfo field={field} />
+												</>
+											)}
+										/>
+									</form>
+									<button className="btn btn-primary" type="button" onClick={handleSubmit}>
+										Check In
+									</button>
+								</div>
+							</div>
+						</div>
+					</section>
 				</div>
 			)}
 			{toast.show && (
