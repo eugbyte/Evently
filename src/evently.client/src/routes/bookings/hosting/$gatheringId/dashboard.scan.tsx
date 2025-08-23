@@ -61,8 +61,7 @@ function RouteComponent() {
 			console.error(error);
 		}
 	};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const memoOnSuccess = useCallback(onSuccess, []);
+	const memoOnSuccess = useCallback(onSuccess, [isPending, form, handleSubmit]);
 	const memoOnError = useCallback(() => {}, []);
 
 	const toggleCamera = () => {
