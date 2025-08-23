@@ -1,15 +1,19 @@
 ﻿import { type JSX } from "react";
-import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import { Link, useLocation, useRouteContext, useRouter } from "@tanstack/react-router";
 import { logout } from "~/lib/services/auth-service";
 import { Icon } from "@iconify/react";
 
 export function Navbar(): JSX.Element {
+	const location = useLocation();
 	const router = useRouter();
+	
 	const identityUserId: string | undefined = useRouteContext({
 		from: "__root__",
 		select: (context) => context.account?.id
 	});
 	console.log({ identityUserId });
+
+	const isHomePage = location.pathname === "/";
 
 	let isAuth = false;
 	if (identityUserId != null) {
@@ -25,77 +29,43 @@ export function Navbar(): JSX.Element {
 		router.history.back();
 	};
 
-	// Check if we're on the home page
-	const isHomePage = router.state.location.pathname === "/";
-
 	return (
 		<div className="bg-base-100 navbar fixed top-0 right-0 left-0 z-50 shadow-sm">
 			<div className="navbar-start">
 				{/* Mobile: Hamburger menu and back button */}
 				<div className="flex items-center gap-2 lg:hidden">
-					{/* Hamburger menu */}
-					<div className="dropdown">
-						<div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-							<Icon icon="material-symbols:menu-rounded" width="24" height="24" />
-						</div>
-						<ul
-							tabIndex={0}
-							className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 space-y-4 p-2 shadow"
-						>
-							<li>
-								<Link to="/gatherings" activeProps={{ className: "underline" }}>
-									Gatherings
-								</Link>
-							</li>
-							{isAuth && (
-								<>
-									<li>
-										<Link to="/bookings/attending" activeProps={{ className: "underline" }}>
-											Attending
-										</Link>
-									</li>
-									<li>
-										<Link to="/bookings/hosting" activeProps={{ className: "underline" }}>
-											Hosting
-										</Link>
-									</li>
-								</>
-							)}
-						</ul>
-					</div>
-
 					{/* Back button (only show when not on home page) */}
 					{!isHomePage && (
 						<button onClick={handleBack} className="btn btn-ghost btn-circle">
-							<Icon icon="material-symbols:arrow-back-ios" width="24" height="24" />
+							<Icon icon="material-symbols:arrow-circle-left-outline-rounded" width="24" height="24" />
 						</button>
 					)}
 				</div>
 
 				{/* Brand/Logo */}
-				<Link className="btn btn-ghost text-xl" to="/">
+				<Link className="btn btn-ghost hidden text-xl sm:inline" to="/">
 					Evently
 				</Link>
 			</div>
 
 			{/* Desktop menu */}
-			<div className="navbar-center hidden lg:flex">
-				<ul className="menu menu-horizontal px-1">
+			<div className="navbar-center">
+				<ul className="menu menu-horizontal px-1 text-xs sm:text-sm">
 					<li>
 						<Link to="/gatherings" activeProps={{ className: "underline" }}>
-							Gatherings
+							<span>Gatherings</span>
 						</Link>
 					</li>
 					{isAuth && (
 						<>
 							<li>
 								<Link to="/bookings/attending" activeProps={{ className: "underline" }}>
-									Attending
+									<span>Attending</span>
 								</Link>
 							</li>
 							<li>
 								<Link to="/bookings/hosting" activeProps={{ className: "underline" }}>
-									Hosting
+									<span>Hosting</span>
 								</Link>
 							</li>
 						</>
@@ -106,11 +76,11 @@ export function Navbar(): JSX.Element {
 			{/* Auth buttons */}
 			<div className="navbar-end">
 				{!isAuth ? (
-					<Link to="/login" className="btn btn-sm">
+					<Link to="/login" className="btn btn-xs sm:btn-sm">
 						Login
 					</Link>
 				) : (
-					<button className="btn btn-sm" onClick={handleLogout}>
+					<button className="btn btn-xs sm:btn-sm" onClick={handleLogout}>
 						Logout
 					</button>
 				)}
