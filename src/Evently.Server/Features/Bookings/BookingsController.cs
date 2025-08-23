@@ -86,10 +86,9 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 		Gathering gathering = booking.Gathering;
 		bool isAuth = await this.IsResourceOwner(gathering.OrganiserId);
 		logger.LogInformation("isAuth: {}", isAuth);
-		// Silence for now
-		// if (!isAuth) {
-		// 	return Forbid();
-		// }
+		if (!isAuth) {
+			return Forbid();
+		}
 
 		booking.CheckInDateTime = DateTimeOffset.UtcNow;
 		booking = await bookingService.UpdateBooking(bookingId, bookingReqDto: booking.ToBookingDto());
