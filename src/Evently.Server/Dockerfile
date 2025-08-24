@@ -1,38 +1,34 @@
 # See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows&pivots=dotnet-9-0#create-the-dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+RUN apt-get update
+RUN apt-get install curl --yes
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
+RUN apt-get -y install nodejs
+RUN npm install -g pnpm
 
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-USER $APP_UID
-WORKDIR /app
+WORKDIR /App
+
+## The docker build command and the build context is fixed at ./Evently.sln
+
+COPY src .
+# Build and publish a release
+RUN dotnet publish ./Evently.Server/Evently.Server.csproj -c Release -o publish -p:UseAppHost=false
+RUN ls
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS run
+WORKDIR /App/server
+
+COPY --from=build /App/publish .
+
+RUN ls
+
 EXPOSE 8080
 EXPOSE 8081
 
+ARG PORT=8080
+RUN echo $PORT
 
-# This stage is used to build the service project
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS with-node
-RUN apt-get update
-RUN apt-get install curl
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
-RUN apt-get -y install nodejs
-
-
-FROM with-node AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["Evently.Server/Evently.Server.csproj", "Evently.Server/"]
-COPY ["evently.client/evently.client.esproj", "evently.client/"]
-RUN dotnet restore "./Evently.Server/Evently.Server.csproj"
-COPY . .
-WORKDIR "/src/Evently.Server"
-RUN dotnet build "./Evently.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-# This stage is used to publish the service project to be copied to the final stage
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Evently.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Evently.Server.dll"]
+# cannot separate --urls http https://docs.docker.com/reference/dockerfile/#variable-substitution
+ENTRYPOINT ["dotnet", "Evently.Server.dll", "--urls http://*:$PORT"]
