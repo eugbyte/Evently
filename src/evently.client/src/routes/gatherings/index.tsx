@@ -5,6 +5,7 @@ import { Gathering } from "~/lib/domains/entities";
 import { getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card } from "~/lib/components";
 import type { PageResult } from "~/lib/domains/models";
+import { Icon } from "@iconify/react";
 
 export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,
@@ -62,22 +63,7 @@ export function GatheringsPage(): JSX.Element {
 		<div className="h-full">
 			<div className="mt-1 flex flex-row justify-center">
 				<label className="input [w-200px]">
-					<svg
-						className="h-[1em] opacity-50"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 24 24"
-					>
-						<g
-							strokeLinejoin="round"
-							strokeLinecap="round"
-							strokeWidth="2.5"
-							fill="none"
-							stroke="currentColor"
-						>
-							<circle cx="11" cy="11" r="8"></circle>
-							<path d="m21 21-4.3-4.3"></path>
-						</g>
-					</svg>
+					<Icon icon="material-symbols:search" width="24" height="24" />
 					<input
 						type="search"
 						className="w-full"
