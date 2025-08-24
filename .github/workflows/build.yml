@@ -26,7 +26,7 @@ jobs:
     - name: Install npm modules
       run: cd src/evently.client && pnpm i
     - name: Restore dependencies
-      run: dotnet restore src/Evently.Server/ExpoConnect.Server.csproj
+      run: dotnet restore src/Evently.Server/Evently.Server.csproj
     - name: Build
       run: dotnet build --no-restore src/Evently.Server/Evently.Server.csproj
     - name: Test Docker Image
