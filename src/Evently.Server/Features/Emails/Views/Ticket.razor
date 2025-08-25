@@ -5,7 +5,7 @@
 
 <html lang="en" dir="ltr">
 <head>
-    <title>ExpoConnect</title>
+    <title>Evently</title>
 
     <style>
         @@media print {
@@ -54,8 +54,8 @@
             <tr>
                 <td style="padding: 20px 20px 10px; text-align: center;">
                     <a href="@_baseUri/gatherings/@Gathering.GatheringId"
-                       style="color: #0d6efd; text-decoration: none; font-size: 20px; font-weight: 700; 
-                       display: block; line-height: 1.3; border-bottom: 2px solid #0d6efd; padding-bottom: 5px;">
+                       style="color: #0d6efd; font-size: 20px; font-weight: 700; 
+                       display: block; line-height: 1.3; padding-bottom: 5px; text-decoration: underline;">
                         @Gathering.Name
                     </a>
                 </td>
@@ -66,7 +66,7 @@
                 <td style="padding: 10px 20px; text-align: center;">
                     <div style="background: #f8f9fa; border-radius: 8px; padding: 12px; border-left: 4px solid #0d6efd;">
                         <div style="color: #6c757d; font-size: 12px; font-weight: 500; margin-bottom: 4px;">DATE & TIME</div>
-                        <div style="color: #495057; font-size: 16px; font-weight: 600;">@Day, @StartDate - @EndDate</div>
+                        <div style="color: #495057; font-size: 16px; font-weight: 600;">@StartDate - @EndDate</div>
                     </div>
                 </td>
             </tr>
@@ -137,8 +137,7 @@ _baseUri = (Env.IsDevelopment() ? "https://localhost:5000/" : Navigator.BaseUri)
 }
 }
 
-private string Day => Gathering.Start.ToString("ddd");
-private string StartDate => Gathering.Start.ToString("d MMM yyyy, HH:mm");
+private string StartDate => Gathering.Start.ToString("ddd, d MMM yyyy, HH:mm");
 private string EndDate => Gathering.End.ToString("d MMM yyyy, HH:mm");
 private string _baseUri = string.Empty;
 private Gathering Gathering => Booking.Gathering ?? new Gathering();
