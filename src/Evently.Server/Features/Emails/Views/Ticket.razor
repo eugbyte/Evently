@@ -24,13 +24,17 @@
         }
     </style>
 </head>
-<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f8f9fa;">
+<body
+    style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f8f9fa;">
 <Container>
-    <div style="max-width: 400px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(13, 110, 253, 0.15); overflow: hidden;">
+    <div
+        style="max-width: 400px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(13, 110, 253, 0.15); overflow: hidden;">
 
         <!-- Confirmation Message -->
-        <div style="padding: 20px; text-align: center; background: linear-gradient(135deg, #e3f2fd, #f0f8ff); border-bottom: 1px solid #e9ecef;">
-            <p style="margin: 0; color: #2c5aa0; font-weight: 600; font-size: 16px;">Your booking has been confirmed!</p>
+        <div
+            style="padding: 20px; text-align: center; background: linear-gradient(135deg, #e3f2fd, #f0f8ff); border-bottom: 1px solid #e9ecef;">
+            <p style="margin: 0; color: #2c5aa0; font-weight: 600; font-size: 16px;">Your booking has been
+                confirmed!</p>
         </div>
 
         <!-- Ticket Header -->
@@ -64,8 +68,11 @@
             <!-- Date and Time -->
             <tr>
                 <td style="padding: 10px 20px; text-align: center;">
-                    <div style="background: #f8f9fa; border-radius: 8px; padding: 12px; border-left: 4px solid #0d6efd;">
-                        <div style="color: #6c757d; font-size: 12px; font-weight: 500; margin-bottom: 4px;">DATE & TIME</div>
+                    <div
+                        style="background: #f8f9fa; border-radius: 8px; padding: 12px; border-left: 4px solid #0d6efd;">
+                        <div style="color: #6c757d; font-size: 12px; font-weight: 500; margin-bottom: 4px;">DATE &
+                            TIME
+                        </div>
                         <div style="color: #495057; font-size: 16px; font-weight: 600;">@StartDate - @EndDate</div>
                     </div>
                 </td>
@@ -74,8 +81,10 @@
             <!-- Location -->
             <tr>
                 <td style="padding: 10px 20px; text-align: center;">
-                    <div style="background: #f8f9fa; border-radius: 8px; padding: 12px; border-left: 4px solid #28a745;">
-                        <div style="color: #6c757d; font-size: 12px; font-weight: 500; margin-bottom: 4px;">LOCATION</div>
+                    <div
+                        style="background: #f8f9fa; border-radius: 8px; padding: 12px; border-left: 4px solid #28a745;">
+                        <div style="color: #6c757d; font-size: 12px; font-weight: 500; margin-bottom: 4px;">LOCATION
+                        </div>
                         <div style="color: #495057; font-size: 14px; font-weight: 500;">@Gathering.Location</div>
                     </div>
                 </td>
@@ -84,9 +93,12 @@
             <!-- Attendee Name -->
             <tr>
                 <td style="padding: 20px 20px 10px; text-align: center;">
-                    <div style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); border-radius: 10px; padding: 16px; border: 2px dashed #ffc107;">
-                        <div style="color: #856404; font-size: 12px; font-weight: 600; margin-bottom: 8px;">ATTENDEE</div>
-                        <div style="color: #212529; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                    <div
+                        style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); border-radius: 10px; padding: 16px; border: 2px dashed #ffc107;">
+                        <div style="color: #856404; font-size: 12px; font-weight: 600; margin-bottom: 8px;">ATTENDEE
+                        </div>
+                        <div
+                            style="color: #212529; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
                             @Account.UserName
                         </div>
                     </div>
@@ -96,7 +108,8 @@
             <!-- QR Code -->
             <tr>
                 <td style="padding: 20px; text-align: center;">
-                    <div style="background: white; border: 3px solid #e9ecef; border-radius: 12px; padding: 15px; display: inline-block;">
+                    <div
+                        style="background: white; border: 3px solid #e9ecef; border-radius: 12px; padding: 15px; display: inline-block;">
                         <img alt="QR Code for ticket verification" src="@QrCodeUrl"
                              style="width: 180px; height: 180px; display: block;"/>
                     </div>
@@ -108,7 +121,8 @@
                 <td style="padding: 0 20px 20px; text-align: center;">
                     <div style="background: #f8f9fa; border-radius: 6px; padding: 8px 12px; display: inline-block;">
                         <span style="color: #6c757d; font-size: 11px; font-weight: 500;">BOOKING ID: </span>
-                        <span style="color: #495057; font-size: 12px; font-weight: 600; font-family: 'Courier New', monospace;">@Booking.BookingId</span>
+                        <span
+                            style="color: #495057; font-size: 12px; font-weight: 600; font-family: 'Courier New', monospace;">@Booking.BookingId</span>
                     </div>
                 </td>
             </tr>
@@ -127,19 +141,19 @@
 </html>
 
 @code {
-[Parameter] [EditorRequired] public Booking Booking { get; set; } = new();
-[Parameter] [EditorRequired] public string QrCodeUrl { get; set; } = string.Empty;
-[Parameter] public string Classes { get; set; } = string.Empty;
+    [Parameter] [EditorRequired] public Booking Booking { get; set; } = new();
+    [Parameter] [EditorRequired] public string QrCodeUrl { get; set; } = string.Empty;
+    [Parameter] public string Classes { get; set; } = string.Empty;
 
-protected override void OnAfterRender(bool firstRender) {
-if (firstRender) {
-_baseUri = (Env.IsDevelopment() ? "https://localhost:5000/" : Navigator.BaseUri).TrimEnd('/');
-}
-}
+    protected override void OnAfterRender(bool firstRender) {
+        if (firstRender) {
+            _baseUri = (Env.IsDevelopment() ? "https://localhost:5000/" : Navigator.BaseUri).TrimEnd('/');
+        }
+    }
 
-private string StartDate => Gathering.Start.ToString("ddd, d MMM yyyy, HH:mm");
-private string EndDate => Gathering.End.ToString("d MMM yyyy, HH:mm");
-private string _baseUri = string.Empty;
-private Gathering Gathering => Booking.Gathering ?? new Gathering();
-private Account Account => Booking.Account ?? new Account();
+    private string StartDate => Gathering.Start.ToString("ddd, d MMM yyyy, HH:mm");
+    private string EndDate => Gathering.End.ToString("d MMM yyyy, HH:mm");
+    private string _baseUri = string.Empty;
+    private Gathering Gathering => Booking.Gathering ?? new Gathering();
+    private Account Account => Booking.Account ?? new Account();
 }

@@ -21,7 +21,7 @@ public sealed class HealthChecksController(HealthCheckService healthCheckService
 		statuses["Server"] = "Healthy";
 		return Ok(statuses);
 	}
-	
+
 	[HttpGet("middlewares/error-middleware", Name = "TestErrorMiddleware")]
 	public Task<ActionResult> TestErrorMiddleware() {
 		throw new ArgumentException("Test Error Middleware");
