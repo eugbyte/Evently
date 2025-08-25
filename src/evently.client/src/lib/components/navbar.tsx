@@ -46,7 +46,7 @@ export function Navbar(): JSX.Element {
 				</div>
 
 				{/* Brand/Logo */}
-				<Link className="btn btn-ghost hidden sm:inline btn-lg border" to="/">
+				<Link className="btn btn-ghost hidden sm:inline btn-lg" to="/">
 					<span className="hidden sm:inline">Evently</span>
 				</Link>
 			</div>
