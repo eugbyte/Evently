@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index'
 import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
-import { Route as LoginCallbackRouteImport } from './routes/login/callback'
 import { Route as authGatheringsRouteRouteImport } from './routes/(auth)/gatherings/route'
 import { Route as authBookingsRouteRouteImport } from './routes/(auth)/bookings/route'
 import { Route as GatheringsGatheringIdIndexRouteImport } from './routes/gatherings/$gatheringId/index'
@@ -42,11 +41,6 @@ const HealthcheckIndexRoute = HealthcheckIndexRouteImport.update({
 const GatheringsIndexRoute = GatheringsIndexRouteImport.update({
   id: '/gatherings/',
   path: '/gatherings/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginCallbackRoute = LoginCallbackRouteImport.update({
-  id: '/login/callback',
-  path: '/login/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authGatheringsRouteRoute = authGatheringsRouteRouteImport.update({
@@ -105,7 +99,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bookings': typeof authBookingsRouteRouteWithChildren
   '/gatherings': typeof GatheringsIndexRoute
-  '/login/callback': typeof LoginCallbackRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
   '/gatherings/create': typeof authGatheringsCreateRoute
@@ -120,7 +113,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bookings': typeof authBookingsRouteRouteWithChildren
   '/gatherings': typeof GatheringsIndexRoute
-  '/login/callback': typeof LoginCallbackRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
   '/gatherings/create': typeof authGatheringsCreateRoute
@@ -136,7 +128,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/(auth)/bookings': typeof authBookingsRouteRouteWithChildren
   '/(auth)/gatherings': typeof authGatheringsRouteRouteWithChildren
-  '/login/callback': typeof LoginCallbackRoute
   '/gatherings/': typeof GatheringsIndexRoute
   '/healthcheck/': typeof HealthcheckIndexRoute
   '/login/': typeof LoginIndexRoute
@@ -154,7 +145,6 @@ export interface FileRouteTypes {
     | '/'
     | '/bookings'
     | '/gatherings'
-    | '/login/callback'
     | '/healthcheck'
     | '/login'
     | '/gatherings/create'
@@ -169,7 +159,6 @@ export interface FileRouteTypes {
     | '/'
     | '/bookings'
     | '/gatherings'
-    | '/login/callback'
     | '/healthcheck'
     | '/login'
     | '/gatherings/create'
@@ -184,7 +173,6 @@ export interface FileRouteTypes {
     | '/'
     | '/(auth)/bookings'
     | '/(auth)/gatherings'
-    | '/login/callback'
     | '/gatherings/'
     | '/healthcheck/'
     | '/login/'
@@ -201,7 +189,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   authBookingsRouteRoute: typeof authBookingsRouteRouteWithChildren
   authGatheringsRouteRoute: typeof authGatheringsRouteRouteWithChildren
-  LoginCallbackRoute: typeof LoginCallbackRoute
   GatheringsIndexRoute: typeof GatheringsIndexRoute
   HealthcheckIndexRoute: typeof HealthcheckIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
@@ -236,13 +223,6 @@ declare module '@tanstack/react-router' {
       path: '/gatherings'
       fullPath: '/gatherings'
       preLoaderRoute: typeof GatheringsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login/callback': {
-      id: '/login/callback'
-      path: '/login/callback'
-      fullPath: '/login/callback'
-      preLoaderRoute: typeof LoginCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(auth)/gatherings': {
@@ -347,7 +327,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authBookingsRouteRoute: authBookingsRouteRouteWithChildren,
   authGatheringsRouteRoute: authGatheringsRouteRouteWithChildren,
-  LoginCallbackRoute: LoginCallbackRoute,
   GatheringsIndexRoute: GatheringsIndexRoute,
   HealthcheckIndexRoute: HealthcheckIndexRoute,
   LoginIndexRoute: LoginIndexRoute,

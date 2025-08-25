@@ -7,7 +7,7 @@ export const Route = createFileRoute("/login/")({
 });
 
 export function LoginPage() {
-	const defaultRedirect: URL = new URL("/login/callback", window.location.href);
+	const defaultRedirect: URL = new URL("/bookings/attending", window.location.href);
 	const searchParams: Record<string, string> = useSearch({ strict: false });
 	const redirect: string = searchParams["redirect"] ?? defaultRedirect.href;
 	console.log({ redirect });
