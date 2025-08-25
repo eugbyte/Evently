@@ -125,6 +125,9 @@ using (IServiceScope serviceScope = app.Services.CreateScope()) {
 	await dbContext.Database.MigrateAsync();
 }
 
+// Use the global exception handler
+app.UseExceptionHandler((_) => {});
+
 // To serve the Svelte SPA files
 app.UseFileServer();
 

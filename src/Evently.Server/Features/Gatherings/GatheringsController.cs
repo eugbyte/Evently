@@ -16,8 +16,7 @@ namespace Evently.Server.Features.Gatherings;
 [Route("api/v1/[controller]")]
 public sealed class GatheringsController(
 	IGatheringService gatheringService,
-	IFileStorageService fileStorageService,
-	IValidator<Gathering> validator) : ControllerBase {
+	IFileStorageService fileStorageService) : ControllerBase {
 	[HttpGet("{gatheringId:long}", Name = "GetGathering")]
 	public async Task<ActionResult<Gathering>> GetGathering(long gatheringId) {
 		Gathering? customer = await gatheringService.GetGathering(gatheringId);

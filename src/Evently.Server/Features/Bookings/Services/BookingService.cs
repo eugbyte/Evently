@@ -68,9 +68,9 @@ public sealed class BookingService(
 		Booking booking = bookingReqDto.ToBooking();
 		ValidationResult validationResult = await validator.ValidateAsync(booking);
 		if (!validationResult.IsValid) {
-			throw new ArgumentException(string.Join("\n", values: validationResult.Errors.Select(e => e.ErrorMessage)));
+			throw new ArgumentException($"Account has already booked this gathering (GatheringId: {booking.GatheringId})");
 		}
-
+		
 		booking.BookingId = $"book_{await Nanoid.GenerateAsync(size: 10)}";
 		await db.Bookings.AddAsync(booking);
 		await db.SaveChangesAsync();

@@ -26,7 +26,7 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 	[HttpGet("{bookingId}/preview", Name = "PreviewBooking")]
 	public async Task<ActionResult<Booking>> PreviewBooking(string bookingId) {
 		string html = await bookingService.RenderTicket(bookingId);
-		return Content(html);
+		return Content(html, "text/html");
 	}
 
 	[HttpGet("", Name = "GetBookings")]

@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 export function Navbar(): JSX.Element {
 	const location = useLocation();
 	const router = useRouter();
-	
+
 	const identityUserId: string | undefined = useRouteContext({
 		from: "__root__",
 		select: (context) => context.account?.id
@@ -32,25 +32,28 @@ export function Navbar(): JSX.Element {
 	return (
 		<div className="bg-base-100 navbar fixed top-0 right-0 left-0 z-50 shadow-sm">
 			<div className="navbar-start">
-				{/* Mobile: Hamburger menu and back button */}
 				<div className="flex items-center gap-2 lg:hidden">
 					{/* Back button (only show when not on home page) */}
 					{!isHomePage && (
-						<button onClick={handleBack} className="btn btn-ghost btn-circle">
-							<Icon icon="material-symbols:arrow-circle-left-outline-rounded" width="24" height="24" />
+						<button onClick={handleBack} className="btn btn-ghost btn-circle btn-xs">
+							<Icon
+								icon="material-symbols:arrow-circle-left-outline-rounded"
+								width="24"
+								height="24"
+							/>
 						</button>
 					)}
 				</div>
 
 				{/* Brand/Logo */}
-				<Link className="btn btn-ghost hidden text-xl sm:inline" to="/">
-					Evently
+				<Link className="btn btn-ghost hidden sm:inline btn-lg" to="/">
+					<span className="hidden sm:inline">Evently</span>
 				</Link>
 			</div>
 
 			{/* Desktop menu */}
 			<div className="navbar-center">
-				<ul className="menu menu-horizontal px-1 text-xs sm:text-sm">
+				<ul className="menu menu-horizontal text-xs sm:text-sm">
 					<li>
 						<Link to="/gatherings" activeProps={{ className: "underline" }}>
 							<span>Gatherings</span>
