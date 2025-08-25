@@ -71,6 +71,12 @@ public sealed class BookingService(
 			throw new ArgumentException(string.Join("\n", values: validationResult.Errors.Select(e => e.ErrorMessage)));
 		}
 
+		bool hasPrevBooking =
+			await db.Bookings.AnyAsync(b => b.AccountId == booking.AccountId && b.GatheringId == booking.GatheringId && b.CancellationDateTime == null);
+		if (hasPrevBooking) {
+			throw new ArgumentException("Account has already booked");
+		}
+
 		booking.BookingId = $"book_{await Nanoid.GenerateAsync(size: 10)}";
 		await db.Bookings.AddAsync(booking);
 		await db.SaveChangesAsync();

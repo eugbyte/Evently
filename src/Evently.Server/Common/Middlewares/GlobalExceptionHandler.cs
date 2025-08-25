@@ -21,16 +21,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
 					},
 					cancellationToken);
 				break;
-			case not null:
-				httpContext.Response.StatusCode = 500;
-				await httpContext.Response.WriteAsJsonAsync(value: new {
-						Title = "Server Error",
-						Detail = "An unexpected error occurred.",
-						Status = StatusCodes.Status500InternalServerError,
-					},
-					cancellationToken);
-				break;
-			case null:
+			default:
 				httpContext.Response.StatusCode = 500;
 				await httpContext.Response.WriteAsJsonAsync(value: new {
 						Title = "Server Error",
