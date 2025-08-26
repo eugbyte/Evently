@@ -38,8 +38,8 @@ public sealed class GatheringService(AppDbContext db, IValidator<Gathering> vali
 			.Where((gathering) => organiserId == null || gathering.OrganiserId == organiserId)
 			.Where(gathering => isCancelled == null || gathering.CancellationDateTime.HasValue == isCancelled)
 			.Where((gathering) =>
-				attendeeId == null || gathering.Bookings.Any((be) => be.AccountId == attendeeId))
-			.Include(gathering => gathering.Bookings.Where((be) => be.AccountId == attendeeId))
+				attendeeId == null || gathering.Bookings.Any((be) => be.AttendeeId == attendeeId))
+			.Include(gathering => gathering.Bookings.Where((be) => be.AttendeeId == attendeeId))
 			.Include(gathering => gathering.GatheringCategoryDetails)
 			.ThenInclude(detail => detail.Category);
 

@@ -14,6 +14,7 @@ export interface GetGatheringsParams {
 	offset?: number;
 	limit?: number;
 }
+
 export async function getGatherings(params: GetGatheringsParams): Promise<PageResult<Gathering[]>> {
 	const response = await axios.get<Gathering[]>("/api/v1/Gatherings", { params });
 	const gatherings: Gathering[] = response.data;

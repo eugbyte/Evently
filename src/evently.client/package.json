@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+		"test": "vitest",
 		"clean": "pnpm dlx npkill",
 		"build": "tsc -b && vite build",
 		"fmt": "prettier --write . && eslint .",
@@ -37,7 +38,9 @@
 		"@iconify/react": "^6.0.0",
 		"@tanstack/router-plugin": "^1.131.7",
 		"@testing-library/dom": "^10.4.1",
+		"@testing-library/jest-dom": "^6.8.0",
 		"@testing-library/react": "^16.3.0",
+		"@testing-library/user-event": "^14.6.1",
 		"@types/lodash.clonedeep": "^4.5.9",
 		"@types/lodash.uniqby": "^4.7.9",
 		"@types/luxon": "^3.7.1",
@@ -55,6 +58,7 @@
 		"typescript": "~5.8.3",
 		"typescript-eslint": "^8.39.0",
 		"vite": "^7.1.0",
-		"vitest": "^3.2.4"
+		"vitest": "^3.2.4",
+		"vitest-dom": "^0.1.1"
 	}
 }

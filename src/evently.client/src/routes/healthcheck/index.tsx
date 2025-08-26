@@ -15,7 +15,7 @@ export function HealthcheckPage(): JSX.Element {
 	const statuses: Record<string, string> = _statuses ?? {};
 
 	return (
-		<div className="h-full flex flex-col justify-center items-center space-y-4">
+		<div className="flex h-full flex-col items-center justify-center space-y-4">
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (

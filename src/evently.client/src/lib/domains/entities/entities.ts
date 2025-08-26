@@ -30,14 +30,15 @@ export class Account {
 }
 
 export class Booking {
-	public bookingId = "";
-	public accountDto = new Account();
-	public gatheringId = 0;
-	public gathering = new Gathering();
-	public creationDateTime = new Date();
-	public checkInDateTime: Date | null = null;
-	public checkoutDateTime: Date | null = null;
-	public cancellationDateTime: Date | null = null;
+	bookingId = "";
+	attendeeId = "";
+	accountDto = new Account();
+	gatheringId = 0;
+	gathering = new Gathering();
+	creationDateTime = new Date();
+	checkInDateTime: Date | null = null;
+	checkoutDateTime: Date | null = null;
+	cancellationDateTime: Date | null = null;
 
 	constructor(partial: Partial<Booking> = {}) {
 		Object.assign(this, partial);
@@ -45,8 +46,8 @@ export class Booking {
 }
 
 export class Category {
-	public categoryId = 0;
-	public categoryName = "";
+	categoryId = 0;
+	categoryName = "";
 
 	constructor(partial: Partial<Category> = {}) {
 		// Apply partial properties using Object.assign
@@ -55,10 +56,10 @@ export class Category {
 }
 
 export class GatheringCategoryDetail {
-	public gatheringId = 0;
-	public categoryId = 0;
-	public gathering = new Gathering();
-	public category = new Category();
+	gatheringId = 0;
+	categoryId = 0;
+	gathering = new Gathering();
+	category = new Category();
 
 	constructor(partial: Partial<GatheringCategoryDetail> = {}) {
 		// Apply partial properties using Object.assign
