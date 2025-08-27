@@ -18,7 +18,7 @@ export const WrapperDataTestId = "root-layout";
 
 /**
  * A HOC to wire up the components with TanStack configurations so that it can be tested.
- * 
+ *
  * Remember to wait for the wrapped Component to be rendered by calling: `await waitFor(() => screen.findByTestId(WrapperDataTestId))`
  * @param children The React Component to be tested
  * @constructor

@@ -4,7 +4,7 @@ import * as GatheringService from "~/lib/services";
 import userEvent from "@testing-library/user-event";
 import { TestWrapper, WrapperDataTestId } from "~/lib/components";
 import { GatheringsPage } from "./index.tsx";
-import type {GetGatheringsParams} from "~/lib/services";
+import type { GetGatheringsParams } from "~/lib/services";
 
 it("renders GatheringPage", async () => {
 	const spy = vi.spyOn(GatheringService, "getGatherings");
@@ -31,9 +31,7 @@ it("renders GatheringPage", async () => {
 	await userEvent.type(input, "T");
 	expect(spy).toHaveBeenCalledTimes(2);
 
-
-	const button: HTMLButtonElement = screen.getByRole('button', { name: '»' });
+	const button: HTMLButtonElement = screen.getByRole("button", { name: "»" });
 	await userEvent.click(button);
 	expect(spy).toHaveBeenCalledTimes(3);
-
 });
