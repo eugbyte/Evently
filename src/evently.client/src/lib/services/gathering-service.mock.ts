@@ -1,6 +1,7 @@
 ﻿import { Booking, Gathering, Category } from "~/lib/domains/entities";
-import { GatheringReqDto, type PageResult } from "~/lib/domains/models";
+import { GatheringReqDto } from "~/lib/domains/models";
 import type { GetGatheringsParams } from "./gathering-service";
+import type { PageResult } from "~/lib/domains/interfaces";
 
 // Mock data for categories
 const mockCategories: Category[] = [

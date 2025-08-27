@@ -42,7 +42,7 @@ describe("Card Component", () => {
 		expect(image).toBeInTheDocument();
 		expect(image).toHaveAttribute("src", "/images/tech-conference.jpg");
 	});
-    
+
 	it("displays cancelled status when gathering is cancelled", () => {
 		const cancelledGathering = {
 			...mockGathering,

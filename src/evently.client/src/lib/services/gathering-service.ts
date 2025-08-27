@@ -1,6 +1,7 @@
 ﻿import type { Gathering } from "~/lib/domains/entities";
 import axios from "axios";
-import { GatheringReqDto, type PageResult } from "~/lib/domains/models";
+import { GatheringReqDto } from "~/lib/domains/models";
+import type { PageResult } from "~/lib/domains/interfaces";
 
 export interface GetGatheringsParams {
 	attendeeId?: string;

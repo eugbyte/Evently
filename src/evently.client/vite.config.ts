@@ -14,9 +14,10 @@ console.log({ backendUrl });
 // https://vitejs.dev/config/
 export default defineConfig({
 	test: {
-		include: ["src/**/*.{test,spec}.{js,ts}"],
+		include: ["src/**/*.{test,spec}.{js,ts,jsx,tsx}"],
 		environment: "jsdom",
-		setupFiles: "src/setup-tests.ts"
+		setupFiles: "src/setup-tests.ts",
+		globals: true
 	},
 	plugins: [
 		tailwindcss(),

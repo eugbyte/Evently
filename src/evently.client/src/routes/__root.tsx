@@ -4,11 +4,7 @@ import { Navbar } from "~/lib/components";
 import { type JSX } from "react";
 import { getAccount } from "~/lib/services";
 import { Account } from "~/lib/domains/entities";
-
-interface RouteContext {
-	// The ReturnType of your useAuth hook or the value of your AuthContext
-	account: Account;
-}
+import type { RouteContext } from "~/lib/domains/interfaces/route-context.ts";
 
 export const Route = createRootRouteWithContext<RouteContext>()({
 	beforeLoad: async () => {
