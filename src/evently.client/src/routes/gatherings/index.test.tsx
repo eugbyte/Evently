@@ -1,63 +1,39 @@
-﻿import { render, screen } from "@testing-library/react";
-import { GatheringPage } from "./$gatheringId";
+﻿import { render, screen, waitFor } from "@testing-library/react";
 import { getMockGatherings } from "~/lib/services/gathering-service.mock";
 import * as GatheringService from "~/lib/services";
 import userEvent from "@testing-library/user-event";
-import {
-	createRootRouteWithContext,
-	createRoute,
-	createRouter,
-	Outlet,
-	RouterProvider
-} from "@tanstack/react-router";
-import { Account } from "~/lib/domains/entities";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TestWrapper, WrapperDataTestId } from "~/lib/components";
+import { GatheringsPage } from "./index.tsx";
+import type {GetGatheringsParams} from "~/lib/services";
 
-interface RouteContext {
-	// The ReturnType of your useAuth hook or the value of your AuthContext
-	account: Account;
-}
-
-it.only("renders GatheringPage", async () => {
+it("renders GatheringPage", async () => {
 	const spy = vi.spyOn(GatheringService, "getGatherings");
-	spy.mockImplementation(async (params) => await getMockGatherings(params));
+	spy.mockImplementation(async (params: GetGatheringsParams) => await getMockGatherings(params));
 
-	const rootRoute = createRootRouteWithContext<RouteContext>()({
-		beforeLoad: async () => {
-			const account: Account | null = new Account();
-			return { account };
-		},
-		component: () => <Outlet />
-	});
-
-	const indexRoute = createRoute({
-		getParentRoute: () => rootRoute,
-		path: "/",
-		component: GatheringPage
-	});
-
-	const router = createRouter({
-		routeTree: rootRoute.addChildren([indexRoute]),
-		defaultPendingMinMs: 0,
-		context: {
-			account: undefined!
-		}
-	});
-
-	const queryClient = new QueryClient();
 	render(
-		<QueryClientProvider client={queryClient}>
-			<RouterProvider router={router} />
-		</QueryClientProvider>
+		<TestWrapper>
+			<GatheringsPage />
+		</TestWrapper>
 	);
+	await waitFor(() => screen.findByTestId(WrapperDataTestId));
 
-	expect(spy).toHaveBeenCalled();
-	expect(screen.getByText("Tech Conference 2024")).toBeInTheDocument();
-	expect(screen.getByText("Design Workshop")).toBeInTheDocument();
-	expect(screen.getByText("Networking Event")).toBeInTheDocument();
+	expect(spy).toHaveBeenCalledTimes(1);
+	let element = await screen.findByText("Tech Conference 2024");
+	expect(element).toBeInTheDocument();
+
+	element = await screen.findByText("Design Workshop");
+	expect(element).toBeInTheDocument();
+
+	element = await screen.findByText("Networking Event");
+	expect(element).toBeInTheDocument();
 
 	const input: HTMLInputElement = screen.getByPlaceholderText("Search Gatherings");
 	await userEvent.type(input, "T");
+	expect(spy).toHaveBeenCalledTimes(2);
 
-	expect(spy).toHaveBeenCalledWith({ name: "T" });
+
+	const button: HTMLButtonElement = screen.getByRole('button', { name: '»' });
+	await userEvent.click(button);
+	expect(spy).toHaveBeenCalledTimes(3);
+
 });

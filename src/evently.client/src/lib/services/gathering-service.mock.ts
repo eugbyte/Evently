@@ -83,67 +83,20 @@ export async function getMockGathering(id: number): Promise<Gathering> {
 }
 
 export async function getMockGatherings(
-	params: GetGatheringsParams = {}
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	_params: GetGatheringsParams = {}
 ): Promise<PageResult<Gathering[]>> {
 	// Simulate network delay
 	await new Promise((resolve) => setTimeout(resolve, 300));
-
-	let filteredGatherings: Gathering[] = [...mockGatherings];
-
-	// Apply filters based on params
-	if (params.attendeeId != null) {
-		filteredGatherings = filteredGatherings.filter((g) =>
-			g.bookings.map((b) => b.attendeeId).includes(params.attendeeId!)
-		);
-	}
-
-	if (params.organiserId) {
-		filteredGatherings = filteredGatherings.filter((g) => g.organiserId === params.organiserId);
-	}
-
-	if (params.name) {
-		filteredGatherings = filteredGatherings.filter((g) =>
-			g.name.toLowerCase().includes(params.name!.toLowerCase())
-		);
-	}
-
-	if (params.startDateBefore) {
-		filteredGatherings = filteredGatherings.filter((g) => g.start <= params.startDateBefore!);
-	}
-
-	if (params.startDateAfter) {
-		filteredGatherings = filteredGatherings.filter((g) => g.start >= params.startDateAfter!);
-	}
-
-	if (params.endDateBefore) {
-		filteredGatherings = filteredGatherings.filter((g) => g.end <= params.endDateBefore!);
-	}
-
-	if (params.endDateAfter) {
-		filteredGatherings = filteredGatherings.filter((g) => g.end >= params.endDateAfter!);
-	}
-
-	if (params.isCancelled !== undefined) {
-		filteredGatherings = filteredGatherings.filter(
-			(g) => (g.cancellationDateTime != null) === params.isCancelled
-		);
-	}
-
-	const totalCount = filteredGatherings.length;
-
-	// Apply pagination
-	const offset = params.offset || 0;
-	const limit = params.limit || 10;
-	const paginatedGatherings = filteredGatherings.slice(offset, offset + limit);
-
 	return {
-		totalCount,
-		data: paginatedGatherings
+		totalCount: 10,
+		data: [...mockGatherings]
 	};
 }
 
 export async function createMockGathering(
 	gatheringDto: GatheringReqDto,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	_coverImg?: File | null
 ): Promise<Gathering> {
 	return {
@@ -155,6 +108,7 @@ export async function createMockGathering(
 export async function updateMockGathering(
 	gatheringId: number,
 	gatheringDto: GatheringReqDto,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	_coverImg?: File | null
 ): Promise<Gathering> {
 	return {

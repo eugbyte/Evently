@@ -21,7 +21,7 @@ export function HealthcheckPage(): JSX.Element {
 			) : (
 				<>
 					{Object.entries(statuses).map(([key, value]) => (
-						<code>
+						<code key={key}>
 							{key}: {value}
 						</code>
 					))}
