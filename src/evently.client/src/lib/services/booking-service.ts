@@ -1,6 +1,7 @@
 ﻿import axios from "axios";
 import { Booking } from "~/lib/domains/entities";
-import { BookingReqDto, type PageResult } from "~/lib/domains/models";
+import { BookingReqDto } from "~/lib/domains/models";
+import type { PageResult } from "~/lib/domains/interfaces";
 
 export interface GetBookingsParams {
 	attendeeId?: string;

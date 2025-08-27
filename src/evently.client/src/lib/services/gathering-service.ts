@@ -1,6 +1,7 @@
 ﻿import type { Gathering } from "~/lib/domains/entities";
 import axios from "axios";
-import { GatheringReqDto, type PageResult } from "~/lib/domains/models";
+import { GatheringReqDto } from "~/lib/domains/models";
+import type { PageResult } from "~/lib/domains/interfaces";
 
 export interface GetGatheringsParams {
 	attendeeId?: string;
@@ -14,6 +15,7 @@ export interface GetGatheringsParams {
 	offset?: number;
 	limit?: number;
 }
+
 export async function getGatherings(params: GetGatheringsParams): Promise<PageResult<Gathering[]>> {
 	const response = await axios.get<Gathering[]>("/api/v1/Gatherings", { params });
 	const gatherings: Gathering[] = response.data;

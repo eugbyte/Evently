@@ -243,7 +243,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 			new Booking {
 				BookingId = "book_abc123456",
 				GatheringId = 1,
-				AccountId = guestUserId,
+				AttendeeId = guestUserId,
 				CreationDateTime = fixedCreationTime,
 				CheckInDateTime = null,
 				CheckoutDateTime = null,
@@ -252,7 +252,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 			new Booking {
 				BookingId = "book_def789012",
 				GatheringId = 2,
-				AccountId = hostUserId,
+				AttendeeId = hostUserId,
 				CreationDateTime = fixedCreationTime.AddHours(1), // Slightly different time
 				CheckInDateTime = null,
 				CheckoutDateTime = null,

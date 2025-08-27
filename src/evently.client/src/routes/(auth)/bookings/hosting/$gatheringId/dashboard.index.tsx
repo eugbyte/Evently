@@ -7,10 +7,10 @@ import cloneDeep from "lodash.clonedeep";
 import { Icon } from "@iconify/react";
 import { json2csv } from "json-2-csv";
 import { downloadFile } from "~/lib/services";
-import type { PageResult } from "~/lib/domains/models";
 import { useQuery } from "@tanstack/react-query";
 import { BookingsTable, Jumbotron, StatsCard } from "./-components";
 import { useInterval } from "usehooks-ts";
+import type { PageResult } from "~/lib/domains/interfaces";
 
 export const Route = createFileRoute("/(auth)/bookings/hosting/$gatheringId/dashboard/")({
 	loader: async ({ params }) => {

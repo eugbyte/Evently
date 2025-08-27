@@ -16,7 +16,7 @@ public class Booking {
 	[StringLength(50)]
 	public string BookingId { get; set; } = $"book_{Nanoid.Generate(size: 10)}";
 
-	[StringLength(100)] [ForeignKey("Account")] public string AccountId { get; set; } = string.Empty;
+	[StringLength(100)] [ForeignKey("Account")] public string AttendeeId { get; set; } = string.Empty;
 	[JsonIgnore] public Account? Account { get; set; }
 	[NotMapped] public AccountDto? AccountDto => Account?.ToAccountDto();
 

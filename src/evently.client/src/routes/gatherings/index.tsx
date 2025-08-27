@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Gathering } from "~/lib/domains/entities";
 import { getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card } from "~/lib/components";
-import type { PageResult } from "~/lib/domains/models";
 import { Icon } from "@iconify/react";
+import type { PageResult } from "~/lib/domains/interfaces";
 
 export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,

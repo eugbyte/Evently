@@ -8,7 +8,7 @@ public sealed class AccountValidator : AbstractValidator<Account> {
 		RuleFor((member) => member.Name).NotEmpty().WithMessage("Name is required.");
 		RuleFor((member) => member.Email).NotEmpty().WithMessage("Email is required.");
 		RuleForEach((member) => member.Bookings).Custom((value, context) => {
-			if (value.AccountId == string.Empty) {
+			if (value.AttendeeId == string.Empty) {
 				context.AddFailure("MemberId is required.");
 			}
 

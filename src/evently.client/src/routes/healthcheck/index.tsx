@@ -15,15 +15,15 @@ export function HealthcheckPage(): JSX.Element {
 	const statuses: Record<string, string> = _statuses ?? {};
 
 	return (
-		<div>
+		<div className="flex h-full flex-col items-center justify-center space-y-4">
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
 				<>
 					{Object.entries(statuses).map(([key, value]) => (
-						<p>
+						<code key={key}>
 							{key}: {value}
-						</p>
+						</code>
 					))}
 				</>
 			)}

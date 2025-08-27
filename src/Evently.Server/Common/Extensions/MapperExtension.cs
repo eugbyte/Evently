@@ -38,7 +38,7 @@ public static class MapperExtension {
 	public static Booking ToBooking(this BookingReqDto bookingReqDto) {
 		return new Booking {
 			BookingId = bookingReqDto.BookingId,
-			AccountId = bookingReqDto.AttendeeId,
+			AttendeeId = bookingReqDto.AttendeeId,
 			GatheringId = bookingReqDto.GatheringId,
 			CreationDateTime = bookingReqDto.CreationDateTime,
 			CheckInDateTime = bookingReqDto.CheckInDateTime,
@@ -50,7 +50,7 @@ public static class MapperExtension {
 	public static BookingReqDto ToBookingDto(this Booking booking) {
 		return new BookingReqDto(
 			booking.BookingId,
-			booking.AccountId,
+			booking.AttendeeId,
 			booking.GatheringId,
 			booking.CreationDateTime,
 			booking.CheckInDateTime,

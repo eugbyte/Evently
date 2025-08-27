@@ -1,0 +1,88 @@
+﻿import { render, screen, waitFor } from "@testing-library/react";
+import { Card } from "~/lib/components/card.tsx";
+import { Gathering } from "~/lib/domains/entities";
+import { getMockGathering } from "~/lib/services/gathering-service.mock";
+import { TestWrapper, WrapperDataTestId } from "~/lib/components/test-wrapper.tsx";
+
+describe("Card Component", () => {
+	let mockGathering: Gathering;
+	beforeEach(async () => {
+		mockGathering = await getMockGathering(1);
+	});
+
+	it("renders gathering name", async () => {
+		render(
+			<TestWrapper>
+				<Card gathering={mockGathering} />
+			</TestWrapper>
+		);
+		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+		expect(screen.getByText("Tech Conference 2024")).toBeInTheDocument();
+	});
+
+	it("renders gathering description", async () => {
+		render(
+			<TestWrapper>
+				<Card gathering={mockGathering} />
+			</TestWrapper>
+		);
+		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+
+		expect(
+			screen.getByText("Annual technology conference with industry leaders")
+		).toBeInTheDocument();
+	});
+
+	it("renders gathering location", async () => {
+		render(
+			<TestWrapper>
+				<Card gathering={mockGathering} />
+			</TestWrapper>
+		);
+		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+
+		expect(screen.getByText("Convention Center")).toBeInTheDocument();
+	});
+
+	it("renders cover image when coverSrc is provided", async () => {
+		render(
+			<TestWrapper>
+				<Card gathering={mockGathering} />
+			</TestWrapper>
+		);
+		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+
+		const image = screen.getByRole("img");
+		expect(image).toBeInTheDocument();
+		expect(image).toHaveAttribute("src", "/images/tech-conference.jpg");
+	});
+
+	it("displays cancelled status when gathering is cancelled", async () => {
+		const cancelledGathering = {
+			...mockGathering,
+			cancellationDateTime: new Date("2024-12-10T10:00:00Z")
+		};
+
+		render(
+			<TestWrapper>
+				<Card gathering={cancelledGathering} />
+			</TestWrapper>
+		);
+		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+		expect(screen.getByText(/cancelled/i)).toBeInTheDocument();
+	});
+
+	it("handles gathering with multiple categories", async () => {
+		const gatheringWithMultipleCategories: Gathering = await getMockGathering(1);
+
+		render(
+			<TestWrapper>
+				<Card gathering={gatheringWithMultipleCategories} />
+			</TestWrapper>
+		);
+		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+
+		expect(screen.getByText("Technology")).toBeInTheDocument();
+		expect(screen.getByText("Networking")).toBeInTheDocument();
+	});
+});

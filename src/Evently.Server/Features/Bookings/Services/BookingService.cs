@@ -32,7 +32,7 @@ public sealed class BookingService(
 		DateTimeOffset? gatheringStartBefore, DateTimeOffset? gatheringStartAfter, DateTimeOffset? gatheringEndBefore, DateTimeOffset? gatheringEndAfter,
 		bool? isCancelled, int? offset, int? limit) {
 		IQueryable<Booking> query = db.Bookings
-			.Where((b) => accountId == null || b.AccountId == accountId)
+			.Where((b) => accountId == null || b.AttendeeId == accountId)
 			.Where((b) => gatheringId == null || b.GatheringId == gatheringId)
 			.Where((c) => checkInStart == null || checkInStart <= c.CheckInDateTime)
 			.Where((b) => checkInEnd == null || b.CheckInDateTime <= checkInEnd)
@@ -89,7 +89,7 @@ public sealed class BookingService(
 			                  .FirstOrDefaultAsync((be) => be.BookingId == bookingId)
 		                  ?? throw new KeyNotFoundException($"{booking.BookingId} not found");
 
-		current.AccountId = booking.AccountId;
+		current.AttendeeId = booking.AttendeeId;
 		current.GatheringId = booking.GatheringId;
 		current.CreationDateTime = booking.CreationDateTime;
 		current.CheckInDateTime = booking.CheckInDateTime;
