@@ -25,6 +25,8 @@ jobs:
         version: 10
     - name: Install npm modules
       run: cd src/evently.client && pnpm i
+    - name: Run UI Tests
+      run: cd src/evently.client && pnpm run test
     - name: Restore dependencies
       run: dotnet restore src/Evently.Server/Evently.Server.csproj
     - name: Build
