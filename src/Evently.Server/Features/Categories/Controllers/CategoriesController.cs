@@ -4,7 +4,7 @@ using Evently.Server.Common.Domains.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 
-namespace Evently.Server.Features.Categories;
+namespace Evently.Server.Features.Categories.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]

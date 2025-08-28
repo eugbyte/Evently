@@ -6,13 +6,15 @@ import { DateTime } from "luxon";
 import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
 import { useRouter } from "@tanstack/react-router";
 import { toIsoString } from "~/lib/services";
+import {Category} from "~/lib/domains/entities";
 interface GatheringFormProps {
 	file: File | null;
 	setFile: (file: File | null) => void;
 	form: IGatheringForm;
+	categories: Category[];
 }
 
-export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.Element {
+export function GatheringForm({ file, setFile, form, categories }: GatheringFormProps): JSX.Element {
 	const router = useRouter();
 	const fileName: string = file?.name ?? "";
 	const coverSrc: string =

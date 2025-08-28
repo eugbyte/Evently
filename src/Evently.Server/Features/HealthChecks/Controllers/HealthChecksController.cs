@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace Evently.Server.Features.HealthChecks;
+namespace Evently.Server.Features.HealthChecks.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]

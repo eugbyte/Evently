@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Threading.Channels;
 
-namespace Evently.Server.Features.Bookings;
+namespace Evently.Server.Features.Bookings.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]

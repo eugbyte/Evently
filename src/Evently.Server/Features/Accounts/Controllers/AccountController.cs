@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace Evently.Server.Features.Accounts;
+namespace Evently.Server.Features.Accounts.Controllers;
 
 // Based on https://tinyurl.com/26arz8vk
 [ApiController]

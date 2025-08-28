@@ -3,14 +3,13 @@ using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
 using Evently.Server.Common.Extensions;
 using Evently.Server.Features.Accounts.Services;
-using FluentValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using System.Globalization;
 
-namespace Evently.Server.Features.Gatherings;
+namespace Evently.Server.Features.Gatherings.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
