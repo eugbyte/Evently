@@ -22,8 +22,14 @@ export class GatheringReqDto {
 	organiserId = "";
 	coverSrc?: string | null = null;
 	cancellationDateTime: Date | null = null;
-	
+	gatheringCategoryDetails: GatheringCategoryDetailReqDto[] = [];
+
 	constructor(partial: Partial<GatheringReqDto> = {}) {
 		Object.assign(this, partial);
 	}
+}
+
+export class GatheringCategoryDetailReqDto {
+	gatheringId = 0;
+	categoryId = 0;
 }
