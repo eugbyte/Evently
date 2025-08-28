@@ -1,7 +1,7 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { Category, Gathering } from "~/lib/domains/entities";
-import { useState, type JSX } from "react";
-import { getCategories, getGathering, sleep, updateGathering } from "~/lib/services";
+import { useEffect, useState, type JSX } from "react";
+import { fetchFile, getCategories, getGathering, sleep, updateGathering } from "~/lib/services";
 import {
 	useGatheringForm,
 	type GatheringForm as IGatheringForm
@@ -38,6 +38,18 @@ function UpdateGatheringPage(): JSX.Element {
 		navigate({ to: `/gatherings/${gathering.gatheringId}` });
 	};
 	const form: IGatheringForm = useGatheringForm(defaultGathering, onSubmit);
+
+	useEffect(() => {
+		// set the initial file
+		(async () => {
+			const coverSrc: string | null = gathering.coverSrc ?? null;
+			if (coverSrc == null) {
+				return;
+			}
+			const file: File = await fetchFile(coverSrc);
+			setFile(file);
+		})();
+	}, [gathering]);
 	return (
 		<>
 			<GatheringForm file={file} setFile={setFile} form={form} categories={categories} />
