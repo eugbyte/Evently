@@ -3,22 +3,34 @@ import { compressImage, type GatheringForm as IGatheringForm } from "../-service
 import { FieldErrMsg as FieldInfo } from "~/lib/components";
 import { Icon } from "@iconify/react";
 import { DateTime } from "luxon";
-import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
+import { GatheringCategoryDetailReqDto, GatheringReqDto, ToastContent } from "~/lib/domains/models";
 import { useRouter } from "@tanstack/react-router";
 import { toIsoString } from "~/lib/services";
+import { Category } from "~/lib/domains/entities";
+
 interface GatheringFormProps {
 	file: File | null;
 	setFile: (file: File | null) => void;
 	form: IGatheringForm;
+	categories: Category[];
 }
 
-export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.Element {
+export function GatheringForm({
+	file,
+	setFile,
+	form,
+	categories
+}: GatheringFormProps): JSX.Element {
 	const router = useRouter();
 	const fileName: string = file?.name ?? "";
-	const coverSrc: string =
-		file != null ? URL.createObjectURL(file) : (form.state.values.coverSrc ?? "");
+	const coverSrc = file != null ? URL.createObjectURL(file) : (form.state.values.coverSrc ?? "");
+
 	const gathering: GatheringReqDto = form.state.values;
 	const [toastMsg, setToastMsg] = useState(new ToastContent(false));
+	const categoryDict: Record<number, Category> = {};
+	for (const category of categories) {
+		categoryDict[category.categoryId] = category;
+	}
 
 	useEffect(() => {
 		// prevent memory leak
@@ -94,6 +106,61 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 												/>
 												<FieldInfo field={field} />
 											</div>
+										)}
+									/>
+
+									<form.Field
+										name="gatheringCategoryDetails"
+										children={(field) => (
+											<>
+												<details className="dropdown w-full">
+													<summary className="select m-1 w-full">Categories</summary>
+													<ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 w-full p-2 shadow-sm">
+														{categories.map((category) => {
+															const wasChecked = field.state.value.some(
+																(detail) => detail.categoryId === category.categoryId
+															);
+															return (
+																<li key={category.categoryId}>
+																	<label className="label">
+																		<input
+																			type="checkbox"
+																			checked={wasChecked}
+																			className="checkbox"
+																			onChange={(e) => {
+																				const checked = e.target.checked;
+																				let newValue: GatheringCategoryDetailReqDto[] = [];
+																				if (checked) {
+																					newValue = [
+																						...field.state.value,
+																						{
+																							categoryId: category.categoryId,
+																							gatheringId: gathering.gatheringId
+																						}
+																					];
+																				} else {
+																					newValue = field.state.value.filter(
+																						(detail) => detail.categoryId !== category.categoryId
+																					);
+																				}
+																				field.handleChange(newValue);
+																			}}
+																		/>
+																		{category.categoryName}
+																	</label>
+																</li>
+															);
+														})}
+													</ul>
+												</details>
+												<div className="flex flex-wrap space-x-2">
+													{field.state.value.map((detail) => (
+														<div key={detail.categoryId} className="badge badge-primary">
+															{categoryDict[detail.categoryId]?.categoryName}
+														</div>
+													))}
+												</div>
+											</>
 										)}
 									/>
 
@@ -202,15 +269,26 @@ export function GatheringForm({ file, setFile, form }: GatheringFormProps): JSX.
 												}}
 											/>
 										</label>
-										<p className="">{fileName}</p>
 										{coverSrc != null && coverSrc.trim() !== "" && (
-											<img
-												src={coverSrc}
-												alt="Floor Plan"
-												width="350px"
-												height="350px"
-												className="block"
-											/>
+											<>
+												<img
+													src={coverSrc}
+													alt="Floor Plan"
+													width="350px"
+													height="350px"
+													className="block"
+												/>
+												<div className="flex items-center space-x-2 py-2">
+													<span>{fileName}</span>
+													<button
+														className="cursor-pointer"
+														type="button"
+														onClick={() => setFile(null)}
+													>
+														❌
+													</button>{" "}
+												</div>
+											</>
 										)}
 									</div>
 								</div>

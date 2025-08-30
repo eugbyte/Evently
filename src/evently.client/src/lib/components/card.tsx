@@ -55,7 +55,7 @@ export function Card({ gathering, accountId }: CardProps): JSX.Element {
 					<Icon icon="mingcute:time-fill" width="24" height="24" />
 					<span>{`${start.toLocaleString(DateTime.DATETIME_MED)} — ${end.toLocaleString(DateTime.DATETIME_MED)}`}</span>
 				</div>
-				<div className="flex flex-row flex-wrap space-x-2">
+				<div className="flex flex-row flex-wrap gap-x-2 gap-y-1">
 					{categories.map((category) => (
 						<div className="badge badge-soft badge-info" key={category.categoryId}>
 							{category.categoryName}

@@ -5,6 +5,12 @@ namespace Evently.Server.Common.Extensions;
 
 public static class MapperExtension {
 	public static Gathering ToGathering(this GatheringReqDto gatheringReqDto) {
+		List<GatheringCategoryDetail> gatheringCategoryDetails = gatheringReqDto.GatheringCategoryDetails
+			.Select((detail) => new GatheringCategoryDetail {
+				GatheringId = gatheringReqDto.GatheringId,
+				CategoryId = detail.CategoryId,
+			})
+			.ToList();
 		Gathering gathering = new() {
 			GatheringId = gatheringReqDto.GatheringId,
 			Name = gatheringReqDto.Name,
@@ -15,11 +21,15 @@ public static class MapperExtension {
 			Location = gatheringReqDto.Location,
 			OrganiserId = gatheringReqDto.OrganiserId,
 			CoverSrc = gatheringReqDto.CoverSrc,
+			GatheringCategoryDetails = gatheringCategoryDetails,
 		};
 		return gathering;
 	}
 
 	public static GatheringReqDto ToGatheringDto(this Gathering gathering) {
+		List<GatheringCategoryDetailDto> gatheringCategoryDetails = gathering.GatheringCategoryDetails
+			.Select(detail => new GatheringCategoryDetailDto(detail.GatheringId, detail.CategoryId))
+			.ToList();
 		GatheringReqDto reqDto = new(
 			gathering.GatheringId,
 			gathering.Name,
@@ -29,7 +39,8 @@ public static class MapperExtension {
 			gathering.CancellationDateTime,
 			gathering.Location,
 			gathering.OrganiserId,
-			gathering.CoverSrc
+			gathering.CoverSrc,
+			gatheringCategoryDetails
 		);
 		return reqDto;
 	}

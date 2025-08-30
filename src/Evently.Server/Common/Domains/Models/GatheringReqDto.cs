@@ -9,5 +9,6 @@ public sealed record GatheringReqDto(
 	DateTimeOffset? CancellationDateTime,
 	string Location,
 	string OrganiserId,
-	string? CoverSrc
+	string? CoverSrc,
+	List<GatheringCategoryDetailDto> GatheringCategoryDetails
 );

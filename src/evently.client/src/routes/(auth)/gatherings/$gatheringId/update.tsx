@@ -1,7 +1,7 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
-import { Gathering } from "~/lib/domains/entities";
-import { useState, type JSX } from "react";
-import { getGathering, sleep, updateGathering } from "~/lib/services";
+import { Category, Gathering } from "~/lib/domains/entities";
+import { useEffect, useState, type JSX } from "react";
+import { fetchFile, getCategories, getGathering, sleep, updateGathering } from "~/lib/services";
 import {
 	useGatheringForm,
 	type GatheringForm as IGatheringForm
@@ -12,14 +12,16 @@ import { GatheringForm } from "~/routes/(auth)/gatherings/-components";
 export const Route = createFileRoute("/(auth)/gatherings/$gatheringId/update")({
 	loader: async ({ params }) => {
 		const gatheringId: number = parseInt(params.gatheringId);
-		const gathering: Gathering | null = await getGathering(gatheringId);
-		return gathering ?? new Gathering();
+		let gathering: Gathering | null = await getGathering(gatheringId);
+		gathering = gathering ?? new Gathering();
+		const categories: Category[] = await getCategories();
+		return { gathering, categories };
 	},
 	component: UpdateGatheringPage
 });
 
 function UpdateGatheringPage(): JSX.Element {
-	const gathering: Gathering = Route.useLoaderData();
+	const { gathering, categories } = Route.useLoaderData();
 	const navigate = Route.useNavigate();
 	const defaultGathering: GatheringReqDto = {
 		...gathering
@@ -36,9 +38,21 @@ function UpdateGatheringPage(): JSX.Element {
 		navigate({ to: `/gatherings/${gathering.gatheringId}` });
 	};
 	const form: IGatheringForm = useGatheringForm(defaultGathering, onSubmit);
+
+	useEffect(() => {
+		// set the initial file
+		(async () => {
+			const coverSrc: string | null = gathering.coverSrc ?? null;
+			if (coverSrc == null) {
+				return;
+			}
+			const file: File = await fetchFile(coverSrc);
+			setFile(file);
+		})();
+	}, [gathering]);
 	return (
 		<>
-			<GatheringForm file={file} setFile={setFile} form={form} />
+			<GatheringForm file={file} setFile={setFile} form={form} categories={categories} />
 			{toastMsg.show && (
 				<div className="toast toast-center">
 					<div className="alert alert-success">

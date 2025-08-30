@@ -1,16 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Gathering } from "~/lib/domains/entities";
+import { Category, Gathering } from "~/lib/domains/entities";
 import { useState, type JSX } from "react";
-import { createGathering, sleep } from "~/lib/services";
+import { createGathering, getCategories, sleep } from "~/lib/services";
 import { useGatheringForm, type GatheringForm as IGatheringForm } from "./-services";
 import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
 import { GatheringForm } from "~/routes/(auth)/gatherings/-components";
 
 export const Route = createFileRoute("/(auth)/gatherings/create")({
+	loader: async () => {
+		const categories: Category[] = await getCategories();
+		return { categories };
+	},
 	component: CreateGatheringPage
 });
 
 function CreateGatheringPage(): JSX.Element {
+	const { categories } = Route.useLoaderData();
 	const { account } = Route.useRouteContext();
 	const accountId: string | undefined = account?.id;
 
@@ -36,7 +41,7 @@ function CreateGatheringPage(): JSX.Element {
 	const form: IGatheringForm = useGatheringForm(defaultGathering, onSubmit);
 	return (
 		<>
-			<GatheringForm file={file} setFile={setFile} form={form} />
+			<GatheringForm file={file} setFile={setFile} form={form} categories={categories} />
 			{toastMsg.show && (
 				<div className="toast toast-center">
 					<div className="alert alert-success">
