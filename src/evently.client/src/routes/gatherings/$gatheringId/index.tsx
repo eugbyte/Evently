@@ -71,13 +71,7 @@ export function GatheringPage(): JSX.Element {
 		if (booking == null) {
 			return;
 		}
-
-		const bookingDto: BookingReqDto = {
-			...booking,
-			attendeeId: booking.accountDto.id,
-			cancellationDateTime: new Date()
-		};
-		await cancelBooking(booking?.bookingId ?? "", bookingDto);
+		await cancelBooking(booking?.bookingId ?? "");
 		navigate({
 			to: `/gatherings/${gathering.gatheringId}`,
 			reloadDocument: true
