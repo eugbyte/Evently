@@ -4,9 +4,9 @@ import { useState, type JSX } from "react";
 import { createGathering, getCategories, sleep } from "~/lib/services";
 import { useGatheringForm, type GatheringForm as IGatheringForm } from "./-services";
 import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
-import { GatheringForm } from "~/routes/(auth)/gatherings/-components";
+import { GatheringForm } from "~/routes/gatherings/-components";
 
-export const Route = createFileRoute("/(auth)/gatherings/create")({
+export const Route = createFileRoute("/gatherings/(auth)/create")({
 	loader: async () => {
 		const categories: Category[] = await getCategories();
 		return { categories };

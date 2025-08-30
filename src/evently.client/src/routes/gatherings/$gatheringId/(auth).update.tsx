@@ -5,11 +5,11 @@ import { fetchFile, getCategories, getGathering, sleep, updateGathering } from "
 import {
 	useGatheringForm,
 	type GatheringForm as IGatheringForm
-} from "~/routes/(auth)/gatherings/-services";
+} from "~/routes/gatherings/-services";
 import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
-import { GatheringForm } from "~/routes/(auth)/gatherings/-components";
+import { GatheringForm } from "~/routes/gatherings/-components";
 
-export const Route = createFileRoute("/(auth)/gatherings/$gatheringId/update")({
+export const Route = createFileRoute("/gatherings/$gatheringId/(auth)/update")({
 	loader: async ({ params }) => {
 		const gatheringId: number = parseInt(params.gatheringId);
 		let gathering: Gathering | null = await getGathering(gatheringId);

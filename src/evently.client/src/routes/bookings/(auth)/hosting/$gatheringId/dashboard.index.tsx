@@ -12,7 +12,7 @@ import { BookingsTable, Jumbotron, StatsCard } from "./-components";
 import { useInterval } from "usehooks-ts";
 import type { PageResult } from "~/lib/domains/interfaces";
 
-export const Route = createFileRoute("/(auth)/bookings/hosting/$gatheringId/dashboard/")({
+export const Route = createFileRoute("/bookings/(auth)/hosting/$gatheringId/dashboard/")({
 	loader: async ({ params }) => {
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering = (await getGathering(gatheringId)) ?? new Gathering();
