@@ -1,14 +1,18 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Gathering } from "~/lib/domains/entities";
-import { getGatherings, type GetGatheringsParams } from "~/lib/services";
+import {Category, Gathering} from "~/lib/domains/entities";
+import {getCategories, getGatherings, type GetGatheringsParams} from "~/lib/services";
 import { Card } from "~/lib/components";
 import { Icon } from "@iconify/react";
 import type { PageResult } from "~/lib/domains/interfaces";
 
 export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,
+	loader: async () => {
+		const categories: Category[] = await getCategories();
+		return { categories };
+	},
 	pendingComponent: () => (
 		<div className="h-full">
 			<progress className="progress w-full"></progress>
@@ -17,6 +21,7 @@ export const Route = createFileRoute("/gatherings/")({
 });
 
 export function GatheringsPage(): JSX.Element {
+	const { categories } = Route.useLoaderData();
 	const { account } = Route.useRouteContext();
 	const accountId: string | undefined = account?.id;
 
@@ -61,7 +66,7 @@ export function GatheringsPage(): JSX.Element {
 
 	return (
 		<div className="h-full">
-			<div className="mt-1 flex flex-row justify-center">
+			<div className="mt-1 flex flex-wrap justify-center gap-2">
 				<label className="input [w-200px]">
 					<Icon icon="material-symbols:search" width="24" height="24" />
 					<input
@@ -77,6 +82,56 @@ export function GatheringsPage(): JSX.Element {
 						}}
 					/>
 				</label>
+
+				<div>
+					<details className="dropdown">
+						<summary className="select">Categories </summary>
+						<ul className="menu dropdown-content bg-base-100 rounded-box z-1 shadow-sm">
+							{categories.map((category) => {
+								const oldCategoryIds: number[] = queryParams.categoryIds ?? [];
+								const wasChecked = oldCategoryIds.some(
+									(id) => id === category.categoryId
+								);
+								return (
+									<li key={category.categoryId}>
+										<label className="label">
+											<input
+												type="checkbox"
+												checked={wasChecked}
+												className="checkbox"
+												onChange={(e) => {
+													const checked = e.target.checked;
+													let newValue: number[] = [];
+													if (checked) {
+														newValue = [
+															...oldCategoryIds,
+															category.categoryId,
+														];
+													} else {
+														newValue = oldCategoryIds.filter(
+															(id) => id !== category.categoryId
+														);
+													}
+													setQueryParams({
+														...queryParams,
+														categoryIds: newValue
+													});
+												}}
+											/>
+											{category.categoryName}
+										</label>
+									</li>
+								);
+							})}
+						</ul>
+					</details>
+					<p className=" block text-xs text-center">{(queryParams.categoryIds?.length ?? 0) > 0
+						? `${queryParams.categoryIds?.length} Selected`
+						: ""
+					}</p>
+				</div>
+				
+
 			</div>
 			{isLoading ? (
 				<progress className="progress w-full"></progress>

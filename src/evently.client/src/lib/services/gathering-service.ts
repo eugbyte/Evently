@@ -1,7 +1,8 @@
-﻿import type { Gathering } from "~/lib/domains/entities";
+﻿import type {Gathering} from "~/lib/domains/entities";
 import axios from "axios";
-import { GatheringCategoryDetailReqDto, GatheringReqDto } from "~/lib/domains/models";
-import type { PageResult } from "~/lib/domains/interfaces";
+import {GatheringCategoryDetailReqDto, GatheringReqDto} from "~/lib/domains/models";
+import type {PageResult} from "~/lib/domains/interfaces";
+import cloneDeep from "lodash.clonedeep";
 
 export interface GetGatheringsParams {
 	attendeeId?: string;
@@ -12,12 +13,20 @@ export interface GetGatheringsParams {
 	endDateBefore?: Date;
 	endDateAfter?: Date;
 	isCancelled?: boolean;
+	categoryIds?: number[],
 	offset?: number;
 	limit?: number;
 }
 
 export async function getGatherings(params: GetGatheringsParams): Promise<PageResult<Gathering[]>> {
-	const response = await axios.get<Gathering[]>("/api/v1/Gatherings", { params });
+	const categoryIds: number[] = params.categoryIds ?? [];
+	const queryParams: Record<string, any> = cloneDeep(params);
+	delete queryParams["categoryIds"];
+
+	for (let i = 0; i < categoryIds.length; i++) {
+		queryParams[`categoryIds[${i}]`] = categoryIds[i];
+	}
+	const response = await axios.get<Gathering[]>("/api/v1/Gatherings", { params: queryParams });
 	const gatherings: Gathering[] = response.data;
 	for (const gathering of gatherings) {
 		gathering.start = new Date(gathering.start);
