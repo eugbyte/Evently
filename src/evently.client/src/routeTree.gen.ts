@@ -14,7 +14,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index'
 import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
-import { Route as GatheringsauthRouteRouteImport } from './routes/gatherings/(auth).route'
 import { Route as BookingsauthRouteRouteImport } from './routes/bookings/(auth)/route'
 import { Route as GatheringsGatheringIdIndexRouteImport } from './routes/gatherings/$gatheringId/index'
 import { Route as GatheringsauthCreateRouteImport } from './routes/gatherings/(auth).create'
@@ -48,11 +47,6 @@ const GatheringsIndexRoute = GatheringsIndexRouteImport.update({
   path: '/gatherings/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GatheringsauthRouteRoute = GatheringsauthRouteRouteImport.update({
-  id: '/gatherings/(auth)',
-  path: '/gatherings/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BookingsauthRouteRoute = BookingsauthRouteRouteImport.update({
   id: '/bookings/(auth)',
   path: '/bookings/',
@@ -65,9 +59,9 @@ const GatheringsGatheringIdIndexRoute =
     getParentRoute: () => rootRouteImport,
   } as any)
 const GatheringsauthCreateRoute = GatheringsauthCreateRouteImport.update({
-  id: '/create',
-  path: '/create',
-  getParentRoute: () => GatheringsauthRouteRoute,
+  id: '/gatherings/(auth)/create',
+  path: '/gatherings/create',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BookingsauthHostingIndexRoute =
   BookingsauthHostingIndexRouteImport.update({
@@ -133,7 +127,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRoute
   '/bookings/(auth)': typeof BookingsauthRouteRouteWithChildren
-  '/gatherings/(auth)': typeof GatheringsauthRouteRouteWithChildren
   '/gatherings/': typeof GatheringsIndexRoute
   '/healthcheck/': typeof HealthcheckIndexRoute
   '/login/': typeof LoginIndexRoute
@@ -179,7 +172,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/bookings/(auth)'
-    | '/gatherings/(auth)'
     | '/gatherings/'
     | '/healthcheck/'
     | '/login/'
@@ -196,10 +188,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   BookingsauthRouteRoute: typeof BookingsauthRouteRouteWithChildren
-  GatheringsauthRouteRoute: typeof GatheringsauthRouteRouteWithChildren
   GatheringsIndexRoute: typeof GatheringsIndexRoute
   HealthcheckIndexRoute: typeof HealthcheckIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
+  GatheringsauthCreateRoute: typeof GatheringsauthCreateRoute
   GatheringsGatheringIdIndexRoute: typeof GatheringsGatheringIdIndexRoute
   GatheringsGatheringIdauthUpdateRoute: typeof GatheringsGatheringIdauthUpdateRoute
 }
@@ -241,13 +233,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GatheringsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/gatherings/(auth)': {
-      id: '/gatherings/(auth)'
-      path: '/gatherings'
-      fullPath: '/gatherings'
-      preLoaderRoute: typeof GatheringsauthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/bookings/(auth)': {
       id: '/bookings/(auth)'
       path: '/bookings'
@@ -264,10 +249,10 @@ declare module '@tanstack/react-router' {
     }
     '/gatherings/(auth)/create': {
       id: '/gatherings/(auth)/create'
-      path: '/create'
+      path: '/gatherings/create'
       fullPath: '/gatherings/create'
       preLoaderRoute: typeof GatheringsauthCreateRouteImport
-      parentRoute: typeof GatheringsauthRouteRoute
+      parentRoute: typeof rootRouteImport
     }
     '/bookings/(auth)/hosting/': {
       id: '/bookings/(auth)/hosting/'
@@ -326,25 +311,14 @@ const BookingsauthRouteRouteChildren: BookingsauthRouteRouteChildren = {
 const BookingsauthRouteRouteWithChildren =
   BookingsauthRouteRoute._addFileChildren(BookingsauthRouteRouteChildren)
 
-interface GatheringsauthRouteRouteChildren {
-  GatheringsauthCreateRoute: typeof GatheringsauthCreateRoute
-}
-
-const GatheringsauthRouteRouteChildren: GatheringsauthRouteRouteChildren = {
-  GatheringsauthCreateRoute: GatheringsauthCreateRoute,
-}
-
-const GatheringsauthRouteRouteWithChildren =
-  GatheringsauthRouteRoute._addFileChildren(GatheringsauthRouteRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   BookingsauthRouteRoute: BookingsauthRouteRouteWithChildren,
-  GatheringsauthRouteRoute: GatheringsauthRouteRouteWithChildren,
   GatheringsIndexRoute: GatheringsIndexRoute,
   HealthcheckIndexRoute: HealthcheckIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
+  GatheringsauthCreateRoute: GatheringsauthCreateRoute,
   GatheringsGatheringIdIndexRoute: GatheringsGatheringIdIndexRoute,
   GatheringsGatheringIdauthUpdateRoute: GatheringsGatheringIdauthUpdateRoute,
 }
