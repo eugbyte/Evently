@@ -22,7 +22,7 @@ export function GatheringsPage(): JSX.Element {
 
 	const pageSize = 6;
 	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
-		startDateAfter: new Date(),
+		endDateAfter: new Date(),
 		offset: 0,
 		limit: pageSize
 	});
