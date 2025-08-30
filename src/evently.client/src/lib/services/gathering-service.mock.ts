@@ -1,4 +1,4 @@
-﻿import { Booking, Gathering, Category, GatheringCategoryDetail } from "~/lib/domains/entities";
+﻿import { Booking, Category, Gathering, GatheringCategoryDetail } from "~/lib/domains/entities";
 import { GatheringReqDto } from "~/lib/domains/models";
 import type { GetGatheringsParams } from "./gathering-service";
 import type { PageResult } from "~/lib/domains/interfaces";

@@ -1,10 +1,9 @@
 ﻿using Evently.Server.Common.Domains.Models;
 using Microsoft.Extensions.Options;
-using System.Text.RegularExpressions;
 
 namespace Evently.Server.Common.Extensions;
 
-public static partial class ServiceContainerExtensions {
+public static class ServiceContainerExtensions {
 	public static IOptions<Settings> LoadAppConfiguration(this IServiceCollection services,
 		ConfigurationManager configuration) {
 		// load .env variables, in addition to appsettings.json that is loaded by default
@@ -20,8 +19,4 @@ public static partial class ServiceContainerExtensions {
 		IOptions<Settings> options = Options.Create(settings);
 		return options;
 	}
-
-
-	[GeneratedRegex("postgres://(.*):(.*)@(.*):(.*)/(.*)")]
-	private static partial Regex HerokuDbRegex();
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, type JSX, type Ref } from "react";
+import { type JSX, type Ref, useEffect, useRef } from "react";
 import { Booking } from "~/lib/domains/entities";
 import QRCode from "qrcode";
 

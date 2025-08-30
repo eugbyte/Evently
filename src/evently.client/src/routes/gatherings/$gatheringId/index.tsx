@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { type JSX, useRef } from "react";
 import { Booking, Gathering } from "~/lib/domains/entities";
 import {
@@ -11,7 +11,6 @@ import {
 } from "~/lib/services";
 import { useMutation } from "@tanstack/react-query";
 import { BookingReqDto, GatheringReqDto } from "~/lib/domains/models";
-import { useNavigate } from "@tanstack/react-router";
 import { CancellationDialog, Jumbotron, QrDialog } from "./-components";
 import Placeholder1 from "~/lib/assets/event_placeholder_1.webp";
 import Placeholder2 from "~/lib/assets/event_placeholder_2.png";

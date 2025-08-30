@@ -67,12 +67,18 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 	[HttpPut("{bookingId}", Name = "UpdateBooking")]
 	public async Task<ActionResult> UpdateBooking(string bookingId,
 		[FromBody] BookingReqDto bookingReqDto) {
-		bool isExist = await bookingService.Exists(bookingId);
-		if (!isExist) {
+		Booking? booking = await bookingService.GetBooking(bookingId);
+		if (booking is null) {
 			return NotFound();
 		}
 
-		Booking booking = await bookingService.UpdateBooking(bookingId, bookingReqDto);
+		bool isAuth = await this.IsResourceOwner(booking.AttendeeId);
+		logger.LogInformation("isAuth: {}", isAuth);
+		if (!isAuth) {
+			return Forbid();
+		}
+
+		booking = await bookingService.UpdateBooking(bookingId, bookingReqDto);
 		return Ok(booking);
 	}
 
