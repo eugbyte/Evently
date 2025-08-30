@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import { DateTime } from "luxon";
 import { GatheringCategoryDetailReqDto, GatheringReqDto, ToastContent } from "~/lib/domains/models";
 import { useRouter } from "@tanstack/react-router";
-import { toIsoString } from "~/lib/services";
+import { toIsoDateTimeString } from "~/lib/services";
 import { Category } from "~/lib/domains/entities";
 
 interface GatheringFormProps {
@@ -180,7 +180,9 @@ export function GatheringForm({
 												<input
 													type="datetime-local"
 													className="input input-bordered focus:input-primary w-full"
-													value={field.state.value == null ? "" : toIsoString(field.state.value)}
+													value={
+														field.state.value == null ? "" : toIsoDateTimeString(field.state.value)
+													}
 													onBlur={field.handleBlur}
 													onChange={(e) => {
 														const value: DateTime<boolean> = DateTime.fromISO(e.target.value);
@@ -209,7 +211,9 @@ export function GatheringForm({
 												<input
 													type="datetime-local"
 													className="input input-bordered focus:input-primary w-full"
-													value={field.state.value == null ? "" : toIsoString(field.state.value)}
+													value={
+														field.state.value == null ? "" : toIsoDateTimeString(field.state.value)
+													}
 													onBlur={field.handleBlur}
 													onChange={(e) => {
 														const value: DateTime<boolean> = DateTime.fromISO(e.target.value);

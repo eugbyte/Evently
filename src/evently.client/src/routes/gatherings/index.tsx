@@ -1,11 +1,12 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {Category, Gathering} from "~/lib/domains/entities";
-import {getCategories, getGatherings, type GetGatheringsParams} from "~/lib/services";
+import { Category, Gathering } from "~/lib/domains/entities";
+import { getCategories, getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card } from "~/lib/components";
-import { Icon } from "@iconify/react";
 import type { PageResult } from "~/lib/domains/interfaces";
+import { FilterBar } from "~/routes/gatherings/-components";
+import { Icon } from "@iconify/react";
 
 export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,
@@ -26,6 +27,7 @@ export function GatheringsPage(): JSX.Element {
 	const accountId: string | undefined = account?.id;
 
 	const pageSize = 6;
+	const [page, setPage] = useState(1);
 	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
 		endDateAfter: new Date(),
 		offset: 0,
@@ -33,12 +35,13 @@ export function GatheringsPage(): JSX.Element {
 	});
 	const { data, isLoading } = useQuery({
 		queryKey: ["getGatherings", queryParams],
-		queryFn: (): Promise<PageResult<Gathering[]>> => getGatherings(queryParams)
+		queryFn: (): Promise<PageResult<Gathering[]>> => {
+			return getGatherings(queryParams);
+		}
 	});
 	const gatherings: Gathering[] = data == null ? [] : data.data;
 	const totalCount: number = data == null ? 0 : data.totalCount;
 
-	const [page, setPage] = useState(1);
 	const maxPage = Math.ceil(totalCount / pageSize);
 	const onPrevPage = () => {
 		let prevPage = page - 1;
@@ -64,75 +67,49 @@ export function GatheringsPage(): JSX.Element {
 		});
 	};
 
+	const handleParamsChange = (queryParams: GetGatheringsParams) => {
+		setQueryParams({
+			...queryParams,
+			offset: 0,
+			limit: pageSize
+		});
+		setPage(1);
+	};
+
+	let filterCount = 0;
+	filterCount += queryParams.categoryIds?.length ?? 0;
+	filterCount += queryParams.name ? 1 : 0;
+	filterCount += queryParams.startDateAfter ? 1 : 0;
+	filterCount += queryParams.endDateBefore ? 1 : 0;
+
 	return (
 		<div className="h-full">
-			<div className="mt-1 flex flex-wrap justify-center gap-2">
-				<label className="input [w-200px]">
-					<Icon icon="material-symbols:search" width="24" height="24" />
-					<input
-						type="search"
-						className="w-full"
-						placeholder="Search Gatherings"
-						onChange={(e) => {
-							const text: string = e.target.value;
-							setQueryParams({
-								...queryParams,
-								name: text
-							});
-						}}
+			<div
+				tabIndex={0}
+				className="collapse-arrow from-base-100 to-base-200 border-base-300 collapse mx-auto mb-4 w-11/12 rounded-lg border bg-gradient-to-r shadow-sm"
+			>
+				<input type="checkbox" defaultChecked={window.innerWidth > 768} />
+				<div className="collapse-title text-primary hover:bg-base-200/50 flex items-center gap-2 text-lg font-bold transition-colors duration-200">
+					<Icon
+						icon="material-symbols:filter-list"
+						width="24"
+						height="24"
+						className="text-primary"
 					/>
-				</label>
-
-				<div>
-					<details className="dropdown">
-						<summary className="select">Categories </summary>
-						<ul className="menu dropdown-content bg-base-100 rounded-box z-1 shadow-sm">
-							{categories.map((category) => {
-								const oldCategoryIds: number[] = queryParams.categoryIds ?? [];
-								const wasChecked = oldCategoryIds.some(
-									(id) => id === category.categoryId
-								);
-								return (
-									<li key={category.categoryId}>
-										<label className="label">
-											<input
-												type="checkbox"
-												checked={wasChecked}
-												className="checkbox"
-												onChange={(e) => {
-													const checked = e.target.checked;
-													let newValue: number[] = [];
-													if (checked) {
-														newValue = [
-															...oldCategoryIds,
-															category.categoryId,
-														];
-													} else {
-														newValue = oldCategoryIds.filter(
-															(id) => id !== category.categoryId
-														);
-													}
-													setQueryParams({
-														...queryParams,
-														categoryIds: newValue
-													});
-												}}
-											/>
-											{category.categoryName}
-										</label>
-									</li>
-								);
-							})}
-						</ul>
-					</details>
-					<p className=" block text-xs text-center">{(queryParams.categoryIds?.length ?? 0) > 0
-						? `${queryParams.categoryIds?.length} Selected`
-						: ""
-					}</p>
+					<span>Filters</span>
+					<div className="badge badge-secondary badge-sm ml-auto">{filterCount}</div>
 				</div>
-				
-
+				<div className="collapse-content">
+					<div className="pt-2">
+						<FilterBar
+							categories={categories}
+							queryParams={queryParams}
+							handleParamsChange={handleParamsChange}
+						/>
+					</div>
+				</div>
 			</div>
+
 			{isLoading ? (
 				<progress className="progress w-full"></progress>
 			) : (
@@ -161,6 +138,7 @@ export function GatheringsPage(): JSX.Element {
 					</button>
 				</div>
 			</div>
+			<div className="h-10"></div>
 		</div>
 	);
 }

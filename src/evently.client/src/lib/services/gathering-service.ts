@@ -1,7 +1,7 @@
-﻿import type {Gathering} from "~/lib/domains/entities";
+﻿import type { Gathering } from "~/lib/domains/entities";
 import axios from "axios";
-import {GatheringCategoryDetailReqDto, GatheringReqDto} from "~/lib/domains/models";
-import type {PageResult} from "~/lib/domains/interfaces";
+import { GatheringCategoryDetailReqDto, GatheringReqDto } from "~/lib/domains/models";
+import type { PageResult } from "~/lib/domains/interfaces";
 import cloneDeep from "lodash.clonedeep";
 
 export interface GetGatheringsParams {
@@ -13,7 +13,7 @@ export interface GetGatheringsParams {
 	endDateBefore?: Date;
 	endDateAfter?: Date;
 	isCancelled?: boolean;
-	categoryIds?: number[],
+	categoryIds?: number[];
 	offset?: number;
 	limit?: number;
 }
