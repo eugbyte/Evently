@@ -7,7 +7,7 @@ import { ToastContent, ToastStatus, toastStyles } from "~/lib/domains/models";
 import { useForm } from "@tanstack/react-form";
 import { FieldErrMsg as FieldInfo } from "~/lib/components";
 
-export const Route = createFileRoute("/(auth)/bookings/hosting/$gatheringId/dashboard/scan")({
+export const Route = createFileRoute("/bookings/(auth)/hosting/$gatheringId/dashboard/scan")({
 	component: RouteComponent
 });
 

@@ -1,15 +1,23 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { Category, Gathering } from "~/lib/domains/entities";
 import { useEffect, useState, type JSX } from "react";
-import { fetchFile, getCategories, getGathering, sleep, updateGathering } from "~/lib/services";
+import {
+	fetchFile,
+	getCategories,
+	getGathering,
+	guardRoute,
+	sleep,
+	updateGathering
+} from "~/lib/services";
 import {
 	useGatheringForm,
 	type GatheringForm as IGatheringForm
-} from "~/routes/(auth)/gatherings/-services";
+} from "~/routes/gatherings/-services";
 import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
-import { GatheringForm } from "~/routes/(auth)/gatherings/-components";
+import { GatheringForm } from "~/routes/gatherings/-components";
 
-export const Route = createFileRoute("/(auth)/gatherings/$gatheringId/update")({
+export const Route = createFileRoute("/gatherings/$gatheringId/(auth)/update")({
+	beforeLoad: ({ context }) => guardRoute(context.account, window.location.href),
 	loader: async ({ params }) => {
 		const gatheringId: number = parseInt(params.gatheringId);
 		let gathering: Gathering | null = await getGathering(gatheringId);

@@ -1,14 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
-import { Booking, Gathering } from "~/lib/domains/entities";
-import { getBookings, type GetBookingsParams } from "~/lib/services";
+import { Gathering } from "~/lib/domains/entities";
+import { getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card, Tabs, TabState } from "~/lib/components";
-import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "@tanstack/react-query";
+import cloneDeep from "lodash.clonedeep";
 
-export const Route = createFileRoute("/(auth)/bookings/attending/")({
-	loader: ({ context }) => ({ account: context.account }),
-	component: GetBookingsPage,
+export const Route = createFileRoute("/bookings/(auth)/hosting/")({
+	component: GetHostedGatheringsPage,
 	pendingComponent: () => (
 		<div className="h-full">
 			<progress className="progress w-full"></progress>
@@ -16,26 +15,27 @@ export const Route = createFileRoute("/(auth)/bookings/attending/")({
 	)
 });
 
-export function GetBookingsPage(): JSX.Element {
+export function GetHostedGatheringsPage(): JSX.Element {
 	const { account } = Route.useRouteContext();
 	const accountId: string | undefined = account?.id;
 
 	const [tab, setTab] = useState(0);
 
-	const [bkQueryParams, setBkQueryParams] = useState<GetBookingsParams>({
-		attendeeId: accountId,
-		gatheringEndAfter: new Date(),
+	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
+		organiserId: accountId ?? "",
+		endDateAfter: new Date(),
 		isCancelled: false
 	});
-	const { data: _bookings, isLoading } = useQuery({
-		queryKey: ["getBookings", bkQueryParams, tab],
-		queryFn: async (): Promise<Booking[]> => {
-			const { data: bookings } = await getBookings(bkQueryParams);
-			return bookings;
+	const { data: _hostedGatherings, isLoading: isHostedGatheringLoading } = useQuery({
+		queryKey: ["getHostedGatherings", queryParams],
+		queryFn: async (): Promise<Gathering[]> => {
+			const result = await getGatherings(queryParams);
+			return result.data;
 		}
 	});
+	const isLoading: boolean = isHostedGatheringLoading;
 
-	let gatherings: Gathering[] = cloneDeep(_bookings ?? []).map((booking) => booking.gathering);
+	let gatherings: Gathering[] = cloneDeep(_hostedGatherings ?? []);
 	gatherings = gatherings.sort((a, b) => b.end.getTime() - a.end.getTime());
 
 	const handleTabChange = (_tab: number) => {
@@ -43,15 +43,19 @@ export function GetBookingsPage(): JSX.Element {
 
 		switch (_tab) {
 			case TabState.Upcoming: {
-				setBkQueryParams({
-					attendeeId: accountId,
-					gatheringEndAfter: new Date(),
+				setQueryParams({
+					organiserId: accountId ?? "",
+					endDateAfter: new Date(),
 					isCancelled: false
 				});
 				break;
 			}
 			case TabState.Past: {
-				setBkQueryParams({ attendeeId: accountId, gatheringEndBefore: new Date() });
+				setQueryParams({
+					organiserId: accountId ?? "",
+					endDateBefore: new Date(),
+					isCancelled: false
+				});
 				break;
 			}
 		}
@@ -60,6 +64,11 @@ export function GetBookingsPage(): JSX.Element {
 	return (
 		<div className="h-full p-1">
 			<Tabs tab={tab} handleTabChange={handleTabChange} />
+			<div className="flex w-full flex-row justify-end px-4">
+				<Link to="/gatherings/create" className="btn btn-success">
+					Host Event
+				</Link>
+			</div>
 			{gatherings.length === 0 && !isLoading && <div className="text-center">None Found</div>}
 			{isLoading ? (
 				<progress className="progress mx-2 w-full"></progress>
