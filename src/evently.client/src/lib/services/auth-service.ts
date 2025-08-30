@@ -30,14 +30,15 @@ export async function getAccount(): Promise<Account | null> {
  * Redirect to login page if authentication fails.
  * Tightly coupled with TanStack framework
  * @param account
+ * @param currentHref
  */
-export async function guardRoute(account: Account | null): Promise<void> {
+export async function guardRoute(account: Account | null, currentHref: string): Promise<void> {
 	if (account == null) {
 		throw redirect({
 			to: "/login",
 			replace: true,
 			search: {
-				redirect: location.href
+				redirect: currentHref
 			}
 		});
 	}

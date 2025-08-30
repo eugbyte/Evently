@@ -7,7 +7,7 @@ import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
 import { GatheringForm } from "~/routes/gatherings/-components";
 
 export const Route = createFileRoute("/gatherings/(auth)/create")({
-	beforeLoad: ({ context }) => guardRoute(context.account),
+	beforeLoad: ({ context }) => guardRoute(context.account, window.location.href),
 	loader: async () => {
 		const categories: Category[] = await getCategories();
 		return { categories };

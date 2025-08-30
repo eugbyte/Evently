@@ -17,7 +17,7 @@ import { GatheringReqDto, ToastContent } from "~/lib/domains/models";
 import { GatheringForm } from "~/routes/gatherings/-components";
 
 export const Route = createFileRoute("/gatherings/$gatheringId/(auth)/update")({
-	beforeLoad: ({ context }) => guardRoute(context.account),
+	beforeLoad: ({ context }) => guardRoute(context.account, window.location.href),
 	loader: async ({ params }) => {
 		const gatheringId: number = parseInt(params.gatheringId);
 		let gathering: Gathering | null = await getGathering(gatheringId);
