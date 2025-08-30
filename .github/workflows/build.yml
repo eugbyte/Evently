@@ -31,5 +31,7 @@ jobs:
       run: dotnet restore src/Evently.Server/Evently.Server.csproj
     - name: Build
       run: dotnet build --no-restore src/Evently.Server/Evently.Server.csproj
+    - name: Run .NET Unit Tests
+      run: dotnet test tests/ExpoConnect.Server.Test.Integration/ExpoConnect.Server.Test.Integration.csproj
     - name: Test Docker Image
       run: docker build --tag=expo-connect/latest --file=src/Evently.Server/Dockerfile .
