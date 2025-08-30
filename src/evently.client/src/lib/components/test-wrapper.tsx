@@ -1,6 +1,7 @@
 ﻿import type { JSX, ReactNode } from "react";
 import { Account } from "~/lib/domains/entities";
 import {
+	createMemoryHistory,
 	createRootRouteWithContext,
 	createRoute,
 	createRouter,
@@ -45,6 +46,7 @@ export function TestWrapper({ children }: Props): JSX.Element {
 	const router = createRouter({
 		routeTree: rootRoute.addChildren([indexRoute]),
 		defaultPendingMinMs: 0,
+		history: createMemoryHistory({ initialEntries: ["/"] }),
 		context: {
 			account: undefined!
 		}

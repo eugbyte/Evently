@@ -5,10 +5,14 @@ import * as GatheringService from "~/lib/services";
 import userEvent from "@testing-library/user-event";
 import { TestWrapper, WrapperDataTestId } from "~/lib/components";
 import { GatheringsPage } from "./index.tsx";
+import * as CategoryService from "~/lib/services/category-service";
 
 it("renders GatheringPage", async () => {
-	const spy = vi.spyOn(GatheringService, "getGatherings");
-	spy.mockImplementation(async (params: GetGatheringsParams) => await getMockGatherings(params));
+	const gatheringSpy = vi.spyOn(GatheringService, "getGatherings");
+	gatheringSpy.mockImplementation(async (params: GetGatheringsParams) => await getMockGatherings(params));
+	
+	const categorySpy = vi.spyOn(CategoryService, "getCategories");
+	categorySpy.mockResolvedValue([]);
 
 	render(
 		<TestWrapper>
@@ -16,8 +20,9 @@ it("renders GatheringPage", async () => {
 		</TestWrapper>
 	);
 	await waitFor(() => screen.findByTestId(WrapperDataTestId));
+	expect(categorySpy).toHaveBeenCalledTimes(1);
 
-	expect(spy).toHaveBeenCalledTimes(1);
+	expect(gatheringSpy).toHaveBeenCalledTimes(1);
 	let element = await screen.findByText("Tech Conference 2024");
 	expect(element).toBeInTheDocument();
 
@@ -29,9 +34,9 @@ it("renders GatheringPage", async () => {
 
 	const input: HTMLInputElement = screen.getByPlaceholderText("Search Gatherings");
 	await userEvent.type(input, "T");
-	expect(spy).toHaveBeenCalledTimes(2);
+	expect(gatheringSpy).toHaveBeenCalledTimes(2);
 
 	const button: HTMLButtonElement = screen.getByRole("button", { name: "»" });
 	await userEvent.click(button);
-	expect(spy).toHaveBeenCalledTimes(3);
+	expect(gatheringSpy).toHaveBeenCalledTimes(3);
 });
