@@ -20,7 +20,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
 		modelBuilder.Entity<Category>().Property(c => c.CategoryId)
 			.HasIdentityOptions(startValue: 20);
-
+		
 		SeedData(modelBuilder);
 	}
 

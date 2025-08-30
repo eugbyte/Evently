@@ -161,7 +161,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasIndex("GatheringId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
 
                     b.HasData(
                         new
@@ -199,7 +199,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -266,7 +266,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasKey("GatheringId");
 
-                    b.ToTable("Gatherings");
+                    b.ToTable("Gatherings", (string)null);
 
                     b.HasData(
                         new
@@ -448,7 +448,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("GatheringCategoryDetails");
+                    b.ToTable("GatheringCategoryDetails", (string)null);
 
                     b.HasData(
                         new
