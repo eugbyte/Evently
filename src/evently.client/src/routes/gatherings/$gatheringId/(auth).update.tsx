@@ -1,7 +1,14 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { Category, Gathering } from "~/lib/domains/entities";
 import { useEffect, useState, type JSX } from "react";
-import {fetchFile, getCategories, getGathering, guardRoute, sleep, updateGathering} from "~/lib/services";
+import {
+	fetchFile,
+	getCategories,
+	getGathering,
+	guardRoute,
+	sleep,
+	updateGathering
+} from "~/lib/services";
 import {
 	useGatheringForm,
 	type GatheringForm as IGatheringForm

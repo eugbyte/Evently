@@ -7,9 +7,5 @@ export const Route = createFileRoute("/bookings/(auth)")({
 });
 
 function AuthLayout() {
-	return (
-		<>
-			<Outlet />
-		</>
-	);
+	return <Outlet />;
 }
