@@ -1,4 +1,4 @@
-﻿import { Booking, Gathering, Category } from "~/lib/domains/entities";
+﻿import { Booking, Gathering, Category, GatheringCategoryDetail } from "~/lib/domains/entities";
 import { GatheringReqDto } from "~/lib/domains/models";
 import type { GetGatheringsParams } from "./gathering-service";
 import type { PageResult } from "~/lib/domains/interfaces";
@@ -101,7 +101,11 @@ export async function createMockGathering(
 ): Promise<Gathering> {
 	return {
 		...new Gathering(),
-		...gatheringDto
+		...gatheringDto,
+		gatheringCategoryDetails: gatheringDto.gatheringCategoryDetails.map((detail) => ({
+			...detail,
+			...new GatheringCategoryDetail()
+		}))
 	};
 }
 
@@ -114,6 +118,10 @@ export async function updateMockGathering(
 	return {
 		...new Gathering(),
 		...gatheringDto,
-		gatheringId: gatheringId
+		gatheringId: gatheringId,
+		gatheringCategoryDetails: gatheringDto.gatheringCategoryDetails.map((detail) => ({
+			...detail,
+			...new GatheringCategoryDetail()
+		}))
 	};
 }
