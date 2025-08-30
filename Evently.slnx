@@ -1,13 +1,16 @@
-﻿<Solution>
+<Solution>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
     <File Path="Makefile" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src\evently.client\evently.client.esproj" Type="{54A90642-561A-4BB1-A94E-469ADEE60C69}">
+    <Project Path="src\evently.client\evently.client.esproj">
       <Configuration Solution="Release|Any CPU" Project="Debug|Any CPU" />
+      <Build />
+      <Deploy />
     </Project>
-    <Project Path="src\Evently.Server\Evently.Server.csproj" Type="Classic C#" />
+    <Project Path="src\Evently.Server\Evently.Server.csproj" />
   </Folder>
+  <Project Path="Evently.Server.Test/Evently.Server.Test.csproj" Id="5faf41eb-4938-43a4-959a-657d223d6631" />
 </Solution>
