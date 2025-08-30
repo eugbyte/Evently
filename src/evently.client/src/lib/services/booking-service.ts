@@ -58,15 +58,12 @@ export async function getBooking(bookingId: string): Promise<Booking> {
 	return booking;
 }
 
-export async function updateBooking(
-	bookingId: string,
-	bookingDto: BookingReqDto
-): Promise<Booking> {
-	const response = await axios.put<Booking>(`/api/v1/Bookings/${bookingId}`, bookingDto);
+export async function checkInBooking(bookingId: string): Promise<Booking> {
+	const response = await axios.patch<Booking>(`/api/v1/Bookings/${bookingId}/checkIn`);
 	return response.data;
 }
 
-export async function checkInBooking(bookingId: string): Promise<Booking> {
-	const response = await axios.patch<Booking>(`/api/v1/Bookings/${bookingId}/checkIn`);
+export async function cancelBooking(bookingId: string): Promise<Booking> {
+	const response = await axios.patch<Booking>(`/api/v1/Bookings/${bookingId}/cancel`);
 	return response.data;
 }

@@ -63,12 +63,11 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 		await emailQueue.WriteAsync(booking.BookingId);
 		return Ok(booking);
 	}
-
-	[HttpPut("{bookingId}", Name = "UpdateBooking")]
-	public async Task<ActionResult> UpdateBooking(string bookingId,
-		[FromBody] BookingReqDto bookingReqDto) {
+	
+	[HttpPatch("{bookingId}/cancel", Name = "CancelBooking")]
+	public async Task<ActionResult> CancelBooking(string bookingId) {
 		Booking? booking = await bookingService.GetBooking(bookingId);
-		if (booking is null) {
+		if (booking?.Gathering is null) {
 			return NotFound();
 		}
 
@@ -78,7 +77,8 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 			return Forbid();
 		}
 
-		booking = await bookingService.UpdateBooking(bookingId, bookingReqDto);
+		booking.CancellationDateTime = DateTimeOffset.UtcNow;
+		booking = await bookingService.UpdateBooking(bookingId, bookingReqDto: booking.ToBookingDto());
 		return Ok(booking);
 	}
 
