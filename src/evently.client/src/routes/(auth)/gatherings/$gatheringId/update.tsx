@@ -32,7 +32,6 @@ function UpdateGatheringPage(): JSX.Element {
 
 	const onSubmit = async (values: GatheringReqDto): Promise<void> => {
 		setToastMsg(new ToastContent(true, "Updating..."));
-		console.log({ values });
 		await updateGathering(values.gatheringId, values, file);
 		setToastMsg(new ToastContent(true, "Successfully updated. Redirecting..."));
 		await sleep(1500);

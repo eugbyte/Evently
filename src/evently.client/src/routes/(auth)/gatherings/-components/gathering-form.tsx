@@ -143,9 +143,6 @@ export function GatheringForm({
 																						(detail) => detail.categoryId !== category.categoryId
 																					);
 																				}
-
-																				console.log({ newValue });
-
 																				field.handleChange(newValue);
 																			}}
 																		/>
