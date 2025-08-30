@@ -78,6 +78,7 @@ public sealed class GatheringService(AppDbContext db, IValidator<Gathering> vali
 		}
 
 		Gathering current = await db.Gatherings.AsTracking()
+			                    .Include((g) => g.GatheringCategoryDetails)
 			                    .FirstOrDefaultAsync((ex) => ex.GatheringId == gatheringId)
 		                    ?? throw new KeyNotFoundException($"{gatheringId} not found");
 
@@ -87,6 +88,7 @@ public sealed class GatheringService(AppDbContext db, IValidator<Gathering> vali
 		current.End = gathering.End;
 		current.Location = gathering.Location;
 		current.CoverSrc = gathering.CoverSrc;
+		current.GatheringCategoryDetails = gathering.GatheringCategoryDetails;
 
 		await db.SaveChangesAsync();
 		return current;

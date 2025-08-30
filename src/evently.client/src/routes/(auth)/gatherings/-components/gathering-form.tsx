@@ -144,6 +144,8 @@ export function GatheringForm({
 																					);
 																				}
 
+																				console.log({ newValue });
+
 																				field.handleChange(newValue);
 																			}}
 																		/>

@@ -1,6 +1,6 @@
 ﻿import type { Gathering } from "~/lib/domains/entities";
 import axios from "axios";
-import { GatheringReqDto } from "~/lib/domains/models";
+import { GatheringCategoryDetailReqDto, GatheringReqDto } from "~/lib/domains/models";
 import type { PageResult } from "~/lib/domains/interfaces";
 
 export interface GetGatheringsParams {
@@ -43,17 +43,7 @@ export async function createGathering(
 	gatheringDto: GatheringReqDto,
 	coverImg?: File | null
 ): Promise<Gathering> {
-	const formData = new FormData();
-	for (const [key, value] of Object.entries(gatheringDto)) {
-		if (value != null) {
-			formData.set(key, value);
-		}
-	}
-	if (coverImg != null) {
-		formData.set("coverImg", coverImg, coverImg.name);
-	}
-	formData.set("start", gatheringDto.start.toISOString());
-	formData.set("end", gatheringDto.end.toISOString());
+	const formData: FormData = toFormData(gatheringDto, coverImg);
 
 	const response = await axios.post<Gathering>(`/api/v1/Gatherings`, formData, {
 		headers: { "Content-Type": "multipart/form-data" }
@@ -66,12 +56,30 @@ export async function updateGathering(
 	gatheringDto: GatheringReqDto,
 	coverImg?: File | null
 ): Promise<Gathering> {
+	const formData: FormData = toFormData(gatheringDto, coverImg);
+
+	const response = await axios.put<Gathering>(`/api/v1/Gatherings/${gatheringId}`, formData, {
+		headers: { "Content-Type": "multipart/form-data" }
+	});
+	return response.data;
+}
+
+function toFormData(gatheringDto: GatheringReqDto, coverImg?: File | null): FormData {
 	const formData = new FormData();
 	for (const [key, value] of Object.entries(gatheringDto)) {
 		if (value != null) {
 			formData.set(key, value);
 		}
 	}
+	formData.delete("gatheringCategoryDetails");
+
+	for (let i = 0; i < gatheringDto.gatheringCategoryDetails.length; i++) {
+		const detail: GatheringCategoryDetailReqDto = gatheringDto.gatheringCategoryDetails[i];
+		for (const [key, value] of Object.entries(detail)) {
+			formData.set(`gatheringCategoryDetails[${i}].${key}`, value);
+		}
+	}
+
 	if (coverImg != null) {
 		formData.set("coverImg", coverImg, coverImg.name);
 	}
@@ -80,9 +88,5 @@ export async function updateGathering(
 	if (gatheringDto.cancellationDateTime != null) {
 		formData.set("cancellationDateTime", gatheringDto.cancellationDateTime.toISOString());
 	}
-
-	const response = await axios.put<Gathering>(`/api/v1/Gatherings/${gatheringId}`, formData, {
-		headers: { "Content-Type": "multipart/form-data" }
-	});
-	return response.data;
+	return formData;
 }
