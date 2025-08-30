@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { Icon } from "@iconify/react";
-import { Gathering, Category, Booking } from "~/lib/domains/entities";
+import { Booking, Category, Gathering } from "~/lib/domains/entities";
 import { DateTime } from "luxon";
 
 interface JumbotronProps {

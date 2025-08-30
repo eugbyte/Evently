@@ -9,19 +9,19 @@ using Microsoft.EntityFrameworkCore;
 namespace Evently.Server.Test.Features.Gatherings.Services;
 
 public class GatheringServiceTests : IDisposable {
-	private readonly AppDbContext _dbContext;
 	private readonly SqliteConnection _conn;
+	private readonly AppDbContext _dbContext;
 	private readonly IGatheringService _gatheringService;
 
 	public GatheringServiceTests() {
 		_conn = new SqliteConnection("Filename=:memory:");
 		_conn.Open();
-		
+
 		// These options will be used by the context instances in this test suite, including the connection opened above.
 		DbContextOptions<AppDbContext> contextOptions = new DbContextOptionsBuilder<AppDbContext>()
 			.UseSqlite(_conn)
 			.Options;
-		
+
 		// Create the schema and seed some data
 		AppDbContext dbContext = new(contextOptions);
 

@@ -1,10 +1,10 @@
 ﻿import { render, screen, waitFor } from "@testing-library/react";
 import { getMockGatherings } from "~/lib/services/gathering-service.mock";
+import type { GetGatheringsParams } from "~/lib/services";
 import * as GatheringService from "~/lib/services";
 import userEvent from "@testing-library/user-event";
 import { TestWrapper, WrapperDataTestId } from "~/lib/components";
 import { GatheringsPage } from "./index.tsx";
-import type { GetGatheringsParams } from "~/lib/services";
 
 it("renders GatheringPage", async () => {
 	const spy = vi.spyOn(GatheringService, "getGatherings");

@@ -1,5 +1,5 @@
 ﻿import { render, screen, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as healthCheckService from "./-services/health-check-service";
 import { HealthcheckPage } from "./index.tsx";
 import { TestWrapper, WrapperDataTestId } from "~/lib/components";

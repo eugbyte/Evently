@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type JSX } from "react";
+import { type JSX, useEffect, useRef, useState } from "react";
 import QrScanner from "qr-scanner";
 
 interface ScannerProps {

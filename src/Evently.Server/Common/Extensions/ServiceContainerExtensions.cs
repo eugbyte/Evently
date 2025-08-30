@@ -1,6 +1,5 @@
 ﻿using Evently.Server.Common.Domains.Models;
 using Microsoft.Extensions.Options;
-using System.Text.RegularExpressions;
 
 namespace Evently.Server.Common.Extensions;
 

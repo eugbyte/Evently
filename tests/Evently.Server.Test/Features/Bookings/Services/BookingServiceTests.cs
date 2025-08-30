@@ -10,19 +10,19 @@ using Moq;
 namespace Evently.Server.Test.Features.Bookings.Services;
 
 public class BookingServiceTests : IDisposable {
-	private readonly AppDbContext _dbContext;
-	private readonly SqliteConnection _conn;
 	private readonly IBookingService _bookingService;
+	private readonly SqliteConnection _conn;
+	private readonly AppDbContext _dbContext;
 
 	public BookingServiceTests() {
 		_conn = new SqliteConnection("Filename=:memory:");
 		_conn.Open();
-		
+
 		// These options will be used by the context instances in this test suite, including the connection opened above.
 		DbContextOptions<AppDbContext> contextOptions = new DbContextOptionsBuilder<AppDbContext>()
 			.UseSqlite(_conn)
 			.Options;
-		
+
 		// Create the schema and seed some data
 		AppDbContext dbContext = new(contextOptions);
 
@@ -32,7 +32,7 @@ public class BookingServiceTests : IDisposable {
 		Mock<IMediaRenderer> mediaRendererMock = new();
 		Mock<IFileStorageService> fileStorageServiceMock = new();
 
-		_bookingService = new BookingService(mediaRendererMock.Object, fileStorageServiceMock.Object, new BookingValidator(), _dbContext);
+		_bookingService = new BookingService(mediaRendererMock.Object, fileStorageServiceMock.Object, validator: new BookingValidator(), _dbContext);
 	}
 
 	public void Dispose() {
@@ -45,12 +45,12 @@ public class BookingServiceTests : IDisposable {
 		DateTimeOffset now = DateTimeOffset.Now;
 		// Arrange
 		BookingReqDto bookingReqDto = new(
-			BookingId: "book_abc", 
-			GatheringId: 1, 
-			AttendeeId: "empty-user-12345", 
-			CancellationDateTime: null, 
-			CheckInDateTime: null, 
-			CheckoutDateTime: null, 
+			"book_abc",
+			GatheringId: 1,
+			AttendeeId: "empty-user-12345",
+			CancellationDateTime: null,
+			CheckInDateTime: null,
+			CheckoutDateTime: null,
 			CreationDateTime: now
 		);
 
@@ -73,12 +73,12 @@ public class BookingServiceTests : IDisposable {
 		DateTimeOffset now = DateTimeOffset.Now;
 		// Arrange
 		BookingReqDto invalidBookingReqDto = new(
-			BookingId: "book_abc", 
-			GatheringId: 1, 
-			AttendeeId: "", 
-			CancellationDateTime: null, 
-			CheckInDateTime: null, 
-			CheckoutDateTime: null, 
+			"book_abc",
+			GatheringId: 1,
+			AttendeeId: "",
+			CancellationDateTime: null,
+			CheckInDateTime: null,
+			CheckoutDateTime: null,
 			CreationDateTime: now
 		);
 
@@ -95,13 +95,13 @@ public class BookingServiceTests : IDisposable {
 		Assert.NotNull(result);
 		Assert.Equal("book_abc123456", result.BookingId);
 	}
-	
+
 	[Fact]
 	public async Task UpdateBooking_WithNonExistentBookingId_ShouldThrowKeyNotFoundException() {
 		// Arrange
 		string nonExistentBookingId = "book_nonexistent";
 		BookingReqDto updateRequest = new(
-			BookingId: nonExistentBookingId,
+			nonExistentBookingId,
 			GatheringId: 1,
 			AttendeeId: "user_test",
 			CancellationDateTime: null,
@@ -111,7 +111,7 @@ public class BookingServiceTests : IDisposable {
 		);
 
 		// Act & Assert
-		await Assert.ThrowsAsync<KeyNotFoundException>(() => 
+		await Assert.ThrowsAsync<KeyNotFoundException>(() =>
 			_bookingService.UpdateBooking(nonExistentBookingId, updateRequest));
 	}
 
@@ -123,7 +123,7 @@ public class BookingServiceTests : IDisposable {
 		Assert.NotNull(booking);
 
 		BookingReqDto updateRequest = new(
-			BookingId: booking.BookingId,
+			booking.BookingId,
 			GatheringId: booking.GatheringId,
 			AttendeeId: booking.AttendeeId,
 			CancellationDateTime: cancellationTime,
