@@ -9,8 +9,10 @@ import * as CategoryService from "~/lib/services/category-service";
 
 it("renders GatheringPage", async () => {
 	const gatheringSpy = vi.spyOn(GatheringService, "getGatherings");
-	gatheringSpy.mockImplementation(async (params: GetGatheringsParams) => await getMockGatherings(params));
-	
+	gatheringSpy.mockImplementation(
+		async (params: GetGatheringsParams) => await getMockGatherings(params)
+	);
+
 	const categorySpy = vi.spyOn(CategoryService, "getCategories");
 	categorySpy.mockResolvedValue([]);
 

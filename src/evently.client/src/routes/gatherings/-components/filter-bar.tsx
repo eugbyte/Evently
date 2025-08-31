@@ -1,8 +1,9 @@
-﻿import type { JSX } from "react";
+﻿import { useEffect, type JSX } from "react";
 import { type GetGatheringsParams, toIsoDateString } from "~/lib/services";
 import { Category } from "~/lib/domains/entities";
 import { DateTime } from "luxon";
 import { Icon } from "@iconify/react";
+import polyfill from "@oddbird/css-anchor-positioning/fn";
 
 interface FilterBarProps {
 	categories: Category[];
@@ -17,6 +18,9 @@ export function FilterBar({
 }: FilterBarProps): JSX.Element {
 	const dropdownButtonStyle = { anchorName: "--anchor-1" } as React.CSSProperties;
 	const popoverStyle = { positionAnchor: "--anchor-1" } as React.CSSProperties;
+	useEffect(() => {
+		polyfill().catch((err) => console.error(err));
+	}, []);
 
 	return (
 		<div className="mt-1 flex flex-wrap justify-center gap-2">
