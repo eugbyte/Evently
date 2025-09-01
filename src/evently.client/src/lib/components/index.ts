@@ -5,3 +5,4 @@ export * from "./tab-state.ts";
 export { FieldErrMsg } from "./field-err-msg.tsx";
 export { TestWrapper, WrapperDataTestId } from "./test-wrapper.tsx";
 export * from "./render-with-test-providers.tsx";
+export * from "./test-utils.tsx";

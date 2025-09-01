@@ -7,7 +7,7 @@ import { Card } from "~/lib/components";
 import type { PageResult } from "~/lib/domains/interfaces";
 import { FilterBar } from "~/routes/gatherings/-components";
 import { Icon } from "@iconify/react";
-import polyfill from '@oddbird/css-anchor-positioning/fn';
+import polyfill from "@oddbird/css-anchor-positioning/fn";
 
 export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,
@@ -31,7 +31,7 @@ export function GatheringsPage(): JSX.Element {
 		polyfill({
 			elements: undefined,
 			excludeInlineStyles: false,
-			useAnimationFrame: false,
+			useAnimationFrame: false
 		}).catch((err) => console.error(err));
 	}, []);
 

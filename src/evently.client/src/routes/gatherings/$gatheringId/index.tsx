@@ -45,7 +45,7 @@ export function GatheringPage(): JSX.Element {
 	const { gathering, booking: _booking } = Route.useLoaderData();
 	console.log({ accountId });
 	const navigate = useNavigate();
-	
+
 	let { coverSrc: imgSrc } = gathering;
 	if (imgSrc == null || imgSrc.trim().length === 0) {
 		const hash: number = hashString(gathering.name);
