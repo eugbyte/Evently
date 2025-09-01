@@ -29,7 +29,7 @@ export function TestWrapper({ children }: Props): JSX.Element {
 		beforeLoad: async () => {
 			const account: Account | null = new Account();
 			return { account };
-		},
+		},		
 		component: () => (
 			<div data-testid={WrapperDataTestId}>
 				<Outlet />

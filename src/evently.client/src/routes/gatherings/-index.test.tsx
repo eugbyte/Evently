@@ -3,9 +3,15 @@ import { getMockGatherings } from "~/lib/services/gathering-service.mock";
 import type { GetGatheringsParams } from "~/lib/services";
 import * as GatheringService from "~/lib/services";
 import userEvent from "@testing-library/user-event";
-import { TestWrapper, WrapperDataTestId } from "~/lib/components";
-import { GatheringsPage } from "./index.tsx";
+import { WrapperDataTestId } from "~/lib/components";
 import * as CategoryService from "~/lib/services/category-service";
+import {
+	createMemoryHistory,
+	createRouter,
+	RouterProvider
+} from "@tanstack/react-router";
+import { Route } from "./index.tsx";
+import {QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 it("renders GatheringPage", async () => {
 	const gatheringSpy = vi.spyOn(GatheringService, "getGatherings");
@@ -15,11 +21,22 @@ it("renders GatheringPage", async () => {
 
 	const categorySpy = vi.spyOn(CategoryService, "getCategories");
 	categorySpy.mockResolvedValue([]);
+	
+	const router = createRouter({
+		routeTree: Route,
+		defaultPendingMinMs: 0,
+		history: createMemoryHistory({ initialEntries: ["/"] }),
+		context: {
+			account: undefined!
+		}
+	});
+	
+	const queryClient = new QueryClient();
 
 	render(
-		<TestWrapper>
-			<GatheringsPage />
-		</TestWrapper>
+		<QueryClientProvider client={queryClient}>
+			<RouterProvider router={router} />
+		</QueryClientProvider>
 	);
 	await waitFor(() => screen.findByTestId(WrapperDataTestId));
 	expect(categorySpy).toHaveBeenCalledTimes(1);
