@@ -3,9 +3,9 @@ import { Card } from "~/lib/components/card.tsx";
 import { Gathering } from "~/lib/domains/entities";
 import { getMockGathering } from "~/lib/services/gathering-service.mock";
 import {
-	TestComponentWrapper,
+	TestWrappers,
 	WrapperDataTestId
-} from "~/lib/components/test-component-wrapper.tsx";
+} from "~/lib/components/test-wrappers.tsx";
 
 describe("Card Component", () => {
 	let mockGathering: Gathering;
@@ -15,9 +15,9 @@ describe("Card Component", () => {
 
 	it("renders gathering name", async () => {
 		render(
-			<TestComponentWrapper>
+			<TestWrappers>
 				<Card gathering={mockGathering} />
-			</TestComponentWrapper>
+			</TestWrappers>
 		);
 		await waitFor(() => screen.findByTestId(WrapperDataTestId));
 		expect(screen.getByText("Tech Conference 2024")).toBeInTheDocument();
@@ -25,9 +25,9 @@ describe("Card Component", () => {
 
 	it("renders gathering description", async () => {
 		render(
-			<TestComponentWrapper>
+			<TestWrappers>
 				<Card gathering={mockGathering} />
-			</TestComponentWrapper>
+			</TestWrappers>
 		);
 		await waitFor(() => screen.findByTestId(WrapperDataTestId));
 
@@ -38,9 +38,9 @@ describe("Card Component", () => {
 
 	it("renders gathering location", async () => {
 		render(
-			<TestComponentWrapper>
+			<TestWrappers>
 				<Card gathering={mockGathering} />
-			</TestComponentWrapper>
+			</TestWrappers>
 		);
 		await waitFor(() => screen.findByTestId(WrapperDataTestId));
 
@@ -49,9 +49,9 @@ describe("Card Component", () => {
 
 	it("renders cover image when coverSrc is provided", async () => {
 		render(
-			<TestComponentWrapper>
+			<TestWrappers>
 				<Card gathering={mockGathering} />
-			</TestComponentWrapper>
+			</TestWrappers>
 		);
 		await waitFor(() => screen.findByTestId(WrapperDataTestId));
 
@@ -67,9 +67,9 @@ describe("Card Component", () => {
 		};
 
 		render(
-			<TestComponentWrapper>
+			<TestWrappers>
 				<Card gathering={cancelledGathering} />
-			</TestComponentWrapper>
+			</TestWrappers>
 		);
 		await waitFor(() => screen.findByTestId(WrapperDataTestId));
 		expect(screen.getByText(/cancelled/i)).toBeInTheDocument();
@@ -79,9 +79,9 @@ describe("Card Component", () => {
 		const gatheringWithMultipleCategories: Gathering = await getMockGathering(1);
 
 		render(
-			<TestComponentWrapper>
+			<TestWrappers>
 				<Card gathering={gatheringWithMultipleCategories} />
-			</TestComponentWrapper>
+			</TestWrappers>
 		);
 		await waitFor(() => screen.findByTestId(WrapperDataTestId));
 

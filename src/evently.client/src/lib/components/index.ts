@@ -4,8 +4,7 @@ export { Tabs } from "./tabs";
 export * from "./tab-state.ts";
 export { FieldErrMsg } from "./field-err-msg.tsx";
 export {
-	TestComponentWrapper,
+	TestWrappers,
 	WrapperDataTestId,
 	TestRouteWrapper
-} from "./test-component-wrapper.tsx";
-export * from "./render-with-test-providers.tsx";
+} from "./test-wrappers.tsx";

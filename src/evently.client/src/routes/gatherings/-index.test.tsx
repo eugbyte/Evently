@@ -50,6 +50,4 @@ describe("test gatherings page", () => {
 		await userEvent.click(button);
 		expect(gatheringSpy).toHaveBeenCalledTimes(3);
 	});
-
 });
-
