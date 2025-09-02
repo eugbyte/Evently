@@ -7,37 +7,49 @@ import * as CategoryService from "~/lib/services/category-service";
 import { Route as GatheringsRoute } from "./index.tsx";
 import { TestRouteWrapper } from "~/lib/components";
 
-it("renders GatheringPage", async () => {
-	const gatheringSpy = vi.spyOn(GatheringService, "getGatherings");
-	gatheringSpy.mockImplementation(
-		async (params: GetGatheringsParams) => await getMockGatherings(params)
-	);
+describe("test gatherings page", () => {
+	beforeAll(() => {
+		let state = {};
 
-	const categorySpy = vi.spyOn(CategoryService, "getCategories");
-	categorySpy.mockResolvedValue([]);
+		window.setState = (changes: any) => {
+			state = Object.assign({}, state, changes);
+		};
+	});
 
-	render(<TestRouteWrapper route={GatheringsRoute} />);
-	await waitFor(() => screen.findByTestId("gatherings-page"));
-	expect(categorySpy).toHaveBeenCalledTimes(1);
+	it("renders GatheringPage", async () => {
+		const gatheringSpy = vi.spyOn(GatheringService, "getGatherings");
+		gatheringSpy.mockImplementation(
+			async (params: GetGatheringsParams) => await getMockGatherings(params)
+		);
 
-	expect(gatheringSpy).toHaveBeenCalledTimes(1);
-	let element = await screen.findByText("Tech Conference 2024");
-	expect(element).toBeInTheDocument();
+		const categorySpy = vi.spyOn(CategoryService, "getCategories");
+		categorySpy.mockResolvedValue([]);
 
-	element = await screen.findByText("Design Workshop");
-	expect(element).toBeInTheDocument();
+		render(<TestRouteWrapper route={GatheringsRoute} />);
+		await waitFor(() => screen.findByTestId("gatherings-page"));
+		expect(categorySpy).toHaveBeenCalledTimes(1);
 
-	element = await screen.findByText("Networking Event");
-	expect(element).toBeInTheDocument();
+		expect(gatheringSpy).toHaveBeenCalledTimes(1);
+		let element = await screen.findByText("Tech Conference 2024");
+		expect(element).toBeInTheDocument();
 
-	const filterBar: HTMLDivElement = await screen.findByTestId("filter-bar");
-	userEvent.click(filterBar);
+		element = await screen.findByText("Design Workshop");
+		expect(element).toBeInTheDocument();
 
-	const input: HTMLInputElement = screen.getByPlaceholderText("Search gatherings...");
-	await userEvent.type(input, "T");
-	expect(gatheringSpy).toHaveBeenCalledTimes(2);
+		element = await screen.findByText("Networking Event");
+		expect(element).toBeInTheDocument();
 
-	const button: HTMLButtonElement = screen.getByRole("button", { name: "»" });
-	await userEvent.click(button);
-	expect(gatheringSpy).toHaveBeenCalledTimes(3);
+		const filterBar: HTMLDivElement = await screen.findByTestId("filter-bar");
+		userEvent.click(filterBar);
+
+		const input: HTMLInputElement = screen.getByPlaceholderText("Search gatherings...");
+		await userEvent.type(input, "T");
+		expect(gatheringSpy).toHaveBeenCalledTimes(2);
+
+		const button: HTMLButtonElement = screen.getByRole("button", { name: "»" });
+		await userEvent.click(button);
+		expect(gatheringSpy).toHaveBeenCalledTimes(3);
+	});
+
 });
+
