@@ -6,12 +6,13 @@ import {
 	createRoute,
 	createRouter,
 	Outlet,
-	RouterProvider
+	RouterProvider,
+	type AnyRoute
 } from "@tanstack/react-router";
 import type { RouteContext } from "~/lib/domains/interfaces";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-interface Props {
+interface TestComponentProps {
 	children: ReactNode;
 }
 
@@ -24,12 +25,12 @@ export const WrapperDataTestId = "root-layout";
  * @param children The React Component to be tested
  * @constructor
  */
-export function TestWrapper({ children }: Props): JSX.Element {
+export function TestComponentWrapper({ children }: TestComponentProps): JSX.Element {
 	const rootRoute = createRootRouteWithContext<RouteContext>()({
 		beforeLoad: async () => {
 			const account: Account | null = new Account();
 			return { account };
-		},		
+		},
 		component: () => (
 			<div data-testid={WrapperDataTestId}>
 				<Outlet />
@@ -53,6 +54,28 @@ export function TestWrapper({ children }: Props): JSX.Element {
 	});
 	const queryClient = new QueryClient();
 
+	return (
+		<QueryClientProvider client={queryClient}>
+			<RouterProvider router={router} />
+		</QueryClientProvider>
+	);
+}
+
+interface TestRouteProps {
+	route: AnyRoute;
+}
+
+export function TestRouteWrapper({ route }: TestRouteProps): JSX.Element {
+	const router = createRouter({
+		routeTree: route,
+		defaultPendingMinMs: 0,
+		history: createMemoryHistory({ initialEntries: ["/"] }),
+		context: {
+			account: undefined!
+		}
+	});
+
+	const queryClient = new QueryClient();
 	return (
 		<QueryClientProvider client={queryClient}>
 			<RouterProvider router={router} />

@@ -19,7 +19,7 @@ export function FilterBar({
 	const popoverStyle = { positionAnchor: "--anchor-1" } as React.CSSProperties;
 
 	return (
-		<div className="mt-1 flex flex-wrap justify-center gap-2">
+		<div className="mt-1 flex flex-wrap justify-center gap-2" data-testid="filter-bar">
 			<div>
 				<button
 					className="btn btn-outline btn-primary"

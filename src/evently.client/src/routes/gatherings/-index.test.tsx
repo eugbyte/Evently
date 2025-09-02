@@ -3,15 +3,9 @@ import { getMockGatherings } from "~/lib/services/gathering-service.mock";
 import type { GetGatheringsParams } from "~/lib/services";
 import * as GatheringService from "~/lib/services";
 import userEvent from "@testing-library/user-event";
-import { WrapperDataTestId } from "~/lib/components";
 import * as CategoryService from "~/lib/services/category-service";
-import {
-	createMemoryHistory,
-	createRouter,
-	RouterProvider
-} from "@tanstack/react-router";
-import { Route } from "./index.tsx";
-import {QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Route as GatheringsRoute } from "./index.tsx";
+import { TestRouteWrapper } from "~/lib/components";
 
 it("renders GatheringPage", async () => {
 	const gatheringSpy = vi.spyOn(GatheringService, "getGatherings");
@@ -21,24 +15,9 @@ it("renders GatheringPage", async () => {
 
 	const categorySpy = vi.spyOn(CategoryService, "getCategories");
 	categorySpy.mockResolvedValue([]);
-	
-	const router = createRouter({
-		routeTree: Route,
-		defaultPendingMinMs: 0,
-		history: createMemoryHistory({ initialEntries: ["/"] }),
-		context: {
-			account: undefined!
-		}
-	});
-	
-	const queryClient = new QueryClient();
 
-	render(
-		<QueryClientProvider client={queryClient}>
-			<RouterProvider router={router} />
-		</QueryClientProvider>
-	);
-	await waitFor(() => screen.findByTestId(WrapperDataTestId));
+	render(<TestRouteWrapper route={GatheringsRoute} />);
+	await waitFor(() => screen.findByTestId("gatherings-page"));
 	expect(categorySpy).toHaveBeenCalledTimes(1);
 
 	expect(gatheringSpy).toHaveBeenCalledTimes(1);
@@ -51,7 +30,10 @@ it("renders GatheringPage", async () => {
 	element = await screen.findByText("Networking Event");
 	expect(element).toBeInTheDocument();
 
-	const input: HTMLInputElement = screen.getByPlaceholderText("Search Gatherings");
+	const filterBar = await screen.findByTestId("filter-bar");
+	userEvent.click(filterBar);
+
+	const input: HTMLInputElement = screen.getByPlaceholderText("Search gatherings...");
 	await userEvent.type(input, "T");
 	expect(gatheringSpy).toHaveBeenCalledTimes(2);
 
