@@ -65,6 +65,11 @@ interface TestRouteProps {
 	route: AnyRoute;
 }
 
+/**
+ * A HOC to wire up a TanStack route variable so that it can be tested
+ * @param route A TanStack route variable of type `Route`
+ * @constructor
+ */
 export function TestRouteWrapper({ route }: TestRouteProps): JSX.Element {
 	const router = createRouter({
 		routeTree: route,

@@ -30,7 +30,7 @@ it("renders GatheringPage", async () => {
 	element = await screen.findByText("Networking Event");
 	expect(element).toBeInTheDocument();
 
-	const filterBar = await screen.findByTestId("filter-bar");
+	const filterBar: HTMLDivElement = await screen.findByTestId("filter-bar");
 	userEvent.click(filterBar);
 
 	const input: HTMLInputElement = screen.getByPlaceholderText("Search gatherings...");
