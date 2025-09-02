@@ -14,6 +14,7 @@ namespace Evently.Server.Features.Gatherings.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
 public sealed class GatheringsController(
+	ILogger<GatheringsController> logger,
 	IGatheringService gatheringService,
 	IFileStorageService fileStorageService) : ControllerBase {
 	[HttpGet("{gatheringId:long}", Name = "GetGathering")]
@@ -31,7 +32,9 @@ public sealed class GatheringsController(
 		string? name,
 		DateTimeOffset? startDateBefore, DateTimeOffset? startDateAfter, DateTimeOffset? endDateBefore, DateTimeOffset? endDateAfter,
 		bool? isCancelled,
+		long[]? categoryIds,
 		int? offset, int? limit) {
+		logger.LogInformation("categoryIds: {}", string.Join(",", categoryIds ?? []));
 		PageResult<Gathering> result = await gatheringService.GetGatherings(attendeeId,
 			organiserId,
 			name,
@@ -40,6 +43,7 @@ public sealed class GatheringsController(
 			endDateBefore,
 			endDateAfter,
 			isCancelled,
+			categoryIds?.ToHashSet(),
 			offset,
 			limit);
 		List<Gathering> exhibitions = result.Items;
@@ -105,7 +109,6 @@ public sealed class GatheringsController(
 	}
 
 	private async Task<Uri> UploadCoverImage(long gatheringId, IFormFile coverImg) {
-		string t = coverImg.FileName;
 		string fileName = $"gatherings/{gatheringId}/cover-image{Path.GetExtension(coverImg.FileName)}";
 		BinaryData binaryData = await coverImg.ToBinaryData();
 		return await fileStorageService.UploadFile(fileName,

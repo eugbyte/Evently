@@ -4,7 +4,7 @@ import {
 	getBookings,
 	type GetBookingsParams,
 	getGathering,
-	toIsoString
+	toIsoDateTimeString
 } from "~/lib/services";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { type JSX, useState } from "react";
@@ -50,8 +50,8 @@ export function DashboardPage(): JSX.Element {
 		const rows = bookings.map((booking) => ({
 			Name: booking.accountDto.name,
 			Email: booking.accountDto.email,
-			RegistrationDate: toIsoString(booking.creationDateTime),
-			CheckInDate: toIsoString(booking.checkInDateTime)
+			RegistrationDate: toIsoDateTimeString(booking.creationDateTime),
+			CheckInDate: toIsoDateTimeString(booking.checkInDateTime)
 		}));
 
 		const csv: string = json2csv(rows, {});

@@ -1,14 +1,20 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
-import { type JSX, useState } from "react";
+import { type JSX, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Gathering } from "~/lib/domains/entities";
-import { getGatherings, type GetGatheringsParams } from "~/lib/services";
+import { Category, Gathering } from "~/lib/domains/entities";
+import { getCategories, getGatherings, type GetGatheringsParams } from "~/lib/services";
 import { Card } from "~/lib/components";
-import { Icon } from "@iconify/react";
 import type { PageResult } from "~/lib/domains/interfaces";
+import { FilterBar } from "~/routes/gatherings/-components";
+import { Icon } from "@iconify/react";
+import polyfill from "@oddbird/css-anchor-positioning/fn";
 
 export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,
+	loader: async () => {
+		const categories: Category[] = await getCategories();
+		return { categories };
+	},
 	pendingComponent: () => (
 		<div className="h-full">
 			<progress className="progress w-full"></progress>
@@ -17,10 +23,20 @@ export const Route = createFileRoute("/gatherings/")({
 });
 
 export function GatheringsPage(): JSX.Element {
+	const { categories } = Route.useLoaderData();
 	const { account } = Route.useRouteContext();
 	const accountId: string | undefined = account?.id;
 
+	useEffect(() => {
+		polyfill({
+			elements: undefined,
+			excludeInlineStyles: false,
+			useAnimationFrame: false
+		}).catch((err) => console.error(err));
+	}, []);
+
 	const pageSize = 6;
+	const [page, setPage] = useState(1);
 	const [queryParams, setQueryParams] = useState<GetGatheringsParams>({
 		endDateAfter: new Date(),
 		offset: 0,
@@ -28,12 +44,13 @@ export function GatheringsPage(): JSX.Element {
 	});
 	const { data, isLoading } = useQuery({
 		queryKey: ["getGatherings", queryParams],
-		queryFn: (): Promise<PageResult<Gathering[]>> => getGatherings(queryParams)
+		queryFn: (): Promise<PageResult<Gathering[]>> => {
+			return getGatherings(queryParams);
+		}
 	});
 	const gatherings: Gathering[] = data == null ? [] : data.data;
 	const totalCount: number = data == null ? 0 : data.totalCount;
 
-	const [page, setPage] = useState(1);
 	const maxPage = Math.ceil(totalCount / pageSize);
 	const onPrevPage = () => {
 		let prevPage = page - 1;
@@ -59,25 +76,48 @@ export function GatheringsPage(): JSX.Element {
 		});
 	};
 
+	const handleParamsChange = (queryParams: GetGatheringsParams) => {
+		setQueryParams({
+			...queryParams,
+			offset: 0,
+			limit: pageSize
+		});
+		setPage(1);
+	};
+
+	let filterCount: number = queryParams.categoryIds?.length ?? 0;
+	filterCount += queryParams.name ? 1 : 0;
+	filterCount += queryParams.startDateAfter ? 1 : 0;
+	filterCount += queryParams.endDateBefore ? 1 : 0;
+
 	return (
-		<div className="h-full">
-			<div className="mt-1 flex flex-row justify-center">
-				<label className="input [w-200px]">
-					<Icon icon="material-symbols:search" width="24" height="24" />
-					<input
-						type="search"
-						className="w-full"
-						placeholder="Search Gatherings"
-						onChange={(e) => {
-							const text: string = e.target.value;
-							setQueryParams({
-								...queryParams,
-								name: text
-							});
-						}}
+		<div className="h-full" data-testid="gatherings-page">
+			<div
+				tabIndex={0}
+				className="collapse-arrow from-base-100 to-base-200 border-base-300 collapse mx-auto mb-4 w-11/12 rounded-lg border bg-gradient-to-r shadow-sm"
+			>
+				<input type="checkbox" defaultChecked={window.innerWidth > 768} />
+				<div className="collapse-title text-primary hover:bg-base-200/50 flex items-center gap-2 text-lg font-bold transition-colors duration-200">
+					<Icon
+						icon="material-symbols:filter-list"
+						width="24"
+						height="24"
+						className="text-primary"
 					/>
-				</label>
+					<span>Filters</span>
+					<div className="badge badge-secondary badge-sm ml-auto">{filterCount}</div>
+				</div>
+				<div className="collapse-content">
+					<div className="pt-2">
+						<FilterBar
+							categories={categories}
+							queryParams={queryParams}
+							handleParamsChange={handleParamsChange}
+						/>
+					</div>
+				</div>
 			</div>
+
 			{isLoading ? (
 				<progress className="progress w-full"></progress>
 			) : (
@@ -106,6 +146,7 @@ export function GatheringsPage(): JSX.Element {
 					</button>
 				</div>
 			</div>
+			<div className="h-10"></div>
 		</div>
 	);
 }

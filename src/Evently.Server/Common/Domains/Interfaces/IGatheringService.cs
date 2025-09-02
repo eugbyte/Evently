@@ -15,6 +15,7 @@ public interface IGatheringService {
 		DateTimeOffset? endDateBefore,
 		DateTimeOffset? endDateAfter,
 		bool? isCancelled,
+		HashSet<long>? categoryIds,
 		int? offset,
 		int? limit);
 

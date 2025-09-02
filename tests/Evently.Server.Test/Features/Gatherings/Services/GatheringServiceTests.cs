@@ -168,6 +168,7 @@ public class GatheringServiceTests : IDisposable {
 			endDateBefore: null,
 			endDateAfter: null,
 			isCancelled: null,
+			categoryIds: [],
 			offset: null,
 			limit: null);
 

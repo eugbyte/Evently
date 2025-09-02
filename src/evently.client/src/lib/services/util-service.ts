@@ -40,12 +40,20 @@ export function downloadFile(blob: Blob, fileName = ""): void {
 	link.remove();
 }
 
-export function toIsoString(date: Date | null): string {
+export function toIsoDateTimeString(date: Date | null): string {
 	if (date == null) {
 		return "";
 	}
 	const dateTime: DateTime = DateTime.fromJSDate(date);
 	return dateTime.toFormat("yyyy-MM-dd'T'HH:mm");
+}
+
+export function toIsoDateString(date: Date | null): string {
+	if (date == null) {
+		return "";
+	}
+	const dateTime: DateTime = DateTime.fromJSDate(date);
+	return dateTime.toFormat("yyyy-MM-dd");
 }
 
 export async function fetchFile(src: string, fileName?: string): Promise<File> {

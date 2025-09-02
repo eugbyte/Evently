@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { Booking } from "~/lib/domains/entities";
-import { toIsoString } from "~/lib/services";
+import { toIsoDateTimeString } from "~/lib/services";
 import { Icon } from "@iconify/react";
 
 interface BookingsTableProps {
@@ -31,7 +31,7 @@ export function BookingsTable({ bookings }: BookingsTableProps): JSX.Element {
 								<tr key={index} className="hover">
 									<td>{booking.accountDto.name}</td>
 									<td className="text-base-content/70 text-sm">{booking.accountDto.email}</td>
-									<td className="text-sm">{toIsoString(booking.creationDateTime)}</td>
+									<td className="text-sm">{toIsoDateTimeString(booking.creationDateTime)}</td>
 									<td>
 										{booking.checkInDateTime ? (
 											<div className="badge badge-success badge-sm">Checked In</div>

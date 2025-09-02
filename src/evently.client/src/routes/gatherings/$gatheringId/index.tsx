@@ -2,11 +2,11 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { type JSX, useRef } from "react";
 import { Booking, Gathering } from "~/lib/domains/entities";
 import {
+	cancelBooking,
 	createBooking,
 	getBookings,
 	getGathering,
 	hashString,
-	updateBooking,
 	updateGathering
 } from "~/lib/services";
 import { useMutation } from "@tanstack/react-query";
@@ -71,13 +71,7 @@ export function GatheringPage(): JSX.Element {
 		if (booking == null) {
 			return;
 		}
-
-		const bookingDto: BookingReqDto = {
-			...booking,
-			attendeeId: booking.accountDto.id,
-			cancellationDateTime: new Date()
-		};
-		await updateBooking(booking?.bookingId ?? "", bookingDto);
+		await cancelBooking(booking?.bookingId ?? "");
 		navigate({
 			to: `/gatherings/${gathering.gatheringId}`,
 			reloadDocument: true

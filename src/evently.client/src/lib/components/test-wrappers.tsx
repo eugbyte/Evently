@@ -1,16 +1,18 @@
 ﻿import type { JSX, ReactNode } from "react";
 import { Account } from "~/lib/domains/entities";
 import {
+	createMemoryHistory,
 	createRootRouteWithContext,
 	createRoute,
 	createRouter,
 	Outlet,
-	RouterProvider
+	RouterProvider,
+	type AnyRoute
 } from "@tanstack/react-router";
 import type { RouteContext } from "~/lib/domains/interfaces";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-interface Props {
+interface TestComponentProps {
 	children: ReactNode;
 }
 
@@ -23,7 +25,7 @@ export const WrapperDataTestId = "root-layout";
  * @param children The React Component to be tested
  * @constructor
  */
-export function TestWrapper({ children }: Props): JSX.Element {
+export function TestWrappers({ children }: TestComponentProps): JSX.Element {
 	const rootRoute = createRootRouteWithContext<RouteContext>()({
 		beforeLoad: async () => {
 			const account: Account | null = new Account();
@@ -45,12 +47,40 @@ export function TestWrapper({ children }: Props): JSX.Element {
 	const router = createRouter({
 		routeTree: rootRoute.addChildren([indexRoute]),
 		defaultPendingMinMs: 0,
+		history: createMemoryHistory({ initialEntries: ["/"] }),
 		context: {
 			account: undefined!
 		}
 	});
 	const queryClient = new QueryClient();
 
+	return (
+		<QueryClientProvider client={queryClient}>
+			<RouterProvider router={router} />
+		</QueryClientProvider>
+	);
+}
+
+interface TestRouteProps {
+	route: AnyRoute;
+}
+
+/**
+ * A HOC to wire up a TanStack route variable so that it can be tested
+ * @param route A TanStack route variable of type `Route`
+ * @constructor
+ */
+export function TestRouteWrapper({ route }: TestRouteProps): JSX.Element {
+	const router = createRouter({
+		routeTree: route,
+		defaultPendingMinMs: 0,
+		history: createMemoryHistory({ initialEntries: ["/"] }),
+		context: {
+			account: undefined!
+		}
+	});
+
+	const queryClient = new QueryClient();
 	return (
 		<QueryClientProvider client={queryClient}>
 			<RouterProvider router={router} />
