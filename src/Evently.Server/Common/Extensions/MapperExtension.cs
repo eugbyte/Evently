@@ -75,8 +75,7 @@ public static class MapperExtension {
 			account.Id,
 			Email: account.Email ?? string.Empty,
 			Username: account.UserName ?? string.Empty,
-			Name: account.Name ?? string.Empty,
-			LogoSrc: account.LogoSrc ?? string.Empty
+			Name: account.Name
 		);
 	}
 }
