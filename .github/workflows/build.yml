@@ -23,15 +23,15 @@ jobs:
       uses: pnpm/action-setup@v4
       with:
         version: 10
-    - name: Install npm modules
-      run: cd src/evently.client && pnpm i
-    - name: Run UI Tests
-      run: cd src/evently.client && pnpm run test
     - name: Restore dependencies
       run: dotnet restore src/Evently.Server/Evently.Server.csproj
     - name: Build
       run: dotnet build --no-restore src/Evently.Server/Evently.Server.csproj
     - name: Run .NET Unit Tests
       run: dotnet test tests/Evently.Server.Test/Evently.Server.Test.csproj
+    - name: Install npm modules
+      run: cd src/evently.client && pnpm i
+    - name: Run UI Tests
+      run: cd src/evently.client && pnpm run test
     - name: Test Docker Image
       run: docker build --tag=expo-connect/latest --file=src/Evently.Server/Dockerfile .
