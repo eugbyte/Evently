@@ -89,7 +89,6 @@ public sealed partial class AccountService(UserManager<Account> userManager, App
 
 		current.Name = accountDto.Name;
 		current.Email = accountDto.Email;
-		current.LogoSrc = accountDto.LogoSrc;
 
 		await db.SaveChangesAsync();
 		return current;

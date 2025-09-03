@@ -21,7 +21,6 @@ export class Account {
 	name = "";
 	userName = "";
 	email = "";
-	logoSrc?: string = "";
 	bookings: Booking[] = []; // You may want to replace 'any[]' with a proper Booking[] type
 
 	constructor(data: Partial<Account> = {}) {
