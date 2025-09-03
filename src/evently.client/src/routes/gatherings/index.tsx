@@ -1,5 +1,5 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
-import { type JSX, useEffect, useState } from "react";
+import { type JSX, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Category, Gathering } from "~/lib/domains/entities";
 import { getCategories, getGatherings, type GetGatheringsParams } from "~/lib/services";
@@ -7,7 +7,6 @@ import { Card } from "~/lib/components";
 import type { PageResult } from "~/lib/domains/interfaces";
 import { FilterBar } from "~/routes/gatherings/-components";
 import { Icon } from "@iconify/react/dist/offline";
-import polyfill from "@oddbird/css-anchor-positioning/fn";
 
 export const Route = createFileRoute("/gatherings/")({
 	component: GatheringsPage,
@@ -26,14 +25,6 @@ export function GatheringsPage(): JSX.Element {
 	const { categories } = Route.useLoaderData();
 	const { account } = Route.useRouteContext();
 	const accountId: string | undefined = account?.id;
-
-	useEffect(() => {
-		polyfill({
-			elements: undefined,
-			excludeInlineStyles: false,
-			useAnimationFrame: false
-		}).catch((err) => console.error(err));
-	}, []);
 
 	const pageSize = 6;
 	const [page, setPage] = useState(1);
