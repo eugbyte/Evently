@@ -4,3 +4,4 @@ export * from "./store";
 export * from "./gathering-service.ts";
 export * from "./booking-service";
 export * from "./category-service.ts";
+export * from "./service-worker/service-workers.ts";

@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vitest/config";
+import { VitePWA } from "vite-plugin-pwa";
 
 const keyCert: KeyCertPair = generatePem();
 const { key, cert } = keyCert;
@@ -26,7 +27,33 @@ export default defineConfig({
 			target: "react",
 			autoCodeSplitting: true
 		}),
-		react()
+		react(),
+		VitePWA({
+			registerType: "autoUpdate",
+			workbox: {
+				globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+				maximumFileSizeToCacheInBytes: 10_000_000 // 10mb
+			},
+			devOptions: {
+				enabled: true
+			},
+			strategies: "generateSW",
+			manifest: {
+				name: "Evently",
+				description: "Manage your events",
+				display: "standalone",
+				start_url: "/",
+				scope: "/",
+				icons: [
+					{
+						src: "./icon.192.png",
+						sizes: "192x192",
+						type: "image/png",
+						purpose: "any maskable"
+					}
+				]
+			}
+		})
 	],
 	resolve: {
 		alias: {
