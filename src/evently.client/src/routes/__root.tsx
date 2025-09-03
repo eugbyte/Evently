@@ -21,7 +21,7 @@ export function App(): JSX.Element {
 			elements: undefined,
 			excludeInlineStyles: false,
 			useAnimationFrame: false
-		});
+		}).catch((err) => console.error(err));
 	}, []);
 	return (
 		<div className="h-screen">
