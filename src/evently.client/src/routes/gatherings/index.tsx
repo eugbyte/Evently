@@ -6,7 +6,7 @@ import { getCategories, getGatherings, type GetGatheringsParams } from "~/lib/se
 import { Card } from "~/lib/components";
 import type { PageResult } from "~/lib/domains/interfaces";
 import { FilterBar } from "~/routes/gatherings/-components";
-import { Icon } from "@iconify/react";
+import { Icon } from "@iconify/react/dist/offline";
 import polyfill from "@oddbird/css-anchor-positioning/fn";
 
 export const Route = createFileRoute("/gatherings/")({

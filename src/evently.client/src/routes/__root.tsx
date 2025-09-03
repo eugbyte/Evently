@@ -18,7 +18,7 @@ export function App(): JSX.Element {
 	return (
 		<div className="h-screen">
 			<Navbar />
-			<div className="h-fit py-18">
+			<div className="h-full py-18">
 				<Outlet />
 				<div className="h-10"></div>
 			</div>
