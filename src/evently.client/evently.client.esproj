@@ -15,4 +15,9 @@
         <!-- Folder where production build objects will be placed -->
         <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
     </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="dist\**\*" />
+        <Content Include="dev-dist\**\*" />
+    </ItemGroup>
 </Project>
