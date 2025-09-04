@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as healthCheckService from "./-services/health-check-service";
 import { HealthcheckPage } from "./index.tsx";
-import { TestWrappers, WrapperDataTestId } from "~/lib/components";
+import { TestWrappers, wrappedComponentId } from "~/lib/components";
 
 // Mock the health check service
 vi.mock("./-services/health-check-service", () => ({
@@ -27,7 +27,7 @@ describe("HealthcheckPage", () => {
 				<HealthcheckPage />
 			</TestWrappers>
 		);
-		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+		await waitFor(() => screen.findByTestId(wrappedComponentId));
 
 		expect(screen.getByText("Loading...")).toBeInTheDocument();
 	});

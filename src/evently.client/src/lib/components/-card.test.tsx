@@ -2,7 +2,7 @@
 import { Card } from "~/lib/components/card.tsx";
 import { Gathering } from "~/lib/domains/entities";
 import { getMockGathering } from "~/lib/services/gathering-service.mock";
-import { TestWrappers, WrapperDataTestId } from "~/lib/components/test-wrappers.tsx";
+import { TestWrappers, wrappedComponentId } from "~/lib/components/test-wrappers.tsx";
 
 describe("Card Component", () => {
 	let mockGathering: Gathering;
@@ -16,7 +16,7 @@ describe("Card Component", () => {
 				<Card gathering={mockGathering} />
 			</TestWrappers>
 		);
-		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+		await waitFor(() => screen.findByTestId(wrappedComponentId));
 		expect(screen.getByText("Tech Conference 2024")).toBeInTheDocument();
 	});
 
@@ -26,7 +26,7 @@ describe("Card Component", () => {
 				<Card gathering={mockGathering} />
 			</TestWrappers>
 		);
-		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+		await waitFor(() => screen.findByTestId(wrappedComponentId));
 
 		expect(
 			screen.getByText("Annual technology conference with industry leaders")
@@ -39,7 +39,7 @@ describe("Card Component", () => {
 				<Card gathering={mockGathering} />
 			</TestWrappers>
 		);
-		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+		await waitFor(() => screen.findByTestId(wrappedComponentId));
 
 		expect(screen.getByText("Convention Center")).toBeInTheDocument();
 	});
@@ -50,7 +50,7 @@ describe("Card Component", () => {
 				<Card gathering={mockGathering} />
 			</TestWrappers>
 		);
-		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+		await waitFor(() => screen.findByTestId(wrappedComponentId));
 
 		const image = screen.getByRole("img");
 		expect(image).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe("Card Component", () => {
 				<Card gathering={cancelledGathering} />
 			</TestWrappers>
 		);
-		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+		await waitFor(() => screen.findByTestId(wrappedComponentId));
 		expect(screen.getByText(/cancelled/i)).toBeInTheDocument();
 	});
 
@@ -80,7 +80,7 @@ describe("Card Component", () => {
 				<Card gathering={gatheringWithMultipleCategories} />
 			</TestWrappers>
 		);
-		await waitFor(() => screen.findByTestId(WrapperDataTestId));
+		await waitFor(() => screen.findByTestId(wrappedComponentId));
 
 		expect(screen.getByText("Technology")).toBeInTheDocument();
 		expect(screen.getByText("Networking")).toBeInTheDocument();

@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 import * as CategoryService from "~/lib/services/category-service";
 import { Route as GatheringsRoute } from "./index.tsx";
 import { TestRouteWrapper } from "~/lib/components";
+import { wrappedRouteId } from "~/lib/components/test-wrappers.tsx";
 
 describe("test gatherings page", () => {
 	beforeAll(() => {
@@ -26,7 +27,7 @@ describe("test gatherings page", () => {
 		categorySpy.mockResolvedValue([]);
 
 		render(<TestRouteWrapper route={GatheringsRoute} />);
-		await waitFor(() => screen.findByTestId("gatherings-page"));
+		await waitFor(() => screen.findByTestId(wrappedRouteId));
 		expect(categorySpy).toHaveBeenCalledTimes(1);
 
 		expect(gatheringSpy).toHaveBeenCalledTimes(1);
