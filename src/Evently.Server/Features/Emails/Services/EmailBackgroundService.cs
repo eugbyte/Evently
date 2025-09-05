@@ -25,7 +25,7 @@ public sealed class EmailBackgroundService(
 				Account account = booking.Account;
 
 				string html = await bookingService.RenderTicket(bookingId);
-				await emailerAdapter.SendEmailAsync("noreply@expoconnect.id", account.Email, "Test QR ticket", html);
+				await emailerAdapter.SendEmailAsync("noreply@evently", account.Email, "Test QR ticket", html);
 				LoggerExtension.LogSuccessEmail(logger, account.Email);
 			} catch (Exception ex) {
 				logger.LogError("email error: {}", ex.Message);
