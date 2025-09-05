@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 import * as CategoryService from "~/lib/services/category-service";
 import { Route as GatheringsRoute } from "./index.tsx";
 import { TestRouteWrapper } from "~/lib/components";
-import { wrappedRouteId } from "~/lib/components/test-wrappers.tsx";
+import { wrappedRouteId } from "~/lib/components/test-component-wrapper.tsx";
 
 describe("test gatherings page", () => {
 	beforeAll(() => {

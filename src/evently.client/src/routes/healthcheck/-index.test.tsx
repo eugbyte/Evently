@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as healthCheckService from "./-services/health-check-service";
 import { HealthcheckPage } from "./index.tsx";
-import { TestWrappers, wrappedComponentId } from "~/lib/components";
+import { TestComponentWrapper, wrappedComponentId } from "~/lib/components";
 
 // Mock the health check service
 vi.mock("./-services/health-check-service", () => ({
@@ -23,9 +23,9 @@ describe("HealthcheckPage", () => {
 	it("should render loading state initially", async () => {
 		mockGetStatus.mockReturnValue(new Promise(() => {})); // Never resolving with a promise
 		render(
-			<TestWrappers>
+			<TestComponentWrapper>
 				<HealthcheckPage />
-			</TestWrappers>
+			</TestComponentWrapper>
 		);
 		await waitFor(() => screen.findByTestId(wrappedComponentId));
 
@@ -41,11 +41,11 @@ describe("HealthcheckPage", () => {
 		mockGetStatus.mockResolvedValue(mockStatuses);
 
 		render(
-			<TestWrappers>
+			<TestComponentWrapper>
 				<HealthcheckPage />
-			</TestWrappers>
+			</TestComponentWrapper>
 		);
-		await screen.findByTestId("root-layout");
+		await screen.findByTestId(wrappedComponentId);
 
 		// Check that all status entries are rendered
 		// await router.navigate({ to: "/healthcheck" });

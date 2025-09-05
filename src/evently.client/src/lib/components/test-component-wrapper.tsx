@@ -25,7 +25,7 @@ export const wrappedComponentId = "root-component-layout";
  * @param children The React Component to be tested
  * @constructor
  */
-export function TestWrappers({ children }: TestComponentProps): JSX.Element {
+export function TestComponentWrapper({ children }: TestComponentProps): JSX.Element {
 	const rootRoute = createRootRouteWithContext<RouteContext>()({
 		beforeLoad: async () => {
 			const account: Account | null = new Account();
