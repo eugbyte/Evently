@@ -15,7 +15,7 @@ public sealed class EmailAdapter(ILogger<EmailAdapter> logger, IOptions<Settings
 		MimeMessage emailMessage = CreateMessage(senderEmail, recipientEmail, subject, body);
 
 		try {
-			await SendEmailAsync(emailMessage);
+			await SendEmail(emailMessage);
 		} catch (Exception ex) {
 			LoggerExtension.LogCallbackUrl(logger, ex.Message);
 		}
@@ -34,7 +34,7 @@ public sealed class EmailAdapter(ILogger<EmailAdapter> logger, IOptions<Settings
 		return emailMessage;
 	}
 
-	private async Task SendEmailAsync(MimeMessage emailMessage) {
+	private async Task SendEmail(MimeMessage emailMessage) {
 		SmtpClient client = new();
 		await client.ConnectAsync("smtp.gmail.com", port: 587, useSsl: false);
 		// smtp auth

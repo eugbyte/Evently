@@ -16,7 +16,7 @@ interface TestComponentProps {
 	children: ReactNode;
 }
 
-export const WrapperDataTestId = "root-layout";
+export const wrappedComponentId = "root-component-layout";
 
 /**
  * A HOC to wire up the components with TanStack configurations so that it can be tested.
@@ -25,14 +25,14 @@ export const WrapperDataTestId = "root-layout";
  * @param children The React Component to be tested
  * @constructor
  */
-export function TestWrappers({ children }: TestComponentProps): JSX.Element {
+export function TestComponentWrapper({ children }: TestComponentProps): JSX.Element {
 	const rootRoute = createRootRouteWithContext<RouteContext>()({
 		beforeLoad: async () => {
 			const account: Account | null = new Account();
 			return { account };
 		},
 		component: () => (
-			<div data-testid={WrapperDataTestId}>
+			<div data-testid={wrappedComponentId}>
 				<Outlet />
 			</div>
 		)
@@ -61,13 +61,15 @@ export function TestWrappers({ children }: TestComponentProps): JSX.Element {
 	);
 }
 
+export const wrappedRouteId = "root-route-layout";
+
 interface TestRouteProps {
 	route: AnyRoute;
 }
 
 /**
  * A HOC to wire up a TanStack route variable so that it can be tested
- * @param route A TanStack route variable of type `Route`
+ * @param route A TanStack route variable of the type `@tanstack/react-router Route`.
  * @constructor
  */
 export function TestRouteWrapper({ route }: TestRouteProps): JSX.Element {
@@ -83,7 +85,9 @@ export function TestRouteWrapper({ route }: TestRouteProps): JSX.Element {
 	const queryClient = new QueryClient();
 	return (
 		<QueryClientProvider client={queryClient}>
-			<RouterProvider router={router} />
+			<div data-testid={wrappedRouteId}>
+				<RouterProvider router={router} />
+			</div>
 		</QueryClientProvider>
 	);
 }

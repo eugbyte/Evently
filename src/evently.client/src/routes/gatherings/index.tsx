@@ -82,7 +82,7 @@ export function GatheringsPage(): JSX.Element {
 	filterCount += queryParams.endDateBefore ? 1 : 0;
 
 	return (
-		<div className="h-full" data-testid="gatherings-page">
+		<div className="h-full">
 			<div
 				tabIndex={0}
 				className="collapse-arrow from-base-100 to-base-200 border-base-300 collapse mx-auto mb-4 w-11/12 rounded-lg border bg-gradient-to-r shadow-sm"
