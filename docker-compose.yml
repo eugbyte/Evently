@@ -18,8 +18,8 @@
     image: "${IMAGE:-eugbyte/eventlyserver:latest}"
     container_name: evently.server
     build:
-      context: ./src/Evently.Server
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./src/Evently.Server/Dockerfile
       labels:
         - "com.microsoft.created-by=rider"
         - "com.microsoft.rider.project-name=Evently.Server"
@@ -38,6 +38,6 @@
       EmailSettings__ActualFrom: "hippotechcode@gmail.com"
       EmailSettings__SmtpPassword: "snln ewqe nfyw oyfu"
       AllowedHosts: "*"
-      
+
 volumes:
   postgres_data:

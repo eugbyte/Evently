@@ -57,10 +57,10 @@ export default defineConfig({
 				// Important to prevent service worker from caching api calls
 				// The Service Worker intercepts all network requests.
 				// It can serve cached files directly from the browser without ever contacting the server.
-				// Also, to prevent a route clash between front end routes and backend routes. 
-				// Otherwise, if the user types in /api/v1/Healthcheck in the browser, 
+				// Also, to prevent a route clash between front end routes and backend routes.
+				// Otherwise, if the user types in /api/v1/Healthcheck in the browser,
 				// the Service Worker will not even let the request reach the backend, and instead intercept it and return index.html.
-				navigateFallbackDenylist: [/^(\/api\/.*)$/], 
+				navigateFallbackDenylist: [/^(\/api\/.*)$/]
 			},
 			devOptions: {
 				enabled: true
