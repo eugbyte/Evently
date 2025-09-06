@@ -10,17 +10,10 @@ import { wrappedRouteId } from "~/lib/components/test-component-wrapper.tsx";
 
 describe("test gatherings page", () => {
 	beforeAll(() => {
-		let state = {};
-
-		window.setState = (changes: any) => {
-			state = Object.assign(
-				{
-					setState: vi.fn()
-				},
-				state,
-				changes
-			);
-		};
+		Object.defineProperty(global.window, 'setState', {
+			value: vi.fn(),
+			writable: true, // Allow modification if needed
+		});
 	});
 
 	it("renders GatheringPage", async () => {
