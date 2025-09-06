@@ -1,20 +1,20 @@
 <Solution>
-    <Folder Name="/deploy/">
-        <Project Path="deploy\Terraform\Terraform.csproj" Type="Classic C#"/>
-    </Folder>
-    <Folder Name="/Solution Items/">
-        <File Path=".editorconfig"/>
-        <File Path=".gitignore"/>
-        <File Path="Makefile"/>
-        <File Path="docker-compose.yml"/>
-    </Folder>
-    <Folder Name="/src/">
-        <Project Path="src\evently.client\evently.client.esproj">
-            <Configuration Solution="Release|Any CPU" Project="Debug|Any CPU"/>
-        </Project>
-        <Project Path="src\Evently.Server\Evently.Server.csproj"/>
-    </Folder>
-    <Folder Name="/tests/">
-        <Project Path="tests\Evently.Server.Test\Evently.Server.Test.csproj"/>
-    </Folder>
+  <Folder Name="/deploy/">
+    <Project Path="deploy\Terraform\Terraform.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Makefile" />
+    <File Path="docker-compose.yml" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src\evently.client\evently.client.esproj">
+      <Configuration Solution="Release|Any CPU" Project="Debug|Any CPU" />
+    </Project>
+    <Project Path="src\Evently.Server\Evently.Server.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests\Evently.Server.Test\Evently.Server.Test.csproj" />
+  </Folder>
 </Solution>

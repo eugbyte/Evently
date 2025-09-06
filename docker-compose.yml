@@ -18,8 +18,8 @@
     image: "${IMAGE:-eugbyte/eventlyserver:latest}"
     container_name: evently.server
     build:
-      context: ./src
-      dockerfile: ./Evently.Server/Dockerfile
+      context: ./src/Evently.Server
+      dockerfile: ./Dockerfile
       labels:
         - "com.microsoft.created-by=rider"
         - "com.microsoft.rider.project-name=Evently.Server"
@@ -30,7 +30,7 @@
     environment:
       Logging__LogLevel__Default: "Information"
       Logging__LogLevel__Microsoft.AspNetCore: "Warning"
-      ConnectionStrings__WebApiDatabase: "Database=evently_docker;Server=postgres;Port=5432;Username=postgres;Password=admin;"
+      ConnectionStrings__WebApiDatabase: "Database=evently_docker;Server=localhost;Port=5432;Username=postgres;Password=admin;"
       StorageAccount__AccountName: "evently-dev-images"
       StorageAccount__AzureStorageConnectionString: "DefaultEndpointsProtocol=https;AccountName=saeventlydevsea;AccountKey=HEOqV5ViGakHjPwOxWkQFd0iVjyvwPg6MWM7Y2XG/lexPBNsWjolUY5FJgugW69RxmZJcrGb+DyZ+AStJtV5gg==;EndpointSuffix=core.windows.net"
       Authentication__Google__ClientId: "533425050385-fecekp0gl7cc5nt76o0ohgaik7c9l9l1.apps.googleusercontent.com"
