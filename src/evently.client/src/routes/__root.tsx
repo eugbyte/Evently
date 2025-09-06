@@ -1,6 +1,6 @@
 ﻿import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { Navbar } from "~/lib/components";
+import { Navbar, NotFound } from "~/lib/components";
 import { type JSX, useEffect } from "react";
 import { getAccount } from "~/lib/services";
 import { Account } from "~/lib/domains/entities";
@@ -12,7 +12,8 @@ export const Route = createRootRouteWithContext<RouteContext>()({
 		const account: Account | null = await getAccount();
 		return { account };
 	},
-	component: App
+	component: App,
+	notFoundComponent: () => <NotFound />
 });
 
 export function App(): JSX.Element {

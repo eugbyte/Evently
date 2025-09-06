@@ -1,6 +1,6 @@
-import { login } from "~/lib/services/auth-service.ts";
 import GoogleIcon from "~/lib/assets/GoogleIcon.svg";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
+import {login} from "~/lib/services";
 
 export const Route = createFileRoute("/login/")({
 	component: LoginPage

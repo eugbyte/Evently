@@ -4,7 +4,7 @@ import { Account } from "~/lib/domains/entities";
 
 export async function login(redirectUrl: string) {
 	// must redirect instead of making a REST request (https://stackoverflow.com/a/48925986/6514532)
-	// cannot use goto()
+	// cannot use navigate();
 	window.location.href = `/api/v1/Auth/external/google/login?originUrl=${redirectUrl}`;
 }
 

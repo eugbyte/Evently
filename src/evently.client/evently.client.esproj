@@ -3,7 +3,7 @@
         <Exec Command="pnpm install"/>
     </Target>
     <PropertyGroup>
-        <ShouldRunNpmInstall>false</ShouldRunNpmInstall>
+		<ShouldRunNpmInstall>false</ShouldRunNpmInstall>
         <StartupCommand>pnpm run dev</StartupCommand>
         <JavaScriptTestRoot>src\</JavaScriptTestRoot>
         <JavaScriptTestFramework>Vitest</JavaScriptTestFramework>

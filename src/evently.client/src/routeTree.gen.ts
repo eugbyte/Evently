@@ -9,11 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index'
 import { Route as GatheringsIndexRouteImport } from './routes/gatherings/index'
+import { Route as ExperimentIndexRouteImport } from './routes/experiment/index'
 import { Route as BookingsauthRouteRouteImport } from './routes/bookings/(auth)/route'
 import { Route as GatheringsGatheringIdIndexRouteImport } from './routes/gatherings/$gatheringId/index'
 import { Route as GatheringsauthCreateRouteImport } from './routes/gatherings/(auth).create'
@@ -23,10 +23,6 @@ import { Route as GatheringsGatheringIdauthUpdateRouteImport } from './routes/ga
 import { Route as BookingsauthHostingGatheringIdDashboardIndexRouteImport } from './routes/bookings/(auth)/hosting/$gatheringId/dashboard.index'
 import { Route as BookingsauthHostingGatheringIdDashboardScanRouteImport } from './routes/bookings/(auth)/hosting/$gatheringId/dashboard.scan'
 
-const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -45,6 +41,11 @@ const HealthcheckIndexRoute = HealthcheckIndexRouteImport.update({
 const GatheringsIndexRoute = GatheringsIndexRouteImport.update({
   id: '/gatherings/',
   path: '/gatherings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperimentIndexRoute = ExperimentIndexRouteImport.update({
+  id: '/experiment/',
+  path: '/experiment/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookingsauthRouteRoute = BookingsauthRouteRouteImport.update({
@@ -97,6 +98,7 @@ const BookingsauthHostingGatheringIdDashboardScanRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bookings': typeof BookingsauthRouteRouteWithChildren
+  '/experiment': typeof ExperimentIndexRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
@@ -111,6 +113,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bookings': typeof BookingsauthRouteRouteWithChildren
+  '/experiment': typeof ExperimentIndexRoute
   '/gatherings': typeof GatheringsIndexRoute
   '/healthcheck': typeof HealthcheckIndexRoute
   '/login': typeof LoginIndexRoute
@@ -125,8 +128,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_auth': typeof AuthRoute
   '/bookings/(auth)': typeof BookingsauthRouteRouteWithChildren
+  '/experiment/': typeof ExperimentIndexRoute
   '/gatherings/': typeof GatheringsIndexRoute
   '/healthcheck/': typeof HealthcheckIndexRoute
   '/login/': typeof LoginIndexRoute
@@ -143,6 +146,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/bookings'
+    | '/experiment'
     | '/gatherings'
     | '/healthcheck'
     | '/login'
@@ -157,6 +161,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/bookings'
+    | '/experiment'
     | '/gatherings'
     | '/healthcheck'
     | '/login'
@@ -170,8 +175,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_auth'
     | '/bookings/(auth)'
+    | '/experiment/'
     | '/gatherings/'
     | '/healthcheck/'
     | '/login/'
@@ -186,8 +191,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRoute
   BookingsauthRouteRoute: typeof BookingsauthRouteRouteWithChildren
+  ExperimentIndexRoute: typeof ExperimentIndexRoute
   GatheringsIndexRoute: typeof GatheringsIndexRoute
   HealthcheckIndexRoute: typeof HealthcheckIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
@@ -198,13 +203,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -231,6 +229,13 @@ declare module '@tanstack/react-router' {
       path: '/gatherings'
       fullPath: '/gatherings'
       preLoaderRoute: typeof GatheringsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiment/': {
+      id: '/experiment/'
+      path: '/experiment'
+      fullPath: '/experiment'
+      preLoaderRoute: typeof ExperimentIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bookings/(auth)': {
@@ -313,8 +318,8 @@ const BookingsauthRouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRoute,
   BookingsauthRouteRoute: BookingsauthRouteRouteWithChildren,
+  ExperimentIndexRoute: ExperimentIndexRoute,
   GatheringsIndexRoute: GatheringsIndexRoute,
   HealthcheckIndexRoute: HealthcheckIndexRoute,
   LoginIndexRoute: LoginIndexRoute,

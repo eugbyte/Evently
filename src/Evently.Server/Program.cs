@@ -86,7 +86,7 @@ builder.Services.AddAuthentication()
 	.AddGoogle((options) => {
 		options.ClientId = settings.Value.Authentication.Google.ClientId;
 		options.ClientSecret = settings.Value.Authentication.Google.ClientSecret;
-		options.CallbackPath = "/signin-google"; // rmb to resister in the Google oauth dashboard
+		options.CallbackPath = "/api/signin-google"; // rmb to resister in the Google oauth dashboard
 		options.SignInScheme =
 			IdentityConstants
 				.ExternalScheme; // important to default to external scheme - https://stackoverflow.com/a/78674926/6514532
@@ -116,10 +116,6 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 WebApplication app = builder.Build();
 
-// Needed for heroku
-// 1. Forward headers through heroku proxy (https://devcenter.heroku.com/articles/aspnetcore-app-configuration#enforcing-https)
-app.UseForwardedHeaders();
-// 2. Migration heroku postgres db (https://stackoverflow.com/a/76597872/6514532)
 using (IServiceScope serviceScope = app.Services.CreateScope()) {
 	AppDbContext dbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
 	await dbContext.Database.MigrateAsync();
@@ -148,7 +144,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// To serve the Svelte SPA files
+// To serve the SPA files
 app.MapFallbackToFile("/index.html");
 
 app.Run();

@@ -8,3 +8,4 @@ export {
 	wrappedComponentId,
 	TestRouteWrapper
 } from "./test-component-wrapper.tsx";
+export { NotFound } from "./not-found.tsx";
