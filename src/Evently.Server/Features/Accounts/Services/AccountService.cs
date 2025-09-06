@@ -2,9 +2,7 @@
 using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Exceptions;
 using Evently.Server.Common.Domains.Interfaces;
-using Evently.Server.Common.Domains.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
@@ -65,35 +63,10 @@ public sealed partial class AccountService(UserManager<Account> userManager, App
 
 		return newUser;
 	}
-	public async Task<List<Account>> GetAccounts(string? email, string? name, string? username) {
-		IQueryable<Account> query = db.Accounts
-			.Where(account => email == null || EF.Functions.ILike(account.Email ?? "", $"%{email}%"))
-			.Where(account => username == null || EF.Functions.ILike(account.UserName ?? "", $"%{username}%"))
-			.Where(account => name == null || EF.Functions.ILike(account.Name, $"%{name}%"));
-
-		List<Account> members = await query
-			.OrderBy((member) => member.Id)
-			.ToListAsync();
-		return members;
-	}
 
 	public async Task<Account?> GetAccount(string memberId) {
 		return await userManager.FindByIdAsync(memberId);
 	}
-
-	public async Task<Account> UpdateAccount(string memberId, AccountDto accountDto) {
-		Account? current = await userManager.FindByIdAsync(memberId);
-		if (current is null) {
-			throw new KeyNotFoundException($"{memberId} not found");
-		}
-
-		current.Name = accountDto.Name;
-		current.Email = accountDto.Email;
-
-		await db.SaveChangesAsync();
-		return current;
-	}
-
 
 	[GeneratedRegex("[^a-zA-Z0-9]")]
 	private static partial Regex UsernameRegex();

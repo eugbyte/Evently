@@ -2,7 +2,10 @@
 import { Card } from "~/lib/components/card.tsx";
 import { Gathering } from "~/lib/domains/entities";
 import { getMockGathering } from "~/lib/services/gathering-service.mock";
-import { TestComponentWrapper, wrappedComponentId } from "~/lib/components/test-component-wrapper.tsx";
+import {
+	TestComponentWrapper,
+	wrappedComponentId
+} from "~/lib/components/test-component-wrapper.tsx";
 
 describe("Card Component", () => {
 	let mockGathering: Gathering;

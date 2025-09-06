@@ -13,9 +13,13 @@ describe("test gatherings page", () => {
 		let state = {};
 
 		window.setState = (changes: any) => {
-			state = Object.assign({
-				setState: vi.fn()
-			}, state, changes);
+			state = Object.assign(
+				{
+					setState: vi.fn()
+				},
+				state,
+				changes
+			);
 		};
 	});
 

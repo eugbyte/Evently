@@ -2,10 +2,10 @@
 import { Category, Gathering } from "~/lib/domains/entities";
 import { type JSX, useEffect, useState } from "react";
 import {
+	authenticateRoute,
 	fetchFile,
 	getCategories,
 	getGathering,
-	authenticateRoute,
 	sleep,
 	updateGathering
 } from "~/lib/services";

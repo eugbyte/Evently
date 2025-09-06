@@ -1,7 +1,7 @@
 ﻿import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Navbar } from "~/lib/components";
-import { useEffect, type JSX } from "react";
+import { type JSX, useEffect } from "react";
 import { getAccount } from "~/lib/services";
 import { Account } from "~/lib/domains/entities";
 import type { RouteContext } from "~/lib/domains/interfaces/route-context.ts";
