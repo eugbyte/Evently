@@ -17,7 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="dist\**\*" />
-        <Content Include="dev-dist\**\*" />
+        <Content Include="dist\**\*"/>
+        <Content Include="dev-dist\**\*"/>
     </ItemGroup>
 </Project>

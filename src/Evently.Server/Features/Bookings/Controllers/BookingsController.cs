@@ -63,7 +63,7 @@ public sealed class BookingsController(IBookingService bookingService, ChannelWr
 		await emailQueue.WriteAsync(booking.BookingId);
 		return Ok(booking);
 	}
-	
+
 	[HttpPatch("{bookingId}/cancel", Name = "CancelBooking")]
 	public async Task<ActionResult> CancelBooking(string bookingId) {
 		Booking? booking = await bookingService.GetBooking(bookingId);

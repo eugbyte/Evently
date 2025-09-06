@@ -34,7 +34,7 @@ public sealed class GatheringsController(
 		bool? isCancelled,
 		long[]? categoryIds,
 		int? offset, int? limit) {
-		logger.LogInformation("categoryIds: {}", string.Join(",", categoryIds ?? []));
+		logger.LogInformation("categoryIds: {}", string.Join(",", values: categoryIds ?? []));
 		PageResult<Gathering> result = await gatheringService.GetGatherings(attendeeId,
 			organiserId,
 			name,
@@ -43,7 +43,7 @@ public sealed class GatheringsController(
 			endDateBefore,
 			endDateAfter,
 			isCancelled,
-			categoryIds?.ToHashSet(),
+			categoryIds: categoryIds?.ToHashSet(),
 			offset,
 			limit);
 		List<Gathering> exhibitions = result.Items;

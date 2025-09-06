@@ -9,12 +9,14 @@ RUN npm install -g pnpm
 
 WORKDIR /App
 
-## The docker build command and the build context is fixed at ./Evently.sln
+## The docker build command and the build context is fixed at ./Evently.slnx
 
-COPY src .
-# Build and publish a release
-RUN dotnet publish ./Evently.Server/Evently.Server.csproj -c Release -o publish -p:UseAppHost=false
+COPY . .
+
 RUN ls
+
+# Build and publish a release
+RUN dotnet publish ./src/Evently.Server/Evently.Server.csproj -c Release -o publish -p:UseAppHost=false
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS run
@@ -22,7 +24,9 @@ WORKDIR /App/server
 
 COPY --from=build /App/publish .
 
-RUN ls
+# Sanity check that react files has been transpiled to wwwroot folder
+Run ls
+RUN ls wwwroot 
 
 EXPOSE 8080
 EXPOSE 8081

@@ -18,3 +18,5 @@ fmt:
 	jb cleanupcode ./src/Evently.Server/**/*
 	cd src/evently.client && npm run fmt
     
+docker:
+	docker build --no-cache --progress=plain --tag evently:latest -f src/Evently.Server/Dockerfile .

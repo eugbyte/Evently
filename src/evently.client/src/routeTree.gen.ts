@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as HealthcheckIndexRouteImport } from './routes/healthcheck/index'
@@ -23,10 +22,6 @@ import { Route as GatheringsGatheringIdauthUpdateRouteImport } from './routes/ga
 import { Route as BookingsauthHostingGatheringIdDashboardIndexRouteImport } from './routes/bookings/(auth)/hosting/$gatheringId/dashboard.index'
 import { Route as BookingsauthHostingGatheringIdDashboardScanRouteImport } from './routes/bookings/(auth)/hosting/$gatheringId/dashboard.scan'
 
-const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -125,7 +120,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_auth': typeof AuthRoute
   '/bookings/(auth)': typeof BookingsauthRouteRouteWithChildren
   '/gatherings/': typeof GatheringsIndexRoute
   '/healthcheck/': typeof HealthcheckIndexRoute
@@ -170,7 +164,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_auth'
     | '/bookings/(auth)'
     | '/gatherings/'
     | '/healthcheck/'
@@ -186,7 +179,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRoute
   BookingsauthRouteRoute: typeof BookingsauthRouteRouteWithChildren
   GatheringsIndexRoute: typeof GatheringsIndexRoute
   HealthcheckIndexRoute: typeof HealthcheckIndexRoute
@@ -198,13 +190,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -313,7 +298,6 @@ const BookingsauthRouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRoute,
   BookingsauthRouteRoute: BookingsauthRouteRouteWithChildren,
   GatheringsIndexRoute: GatheringsIndexRoute,
   HealthcheckIndexRoute: HealthcheckIndexRoute,

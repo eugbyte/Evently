@@ -22,39 +22,6 @@ public sealed class AccountController(
 		{ "microsoft", MicrosoftAccountDefaults.AuthenticationScheme },
 	};
 
-	[HttpGet("account", Name = "GetAccount from Cookie")]
-	public async Task<ActionResult> GetAccount() {
-		AuthenticateResult result = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
-		if (!result.Succeeded) {
-			return Unauthorized();
-		}
-
-		ClaimsPrincipal principal = result.Principal ?? new ClaimsPrincipal();
-		Account? user = await accountService.FindByClaimsPrincipalAsync(principal);
-		if (user is null) {
-			return NotFound(new { message = "User not found" });
-		}
-
-		return Ok(user.ToAccountDto());
-	}
-
-	[HttpPost("logout")]
-	public async Task<ActionResult> Logout(string? redirectUrl = "") {
-		// Sign out of an external identity provider (if used)
-		AuthenticationProperties authProps = new() {
-			RedirectUri = redirectUrl,
-			IsPersistent = true,
-		};
-		await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme, authProps);
-		// Manually remove the authentication cookie
-		// Delete each cookie
-		foreach (string cookieName in Request.Cookies.Keys) {
-			Response.Cookies.Delete(cookieName);
-		}
-
-		return Ok(new { redirectUrl });
-	}
-
 	/**
 	 * Overall auth flow:
 	 * 1. Login from FE browser. FE specified callback URL.
@@ -99,5 +66,38 @@ public sealed class AccountController(
 		await accountService.ExternalLogin(claimsPrincipal,
 			loginProvider: _authSchemes.GetValueOrDefault(provider) ?? "");
 		return Redirect(originUrl);
+	}
+
+	[HttpGet("account", Name = "GetAccount from Cookie")]
+	public async Task<ActionResult> GetAccount() {
+		AuthenticateResult result = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
+		if (!result.Succeeded) {
+			return Unauthorized();
+		}
+
+		ClaimsPrincipal principal = result.Principal ?? new ClaimsPrincipal();
+		Account? user = await accountService.FindByClaimsPrincipalAsync(principal);
+		if (user is null) {
+			return NotFound(new { message = "User not found" });
+		}
+
+		return Ok(user.ToAccountDto());
+	}
+
+	[HttpPost("logout")]
+	public async Task<ActionResult> Logout(string? redirectUrl = "") {
+		// Sign out of an external identity provider (if used)
+		AuthenticationProperties authProps = new() {
+			RedirectUri = redirectUrl,
+			IsPersistent = true,
+		};
+		await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme, authProps);
+		// Manually remove the authentication cookie
+		// Delete each cookie
+		foreach (string cookieName in Request.Cookies.Keys) {
+			Response.Cookies.Delete(cookieName);
+		}
+
+		return Ok(new { redirectUrl });
 	}
 }
