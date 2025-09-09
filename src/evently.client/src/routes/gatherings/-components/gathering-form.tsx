@@ -22,8 +22,10 @@ export function GatheringForm({
 	categories
 }: GatheringFormProps): JSX.Element {
 	const router = useRouter();
+	console.log({ file });
 	const fileName: string = file?.name ?? "";
-	const coverSrc = file != null ? URL.createObjectURL(file) : (form.state.values.coverSrc ?? "");
+	const coverSrc: string = file != null ? URL.createObjectURL(file) : "";
+	console.log({ coverSrc });
 
 	const gathering: GatheringReqDto = form.state.values;
 	const [toastMsg, setToastMsg] = useState(new ToastContent(false));
@@ -290,7 +292,7 @@ export function GatheringForm({
 														onClick={() => setFile(null)}
 													>
 														❌
-													</button>{" "}
+													</button>
 												</div>
 											</>
 										)}
