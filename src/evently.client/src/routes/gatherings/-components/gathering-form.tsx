@@ -22,7 +22,6 @@ export function GatheringForm({
 	categories
 }: GatheringFormProps): JSX.Element {
 	const router = useRouter();
-	console.log({ file });
 	const fileName: string = file?.name ?? "";
 	const coverSrc: string = file != null ? URL.createObjectURL(file) : "";
 	console.log({ coverSrc });

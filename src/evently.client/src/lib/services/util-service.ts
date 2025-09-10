@@ -1,4 +1,4 @@
-import {DateTime} from "luxon";
+import { DateTime } from "luxon";
 
 export function camelCase(str: string): string {
 	const letters: string[] = str.split("");
@@ -55,4 +55,3 @@ export function toIsoDateString(date: Date | null): string {
 	const dateTime: DateTime = DateTime.fromJSDate(date);
 	return dateTime.toFormat("yyyy-MM-dd");
 }
-
