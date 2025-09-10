@@ -7,7 +7,7 @@ namespace Evently.Server.Features.Files.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class FilesController(ILogger<FilesController> logger, IFileStorageService fileStorageService) : ControllerBase {
+public class FilesController(ILogger<FilesController> logger, IObjectStorageService objectStorageService) : ControllerBase {
 	[HttpGet("object-storage", Name = "GetFile")]
 	public async Task<ActionResult> GetFile([Required] [FromQuery] string filePath) {
 		logger.LogInformation("filePath: {}", filePath);
@@ -19,7 +19,7 @@ public class FilesController(ILogger<FilesController> logger, IFileStorageServic
 
 		filePath = string.Join(separator: '/', values: paths.Skip(1));
 		try {
-			BinaryData binaryData = await fileStorageService.GetFile(containerName, filePath);
+			BinaryData binaryData = await objectStorageService.GetFile(containerName, filePath);
 			return File(fileContents: binaryData.ToArray(), contentType: binaryData.MediaType ?? GetContentType(filePath), filePath);
 		} catch (Exception ex) {
 			logger.LogError(ex.Message);

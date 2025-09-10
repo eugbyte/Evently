@@ -18,7 +18,7 @@ public sealed class GatheringsController(
 	IOptions<Settings> settings,
 	ILogger<GatheringsController> logger,
 	IGatheringService gatheringService,
-	IFileStorageService fileStorageService) : ControllerBase {
+	IObjectStorageService objectStorageService) : ControllerBase {
 	private readonly string _containerName = settings.Value.StorageAccount.AccountName;
 
 	[HttpGet("{gatheringId:long}", Name = "GetGathering")]
@@ -115,7 +115,7 @@ public sealed class GatheringsController(
 	private async Task<Uri> UploadCoverImage(long gatheringId, IFormFile coverImg) {
 		string fileName = $"gatherings/{gatheringId}/cover-image{Path.GetExtension(coverImg.FileName)}";
 		BinaryData binaryData = await coverImg.ToBinaryData();
-		return await fileStorageService.UploadFile(_containerName,
+		return await objectStorageService.UploadFile(_containerName,
 			fileName,
 			binaryData,
 			mimeType: MimeTypes.GetMimeType(coverImg.FileName));

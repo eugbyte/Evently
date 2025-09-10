@@ -31,7 +31,7 @@ public class BookingServiceTests : IDisposable {
 		_dbContext = dbContext;
 
 		Mock<IMediaRenderer> mediaRendererMock = new();
-		Mock<IFileStorageService> fileStorageServiceMock = new();
+		Mock<IObjectStorageService> fileStorageServiceMock = new();
 		Mock<IOptions<Settings>> settingsMock = new();
 
 		_bookingService = new BookingService(mediaRendererMock.Object,

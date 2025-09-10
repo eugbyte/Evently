@@ -57,7 +57,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IAuthorizationHandler, AccountAuthorizationHandler>();
 builder.Services.AddHealthChecks()
 	.AddDbContextCheck<AppDbContext>();
-builder.Services.AddSingleton<IFileStorageService, FileService>();
+builder.Services.AddSingleton<IObjectStorageService, ObjectStorageService>();
 builder.Services.AddTransient<IBookingService, BookingService>();
 
 // MediaRenderer relies on BlazorHtmlRenderer

@@ -8,10 +8,9 @@ using Microsoft.Extensions.Options;
 namespace Evently.Server.Features.Files.Services;
 
 // Based on https://tinyurl.com/5pam66xn
-public sealed class FileService(IOptions<Settings> settings, ILogger<FileService> logger) : IFileStorageService {
+public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<ObjectStorageService> logger) : IObjectStorageService {
 	private readonly BlobServiceClient _blobServiceClient =
 		new(settings.Value.StorageAccount.AzureStorageConnectionString);
-	private readonly string _containerName = settings.Value.StorageAccount.AccountName;
 
 	public async Task<Uri> UploadFile(string containerName, string fileName, BinaryData binaryData,
 		string mimeType = "application/octet-stream") {

@@ -15,7 +15,7 @@ namespace Evently.Server.Features.Bookings.Services;
 
 public sealed class BookingService(
 	IMediaRenderer mediaRenderer,
-	IFileStorageService fileStorageService,
+	IObjectStorageService objectStorageService,
 	IValidator<Booking> validator,
 	IOptions<Settings> settings,
 	AppDbContext db)
@@ -116,11 +116,11 @@ public sealed class BookingService(
 		string fileName = $"bookings/{bookingId}/qrcode.png";
 
 		Uri uri;
-		bool isFileExists = await fileStorageService.IsFileExists(_containerName, fileName);
+		bool isFileExists = await objectStorageService.IsFileExists(_containerName, fileName);
 		if (!isFileExists) {
-			uri = await fileStorageService.UploadFile(_containerName, fileName, binaryData, "image/png");
+			uri = await objectStorageService.UploadFile(_containerName, fileName, binaryData, "image/png");
 		} else {
-			uri = await fileStorageService.GetFileUri(_containerName, fileName);
+			uri = await objectStorageService.GetFileUri(_containerName, fileName);
 		}
 
 		Dictionary<string, object?> props = new() {
