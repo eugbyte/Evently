@@ -6,6 +6,7 @@ using Evently.Server.Features.Accounts.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using System.Globalization;
 
@@ -14,9 +15,12 @@ namespace Evently.Server.Features.Gatherings.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
 public sealed class GatheringsController(
+	IOptions<Settings> settings,
 	ILogger<GatheringsController> logger,
 	IGatheringService gatheringService,
 	IFileStorageService fileStorageService) : ControllerBase {
+	private readonly string _containerName = settings.Value.StorageAccount.AccountName;
+
 	[HttpGet("{gatheringId:long}", Name = "GetGathering")]
 	public async Task<ActionResult<Gathering>> GetGathering(long gatheringId) {
 		Gathering? customer = await gatheringService.GetGathering(gatheringId);
@@ -111,7 +115,8 @@ public sealed class GatheringsController(
 	private async Task<Uri> UploadCoverImage(long gatheringId, IFormFile coverImg) {
 		string fileName = $"gatherings/{gatheringId}/cover-image{Path.GetExtension(coverImg.FileName)}";
 		BinaryData binaryData = await coverImg.ToBinaryData();
-		return await fileStorageService.UploadFile(fileName,
+		return await fileStorageService.UploadFile(_containerName,
+			fileName,
 			binaryData,
 			mimeType: MimeTypes.GetMimeType(coverImg.FileName));
 	}
