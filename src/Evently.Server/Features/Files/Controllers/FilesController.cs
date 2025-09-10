@@ -20,7 +20,7 @@ public class FilesController(ILogger<FilesController> logger, IObjectStorageServ
 			.ToArray(); // ["evently-dev-images", "gatherings", "20", "cover-image.png"]
 		string containerName = paths[0]; // "evently-dev-images"
 
-		filePath = string.Join(separator: '/', values: paths.Skip(1));
+		filePath = string.Join(separator: '/', values: paths.Skip(1));	// "gatherings/20/cover-image.png"
 		try {
 			BinaryData binaryData = await objectStorageService.GetFile(containerName, filePath);
 			return File(fileContents: binaryData.ToArray(), fileDownloadName: filePath, contentType: binaryData.MediaType ?? GetContentType(filePath));
