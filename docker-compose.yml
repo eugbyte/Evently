@@ -11,6 +11,12 @@
       - "5431:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d evently_docker" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
   
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:latest
@@ -26,8 +32,10 @@
   
   evently:
     depends_on:
-      - postgres
-      - azurite
+      postgres:
+        condition: service_healthy
+      azurite:
+        condition: service_started
     # provide default value if env variable not set (https://stackoverflow.com/a/70772707/6514532)
     image: "${IMAGE:-eugbyte/eventlyserver:latest}"
     container_name: evently.server

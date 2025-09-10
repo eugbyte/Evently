@@ -14,7 +14,7 @@ public class FilesController(ILogger<FilesController> logger, IObjectStorageServ
 		// https://saeventlydevsea.blob.core.windows.net/evently-dev-images/gatherings/20/cover-image.png
 		UriBuilder uriBuilder = new(filePath);
 
-		List<string> paths = uriBuilder.Path.Split("/").Skip(1).ToList(); // skip the first slash from the root url.
+		string[] paths = uriBuilder.Path.Split("/").Skip(1).ToArray(); // skip the first slash from the root url.
 		string containerName = paths[0];
 
 		filePath = string.Join(separator: '/', values: paths.Skip(1));
