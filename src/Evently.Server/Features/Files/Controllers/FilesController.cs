@@ -14,13 +14,16 @@ public class FilesController(ILogger<FilesController> logger, IObjectStorageServ
 		// https://saeventlydevsea.blob.core.windows.net/evently-dev-images/gatherings/20/cover-image.png
 		UriBuilder uriBuilder = new(filePath);
 
-		string[] paths = uriBuilder.Path.Split("/").Skip(1).ToArray(); // skip the first slash from the root url.
-		string containerName = paths[0];
+		string[] paths = uriBuilder.Path // "/evently-dev-images/gatherings/20/cover-image.png"
+			.Split("/") // ["", "evently-dev-images", "gatherings", "20", "cover-image.png"]
+			.Skip(1) // skip the first slash from the root url.	
+			.ToArray(); // ["evently-dev-images", "gatherings", "20", "cover-image.png"]
+		string containerName = paths[0]; // "evently-dev-images"
 
 		filePath = string.Join(separator: '/', values: paths.Skip(1));
 		try {
 			BinaryData binaryData = await objectStorageService.GetFile(containerName, filePath);
-			return File(fileContents: binaryData.ToArray(), contentType: binaryData.MediaType ?? GetContentType(filePath), filePath);
+			return File(fileContents: binaryData.ToArray(), fileDownloadName: filePath, contentType: binaryData.MediaType ?? GetContentType(filePath));
 		} catch (Exception ex) {
 			logger.LogError(ex.Message);
 		}
