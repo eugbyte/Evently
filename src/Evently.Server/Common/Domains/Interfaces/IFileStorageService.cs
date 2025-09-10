@@ -8,6 +8,7 @@ public interface IFileStorageService {
 	// e.g. download ("application/octet-stream") or view ("images/*)" the file.
 	Task<Uri> UploadFile(string fileName, BinaryData binaryData, string mimeType = "application/octet-stream");
 	Task<Uri> GetFileUri(string fileName);
+	Task<BinaryData> GetFile(string containerName, string fileName);
 	Task<BinaryData> GetFile(string fileName);
 	Task<bool> IsFileExists(string fileName);
 }

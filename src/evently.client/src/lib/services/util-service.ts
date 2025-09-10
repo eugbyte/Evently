@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import {DateTime} from "luxon";
 
 export function camelCase(str: string): string {
 	const letters: string[] = str.split("");
@@ -56,17 +56,3 @@ export function toIsoDateString(date: Date | null): string {
 	return dateTime.toFormat("yyyy-MM-dd");
 }
 
-export async function fetchFile(src: string, fileName?: string): Promise<File> {
-	const urlObj = new URL(src);
-	if (fileName == null) {
-		fileName = urlObj.pathname.split("/").pop() ?? "";
-	}
-
-	const response = await fetch(src);
-	if (!response.ok) {
-		throw new Error(`Failed to fetch ${src}`);
-	}
-	const dataBlob: Blob = await response.blob();
-	const file: File = new File([dataBlob], fileName, { type: dataBlob.type });
-	return file;
-}

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 namespace Evently.Server.Features.Files.Services;
 
 // Based on https://tinyurl.com/5pam66xn
-public sealed class FileService(IOptions<Settings> settings) : IFileStorageService {
+public sealed class FileService(IOptions<Settings> settings, ILogger<FileService> logger) : IFileStorageService {
 	private readonly BlobServiceClient _blobServiceClient =
 		new(settings.Value.StorageAccount.AzureStorageConnectionString);
 	private readonly string _containerName = settings.Value.StorageAccount.AccountName;
@@ -47,13 +47,27 @@ public sealed class FileService(IOptions<Settings> settings) : IFileStorageServi
 	}
 
 	public async Task<BinaryData> GetFile(string fileName) {
-		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+		return await this.GetFile(_containerName, fileName);
+	}
+	
+	public async Task<BinaryData> GetFile(string containerName, string fileName) {
+		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 		BlobClient blobClient = containerClient.GetBlobClient(fileName);
+		
+		Response<bool> result = await blobClient.ExistsAsync();
+		if (!result.Value) {
+			throw new FileNotFoundException($"File {fileName} not found");
+		}
 
 		using MemoryStream ms = new();
-		await blobClient.DownloadToAsync(ms);
-
-		BinaryData data = await BinaryData.FromStreamAsync(ms);
+		try {
+			await blobClient.DownloadToAsync(ms);
+		} catch (Exception ex) {
+			logger.LogError(ex.Message);
+		}
+		
+		byte[] bytes = ms.ToArray();
+		BinaryData data = BinaryData.FromBytes(bytes);
 		return data;
 	}
 }
