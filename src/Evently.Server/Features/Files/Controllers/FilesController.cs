@@ -23,7 +23,9 @@ public class FilesController(ILogger<FilesController> logger, IObjectStorageServ
 		filePath = string.Join(separator: '/', values: paths.Skip(1));	// "gatherings/20/cover-image.png"
 		try {
 			BinaryData binaryData = await objectStorageService.GetFile(containerName, filePath);
-			return File(fileContents: binaryData.ToArray(), fileDownloadName: filePath, contentType: binaryData.MediaType ?? GetContentType(filePath));
+			logger.LogInformation("binaryData.MediaType: {}", binaryData.MediaType);
+			string contentType = binaryData.MediaType ?? GetContentType(filePath);
+			return File(fileContents: binaryData.ToArray(), fileDownloadName: filePath, contentType: contentType);
 		} catch (Exception ex) {
 			logger.LogError(ex.Message);
 		}
