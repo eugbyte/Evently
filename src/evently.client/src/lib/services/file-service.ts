@@ -2,19 +2,19 @@
 
 /**
  *
- * @param href e.g.: https://saeventlydevsea.blob.core.windows.net/evently-dev-images/gatherings/20/cover-image.png
- * @param fileName e.g.: cover-image.png
+ * @param href e.g.: gatherings/20/cover-image.png
  */
-export async function fetchFile(href: string, fileName?: string): Promise<File> {
+export async function fetchFile(href: string): Promise<File> {
 	const urlObj = new URL(href);
-	const filePath: string = urlObj.href;
+	const filePath: string = urlObj.pathname;
+	
+	console.log(filePath.split("/"));
+	const bucket = filePath.split("/")[1];
+	const fileName = filePath.split("/").slice(2).join("/");
+	console.log({ bucket, fileName });
 
-	if (fileName == null) {
-		fileName = urlObj.pathname.split("/").pop() ?? "";
-	}
-
-	const response = await axios.get(`/api/v1/Files/object-storage`, {
-		params: { filePath },
+	const response = await axios.get(`/api/v1/Files/object-storage/${bucket}`, {
+		params: { fileName },
 		responseType: "blob"
 	});
 	const dataBlob: Blob = await response.data;

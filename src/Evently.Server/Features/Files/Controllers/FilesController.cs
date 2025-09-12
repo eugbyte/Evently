@@ -8,24 +8,14 @@ namespace Evently.Server.Features.Files.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
 public class FilesController(ILogger<FilesController> logger, IObjectStorageService objectStorageService) : ControllerBase {
-	[HttpGet("object-storage", Name = "GetFile")]
-	public async Task<ActionResult> GetFile([Required] [FromQuery] string filePath) {
-		logger.LogInformation("filePath: {}", filePath);
-		// https://saeventlydevsea.blob.core.windows.net/evently-dev-images/gatherings/20/cover-image.png
-		UriBuilder uriBuilder = new(filePath);
-
-		string[] paths = uriBuilder.Path // "/evently-dev-images/gatherings/20/cover-image.png"
-			.Split("/") // ["", "evently-dev-images", "gatherings", "20", "cover-image.png"]
-			.Skip(1) // skip the first slash from the root url.	
-			.ToArray(); // ["evently-dev-images", "gatherings", "20", "cover-image.png"]
-		string containerName = paths[0]; // "evently-dev-images"
-
-		filePath = string.Join(separator: '/', values: paths.Skip(1));	// "gatherings/20/cover-image.png"
+	[HttpGet("object-storage/{bucket}", Name = "GetFile")]
+	public async Task<ActionResult> GetFile(string bucket, [Required] [FromQuery] string fileName) {
+		logger.LogInformation("fileName: {}", fileName);
 		try {
-			BinaryData binaryData = await objectStorageService.GetFile(containerName, filePath);
+			BinaryData binaryData = await objectStorageService.GetFile(containerName: bucket, fileName);
 			logger.LogInformation("binaryData.MediaType: {}", binaryData.MediaType);
-			string contentType = binaryData.MediaType ?? GetContentType(filePath);
-			return File(fileContents: binaryData.ToArray(), fileDownloadName: filePath, contentType: contentType);
+			string contentType = binaryData.MediaType ?? GetContentType(fileName);
+			return File(fileContents: binaryData.ToArray(), fileDownloadName: fileName, contentType: contentType);
 		} catch (Exception ex) {
 			logger.LogError(ex.Message);
 		}
