@@ -32,12 +32,12 @@ public class BookingServiceTests : IDisposable {
 
 		Mock<IMediaRenderer> mediaRendererMock = new();
 		Mock<IObjectStorageService> fileStorageServiceMock = new();
-		Mock<IOptions<Settings>> settingsMock = new();
+		IOptions<Settings> options = Options.Create(new Settings());
 
 		_bookingService = new BookingService(mediaRendererMock.Object,
 			fileStorageServiceMock.Object,
 			validator: new BookingValidator(),
-			settingsMock.Object,
+			settings: options,
 			_dbContext);
 	}
 
