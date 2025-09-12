@@ -24,7 +24,6 @@ export function GatheringForm({
 	const router = useRouter();
 	const fileName: string = file?.name ?? "";
 	const coverSrc: string = file != null ? URL.createObjectURL(file) : "";
-	console.log({ coverSrc });
 
 	const gathering: GatheringReqDto = form.state.values;
 	const [toastMsg, setToastMsg] = useState(new ToastContent(false));
