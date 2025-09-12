@@ -11,7 +11,6 @@ export async function fetchFile(href: string): Promise<File> {
 	console.log(filePath.split("/"));
 	const bucket = filePath.split("/")[1];
 	const fileName = filePath.split("/").slice(2).join("/");
-	console.log({ bucket, fileName });
 
 	const response = await axios.get(`/api/v1/Files/object-storage/${bucket}`, {
 		params: { fileName },
