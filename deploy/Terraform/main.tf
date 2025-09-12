@@ -9,6 +9,10 @@
   }
 }
 
+locals {
+  environment = "staging"
+  project_name = "evently"
+}
 provider "azurerm" {
   features {}
 }
