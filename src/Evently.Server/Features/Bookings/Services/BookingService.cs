@@ -6,6 +6,7 @@ using Evently.Server.Common.Extensions;
 using Evently.Server.Features.Emails.Views;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using NanoidDotNet;
 using System.Text.Json;
 using ValidationResult=FluentValidation.Results.ValidationResult;
@@ -14,10 +15,13 @@ namespace Evently.Server.Features.Bookings.Services;
 
 public sealed class BookingService(
 	IMediaRenderer mediaRenderer,
-	IFileStorageService fileStorageService,
+	IObjectStorageService objectStorageService,
 	IValidator<Booking> validator,
+	IOptions<Settings> settings,
 	AppDbContext db)
 	: IBookingService {
+	private readonly string _containerName = settings.Value.StorageAccount.AccountName;
+
 	public async Task<Booking?> GetBooking(string bookingId) {
 		return await db.Bookings
 			.Include((b) => b.Account)
@@ -112,11 +116,11 @@ public sealed class BookingService(
 		string fileName = $"bookings/{bookingId}/qrcode.png";
 
 		Uri uri;
-		bool isFileExists = await fileStorageService.IsFileExists(fileName);
+		bool isFileExists = await objectStorageService.IsFileExists(_containerName, fileName);
 		if (!isFileExists) {
-			uri = await fileStorageService.UploadFile(fileName, binaryData, "image/png");
+			uri = await objectStorageService.UploadFile(_containerName, fileName, binaryData, "image/png");
 		} else {
-			uri = await fileStorageService.GetFileUri(fileName);
+			uri = await objectStorageService.GetFileUri(_containerName, fileName);
 		}
 
 		Dictionary<string, object?> props = new() {

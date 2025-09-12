@@ -5,6 +5,7 @@ using Evently.Server.Common.Domains.Models;
 using Evently.Server.Features.Bookings.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Moq;
 
 namespace Evently.Server.Test.Features.Bookings.Services;
@@ -30,9 +31,14 @@ public class BookingServiceTests : IDisposable {
 		_dbContext = dbContext;
 
 		Mock<IMediaRenderer> mediaRendererMock = new();
-		Mock<IFileStorageService> fileStorageServiceMock = new();
+		Mock<IObjectStorageService> fileStorageServiceMock = new();
+		IOptions<Settings> options = Options.Create(new Settings());
 
-		_bookingService = new BookingService(mediaRendererMock.Object, fileStorageServiceMock.Object, validator: new BookingValidator(), _dbContext);
+		_bookingService = new BookingService(mediaRendererMock.Object,
+			fileStorageServiceMock.Object,
+			validator: new BookingValidator(),
+			options,
+			_dbContext);
 	}
 
 	public void Dispose() {

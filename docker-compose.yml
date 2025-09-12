@@ -2,18 +2,40 @@
   postgres:
     image: postgres:17
     container_name: evently.postgres
+    restart: always
     environment:
       POSTGRES_DB: evently_docker
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
     ports:
-      - "5432:5432"
+      - "5431:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d evently_docker" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    container_name: evently.azurite
+    hostname: azurite
+    restart: always
+    ports:
+      - "10000:10000"  # Blob service
+      - "10001:10001"  # Queue service
+      - "10002:10002"  # Table service
+    volumes:
+      - azurite_data:/workspace
   
   evently:
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+      azurite:
+        condition: service_started
     # provide default value if env variable not set (https://stackoverflow.com/a/70772707/6514532)
     image: "${IMAGE:-eugbyte/eventlyserver:latest}"
     container_name: evently.server
@@ -41,3 +63,4 @@
 
 volumes:
   postgres_data:
+  azurite_data:

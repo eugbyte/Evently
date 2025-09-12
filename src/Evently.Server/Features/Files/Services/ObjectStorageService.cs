@@ -8,14 +8,13 @@ using Microsoft.Extensions.Options;
 namespace Evently.Server.Features.Files.Services;
 
 // Based on https://tinyurl.com/5pam66xn
-public sealed class FileService(IOptions<Settings> settings) : IFileStorageService {
+public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<ObjectStorageService> logger) : IObjectStorageService {
 	private readonly BlobServiceClient _blobServiceClient =
 		new(settings.Value.StorageAccount.AzureStorageConnectionString);
-	private readonly string _containerName = settings.Value.StorageAccount.AccountName;
 
-	public async Task<Uri> UploadFile(string fileName, BinaryData binaryData,
+	public async Task<Uri> UploadFile(string containerName, string fileName, BinaryData binaryData,
 		string mimeType = "application/octet-stream") {
-		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 		await containerClient.CreateIfNotExistsAsync(PublicAccessType.BlobContainer);
 
 		BlobClient blobClient = containerClient.GetBlobClient(fileName);
@@ -33,27 +32,37 @@ public sealed class FileService(IOptions<Settings> settings) : IFileStorageServi
 		return blobClient.Uri;
 	}
 
-	public async Task<bool> IsFileExists(string fileName) {
-		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+	public async Task<bool> IsFileExists(string containerName, string fileName) {
+		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 		BlobClient blobClient = containerClient.GetBlobClient(fileName);
 		Response<bool> result = await blobClient.ExistsAsync();
 		return result.Value;
 	}
 
-	public Task<Uri> GetFileUri(string fileName) {
-		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+	public Task<Uri> GetFileUri(string containerName, string fileName) {
+		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 		BlobClient blobClient = containerClient.GetBlobClient(fileName);
 		return Task.FromResult(blobClient.Uri);
 	}
 
-	public async Task<BinaryData> GetFile(string fileName) {
-		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+	public async Task<BinaryData> GetFile(string containerName, string fileName) {
+		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 		BlobClient blobClient = containerClient.GetBlobClient(fileName);
 
-		using MemoryStream ms = new();
-		await blobClient.DownloadToAsync(ms);
+		Response<bool> result = await blobClient.ExistsAsync();
+		if (!result.Value) {
+			throw new FileNotFoundException($"File {fileName} not found");
+		}
 
-		BinaryData data = await BinaryData.FromStreamAsync(ms);
+		using MemoryStream ms = new();
+		try {
+			await blobClient.DownloadToAsync(ms);
+		} catch (Exception ex) {
+			logger.LogError(ex.Message);
+		}
+
+		byte[] bytes = ms.ToArray();
+		BinaryData data = BinaryData.FromBytes(bytes);
 		return data;
 	}
 }
