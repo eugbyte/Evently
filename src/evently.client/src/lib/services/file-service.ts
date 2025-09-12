@@ -7,7 +7,7 @@
 export async function fetchFile(href: string): Promise<File> {
 	const urlObj = new URL(href);
 	const filePath: string = urlObj.pathname;
-	
+
 	console.log(filePath.split("/"));
 	const bucket = filePath.split("/")[1];
 	const fileName = filePath.split("/").slice(2).join("/");

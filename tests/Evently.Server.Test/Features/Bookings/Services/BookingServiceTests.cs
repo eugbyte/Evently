@@ -37,7 +37,7 @@ public class BookingServiceTests : IDisposable {
 		_bookingService = new BookingService(mediaRendererMock.Object,
 			fileStorageServiceMock.Object,
 			validator: new BookingValidator(),
-			settings: options,
+			options,
 			_dbContext);
 	}
 
