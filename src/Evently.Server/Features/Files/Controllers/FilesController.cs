@@ -17,12 +17,10 @@ public class FilesController(ILogger<FilesController> logger, IObjectStorageServ
 			string contentType = binaryData.MediaType ?? GetContentType(fileName);
 			return File(fileContents: binaryData.ToArray(), fileDownloadName: fileName, contentType: contentType);
 		} catch (Exception ex) {
-			logger.LogError(ex, "Error occurred while retrieving file '{FileName}' from bucket '{Bucket}'.", fileName, bucket);
-			if (ex is FileNotFoundException) {
-				return NotFound($"File '{fileName}' not found in bucket '{bucket}'.");
-			}
-			// Add more specific exception handling as needed
-			return StatusCode(statusCode: 500, "An unexpected error occurred while retrieving the file.");
+			return ex switch {
+				FileNotFoundException => NotFound($"File '{fileName}' not found in bucket '{bucket}'."),
+				_ => StatusCode(500, "An unexpected error occurred while retrieving the file."),
+			};
 		}
 	}
 
