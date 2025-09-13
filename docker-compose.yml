@@ -1,22 +1,16 @@
 ﻿services:
-  postgres:
-    image: postgres:17
-    container_name: evently.postgres
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: evently.sqlserver
     restart: always
     environment:
-      POSTGRES_DB: evently_docker
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourSTRONG!Passw0rd"
+      MSSQL_PID: "Express"
     ports:
-      - "5431:5432"
+      - "1433:1433"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d evently_docker" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+      - sqlserver_data:/var/opt/mssql
   
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:latest
@@ -32,8 +26,8 @@
   
   evently:
     depends_on:
-      postgres:
-        condition: service_healthy
+      sqlserver:
+        condition: service_started
       azurite:
         condition: service_started
     # provide default value if env variable not set (https://stackoverflow.com/a/70772707/6514532)
@@ -50,7 +44,7 @@
     ports:
       - "4000:8080"
     environment:
-      ConnectionStrings__WebApiDatabase: "Database=evently_docker;Server=postgres;Port=5432;Username=postgres;Password=admin;"
+      ConnectionStrings__WebApiDatabase: "Server=sqlserver,1433;Initial Catalog=evently_docker;User Id=sa;Password=YourSTRONG!Passw0rd;TrustServerCertificate=true;"
       Logging__LogLevel__Default: "Information"
       Logging__LogLevel__Microsoft.AspNetCore: "Warning"
       StorageAccount__AccountName: "evently-dev-images"
@@ -62,5 +56,5 @@
       AllowedHosts: "*"
 
 volumes:
-  postgres_data:
+  sqlserver_data:
   azurite_data:

@@ -40,8 +40,8 @@ string? dbConnStr = builder.Configuration.GetConnectionString("WebApiDatabase");
 logger.LogValue("dbConnStr", dbConnStr);
 builder.Services.AddDbContext<AppDbContext>((options) => {
 	options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-	options.UseNpgsql(dbConnStr,
-		npgsqlOptionsAction: pgOpt => pgOpt.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+	options.UseSqlServer(dbConnStr,
+		sqlServerOptionsAction: opt => opt.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
 });
 
 // Add services to the container.

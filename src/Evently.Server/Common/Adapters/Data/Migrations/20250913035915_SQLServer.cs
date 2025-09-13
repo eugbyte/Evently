@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -9,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Server.Common.Adapters.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedInit : Migration
+    public partial class SQLServer : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,10 +17,10 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,23 +31,22 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    LogoSrc = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,10 +58,9 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 columns: table => new
                 {
                     CategoryId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:IdentitySequenceOptions", "'20', '1', '', '', 'False', '1'")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CategoryName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Approved = table.Column<bool>(type: "boolean", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Approved = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,16 +72,15 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 columns: table => new
                 {
                     GatheringId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:IdentitySequenceOptions", "'20', '1', '', '', 'False', '1'")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "character varying(10000)", maxLength: 10000, nullable: false),
-                    Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Location = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    CoverSrc = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    OrganiserId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    CancellationDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: false),
+                    Start = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    End = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CoverSrc = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    OrganiserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CancellationDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -95,11 +91,11 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,11 +112,11 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,10 +133,10 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    ProviderKey = table.Column<string>(type: "text", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,8 +153,8 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,10 +177,10 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -201,20 +197,20 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "Bookings",
                 columns: table => new
                 {
-                    BookingId = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    AccountId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    BookingId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    AttendeeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GatheringId = table.Column<long>(type: "bigint", nullable: false),
-                    CreationDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CheckInDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CheckoutDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CancellationDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                    CreationDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CheckInDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    CheckoutDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    CancellationDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bookings", x => x.BookingId);
                     table.ForeignKey(
-                        name: "FK_Bookings_AspNetUsers_AccountId",
-                        column: x => x.AccountId,
+                        name: "FK_Bookings_AspNetUsers_AttendeeId",
+                        column: x => x.AttendeeId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -252,11 +248,11 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "LogoSrc", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "empty-user-12345", 0, "EMPTY-CONCURRENCY-STAMP-12345", "empty@example.com", false, true, null, null, "Empty User", "EMPTY@EXAMPLE.COM", "EMPTY_USER", null, null, false, "EMPTY-SECURITY-STAMP-12345", false, "empty_user" },
-                    { "guest-user-22222", 0, "EMPTY-CONCURRENCY-STAMP-12345", "guest@example.com", false, true, null, null, "Guest User", "GUEST@EXAMPLE.COM", "GUEST_USER_2", null, null, false, "EMPTY-SECURITY-STAMP-12345", false, "guest_user2" }
+                    { "empty-user-12345", 0, "EMPTY-CONCURRENCY-STAMP-12345", "empty@example.com", false, true, null, "Empty User", "EMPTY@EXAMPLE.COM", "EMPTY_USER", null, null, false, "EMPTY-SECURITY-STAMP-12345", false, "empty_user" },
+                    { "guest-user-22222", 0, "EMPTY-CONCURRENCY-STAMP-12345", "guest@example.com", false, true, null, "Guest User", "GUEST@EXAMPLE.COM", "GUEST_USER_2", null, null, false, "EMPTY-SECURITY-STAMP-12345", false, "guest_user2" }
                 });
 
             migrationBuilder.InsertData(
@@ -293,7 +289,7 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Bookings",
-                columns: new[] { "BookingId", "AccountId", "CancellationDateTime", "CheckInDateTime", "CheckoutDateTime", "CreationDateTime", "GatheringId" },
+                columns: new[] { "BookingId", "AttendeeId", "CancellationDateTime", "CheckInDateTime", "CheckoutDateTime", "CreationDateTime", "GatheringId" },
                 values: new object[,]
                 {
                     { "book_abc123456", "guest-user-22222", null, null, null, new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1L },
@@ -331,7 +327,8 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -357,12 +354,13 @@ namespace Evently.Server.Common.Adapters.Data.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_AccountId",
+                name: "IX_Bookings_AttendeeId",
                 table: "Bookings",
-                column: "AccountId");
+                column: "AttendeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_GatheringId",
