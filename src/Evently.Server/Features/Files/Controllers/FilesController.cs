@@ -19,7 +19,7 @@ public class FilesController(ILogger<FilesController> logger, IObjectStorageServ
 		} catch (Exception ex) {
 			return ex switch {
 				FileNotFoundException => NotFound($"File '{fileName}' not found in bucket '{bucket}'."),
-				_ => StatusCode(500, "An unexpected error occurred while retrieving the file."),
+				_ => StatusCode(statusCode: 500, "An unexpected error occurred while retrieving the file."),
 			};
 		}
 	}
