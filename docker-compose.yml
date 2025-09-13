@@ -5,19 +5,12 @@
     restart: always
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "admin"
+      SA_PASSWORD: "YourSTRONG!Passw0rd"
       MSSQL_PID: "Express"
-      MSSQL_USER: "SA"
     ports:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
-    healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong@Password123 -Q 'SELECT 1' || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
   
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:latest
@@ -34,7 +27,7 @@
   evently:
     depends_on:
       sqlserver:
-        condition: service_healthy
+        condition: service_started
       azurite:
         condition: service_started
     # provide default value if env variable not set (https://stackoverflow.com/a/70772707/6514532)
@@ -51,7 +44,7 @@
     ports:
       - "4000:8080"
     environment:
-      ConnectionStrings__WebApiDatabase: "Server=sqlserver,1433;Database=evently_docker;User Id=sa;Password=admin;TrustServerCertificate=true;"
+      ConnectionStrings__WebApiDatabase: "Server=sqlserver,1433;Initial Catalog=evently_docker;User Id=sa;Password=YourSTRONG!Passw0rd;TrustServerCertificate=true;"
       Logging__LogLevel__Default: "Information"
       Logging__LogLevel__Microsoft.AspNetCore: "Warning"
       StorageAccount__AccountName: "evently-dev-images"
