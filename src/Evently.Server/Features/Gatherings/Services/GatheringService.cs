@@ -31,7 +31,7 @@ public sealed class GatheringService(AppDbContext db, IValidator<Gathering> vali
 		int? offset,
 		int? limit) {
 		IQueryable<Gathering> query = db.Gatherings
-			.Where((gathering) => name == null || EF.Functions.ILike(gathering.Name, $"%{name}%"))
+			.Where((gathering) => name == null || EF.Functions.Like(gathering.Name, $"%{name}%"))
 			.Where((gathering) => startDateBefore == null || gathering.Start <= startDateBefore)
 			.Where((gathering) => startDateAfter == null || gathering.Start >= startDateAfter)
 			.Where((gathering) => endDateBefore == null || gathering.End <= endDateBefore)
