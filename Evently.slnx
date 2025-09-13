@@ -12,8 +12,6 @@
     <Folder Name="/src/">
         <Project Path="src\evently.client\evently.client.esproj">
             <Configuration Solution="Release|Any CPU" Project="Debug|Any CPU"/>
-            <Build/>
-            <Deploy/>
         </Project>
         <Project Path="src\Evently.Server\Evently.Server.csproj"/>
     </Folder>
