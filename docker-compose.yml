@@ -43,6 +43,8 @@
         - BUILD_CONFIGURATION=Release
     ports:
       - "4000:8080"
+    # order of precedence for env variables
+    # https://docs.docker.com/compose/how-tos/environment-variables/envvars-precedence/
     environment:
       ConnectionStrings__WebApiDatabase: "Server=sqlserver,1433;Initial Catalog=evently_docker;User Id=sa;Password=YourSTRONG!Passw0rd;TrustServerCertificate=true;"
       Logging__LogLevel__Default: "Information"
