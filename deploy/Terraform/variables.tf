@@ -1,4 +1,4 @@
-﻿# set TF_VAR_sql_admin_username in .env
+# set TF_VAR_sql_admin_username in .env
 variable "sql_admin_username" {
   type        = string
   description = "The administrator username of the SQL logical server."

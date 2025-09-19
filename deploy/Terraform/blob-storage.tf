@@ -1,4 +1,4 @@
-﻿# Create a storage account
+# Create a storage account
 resource "azurerm_storage_account" "evently_sa" {
   name                     = "saeventlydevsea"
   resource_group_name      = azurerm_resource_group.rg.name
@@ -8,9 +8,9 @@ resource "azurerm_storage_account" "evently_sa" {
 
   # Optional: Lifecycle management for blob storage
   blob_properties {
-    versioning_enabled = false  # Disable versioning to save costs
+    versioning_enabled = false # Disable versioning to save costs
     delete_retention_policy {
-      days = 7  # Minimum retention period
+      days = 7 # Minimum retention period
     }
   }
 }
@@ -19,5 +19,5 @@ resource "azurerm_storage_account" "evently_sa" {
 resource "azurerm_storage_container" "evently_container" {
   name                  = "evently-dev-images"
   storage_account_id    = azurerm_storage_account.evently_sa.id
-  container_access_type = "public"
+  container_access_type = "blob"
 }

@@ -1,20 +1,17 @@
-﻿terraform {
-  required_version = ">= 1.0.0"
-
+terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0"
+      version = "4.45.0"
     }
   }
 }
 
 locals {
-  environment = "staging"
+  environment  = "staging"
   project_name = "evently"
 }
 provider "azurerm" {
-  features {}
 }
 
 # Define a resource group for your resources
