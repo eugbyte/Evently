@@ -442,7 +442,6 @@ src/emailpaywall.client/.svelte-kit
 **/*.tfvars
 **/*.tfvars.json
 **/.terraform/
-**/.terraform.lock.hcl
 **/terraform.tfstate.d/
 **/*.tfplan
 **/*.tfplan.*
