@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.45.0"
     }
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "3.0.2"
+    }
   }
 }
 
@@ -11,8 +15,14 @@ locals {
   environment  = "staging"
   project_name = "evently"
 }
+
+provider "docker" {}
+
 provider "azurerm" {
+  subscription_id = "e99ca647-4d2d-465f-b0a2-0b97d93c9024"
+  features {}
 }
+
 
 # Define a resource group for your resources
 resource "azurerm_resource_group" "rg" {

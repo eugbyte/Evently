@@ -8,37 +8,15 @@ resource "azurerm_container_registry" "acr" {
 }
 
 locals {
-  image = "eventlyserver"
+  acrimage = "${azurerm_container_registry.acr.login_server}/eugbyte/evently"
 }
 
-# [Use multiple provisoners to run multiple commands in local exec](https://tinyurl.com/mrjw6rkf)
-resource "null_resource" "publish_docker_image" {
-  triggers = {
-    always_run = timestamp()
-  }
-
-  provisioner "local-exec" {
-    environment = {
-      "IMAGE" = local.image
-    }
-    working_dir = "../.."
-    command     = "docker compose build evently"
-  }
-
-  provisioner "local-exec" {
-    command = "az acr login --name ${azurerm_container_registry.acr.name}"
-  }
-
-  provisioner "local-exec" {
-    command = "docker tag ${local.image} ${azurerm_container_registry.acr.login_server}/${local.image}"
-  }
-
-  provisioner "local-exec" {
-    command = "docker image ls"
-  }
-
-  provisioner "local-exec" {
-    command = "docker push ${azurerm_container_registry.acr.login_server}/${local.image}"
+# Build and push the image
+resource "docker_image" "evently" {
+  name = "${local.acrimage}:latest"
+  build {
+    context = "../.."
+    dockerfile = "src/Evently.Server/Dockerfile"
   }
 
   depends_on = [azurerm_container_registry.acr]
@@ -49,16 +27,12 @@ resource "azurerm_container_app_environment" "env" {
   location                   = azurerm_resource_group.rg.location
   resource_group_name        = azurerm_resource_group.rg.name
   log_analytics_workspace_id = azurerm_log_analytics_workspace.analytics.id
-
-  depends_on = [null_resource.publish_docker_image]
 }
 
 resource "azurerm_user_assigned_identity" "uami" {
   name                = "uami-evently-prod-sea"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-
-  depends_on = [null_resource.publish_docker_image]
 }
 
 resource "azurerm_role_assignment" "acr_pull" {
@@ -89,40 +63,6 @@ resource "azurerm_container_app" "app" {
     ]
   }
 
-  template {
-    # Minimum scaling for cost optimization
-    min_replicas = 0 # Scale to zero when no traffic (cheapest option)
-    max_replicas = 1 # Limit maximum instances
-
-    container {
-      name  = "eventlyserver"
-      image = "${azurerm_container_registry.acr.login_server}/${local.image}"
-      # Minimum possible resource allocation
-      cpu    = 0.25
-      memory = "0.5Gi"
-
-      env {
-        name  = "StorageAccount__AzureStorageConnectionString"
-        value = azurerm_storage_account.evently_sa.primary_connection_string
-      }
-      
-      env {
-        name = "StorageAccount__AccountName"
-        value = azurerm_storage_account.evently_sa.name
-      }
-
-      env {
-        name       = "ConnectionStrings__WebApiDatabase"
-        secret_ref = "sql-connection-string"
-      }
-    }
-  }
-
-  secret {
-    name  = "sql-connection-string"
-    value = local.sql_connection_string
-  }
-
   ingress {
     allow_insecure_connections = false
     external_enabled           = true
@@ -132,4 +72,115 @@ resource "azurerm_container_app" "app" {
       percentage      = 100
     }
   }
+
+  template {
+    # Minimum scaling for cost optimization
+    min_replicas = 0 # Scale to zero when no traffic (cheapest option)
+    max_replicas = 1 # Limit maximum instances
+
+    container {
+      name  = "eventlyserver"
+      image = "${local.acrimage}:latest"
+      # Minimum possible resource allocation
+      cpu    = 0.25
+      memory = "0.5Gi"
+
+      # Database Connection
+      env {
+        name        = "ConnectionStrings__WebApiDatabase"
+        secret_name = "sql-connection-string"
+      }
+
+      # Storage Account Configuration
+      env {
+        name        = "StorageAccount__AzureStorageConnectionString"
+        secret_name = "sa-connection-string"
+      }
+
+      env {
+        name  = "StorageAccount__AccountName"
+        value = azurerm_storage_account.evently_sa.name
+      }
+
+      # Authentication - Google OAuth
+      env {
+        name        = "Authentication__Google__ClientId"
+        secret_name = "google-client-id"
+      }
+
+      env {
+        name        = "Authentication__Google__ClientSecret"
+        secret_name = "google-client-secret"
+      }
+
+      # Email Settings
+      env {
+        name        = "EmailSettings__ActualFrom"
+        secret_name = "email-from"
+      }
+
+      env {
+        name        = "EmailSettings__SmtpPassword"
+        secret_name = "smtp-password"
+      }
+
+      # Logging Configuration
+      env {
+        name  = "Logging__LogLevel__Default"
+        value = "Information"
+      }
+
+      env {
+        name  = "Logging__LogLevel__Microsoft.AspNetCore"
+        value = "Warning"
+      }
+
+      # General Settings
+      env {
+        name  = "AllowedHosts"
+        value = "*"
+      }
+
+      # Environment indicator
+      env {
+        name  = "ASPNETCORE_ENVIRONMENT"
+        value = "Production"
+      }
+    }
+  }
+
+  # Database connection string (from SQL database resource)
+  secret {
+    name  = "sql-connection-string"
+    value = local.sql_connection_string
+  }
+
+  # Storage account connection string
+  secret {
+    name  = "sa-connection-string"
+    value = azurerm_storage_account.evently_sa.primary_connection_string
+  }
+
+  # Google OAuth secrets (these should come from GitHub Secrets via Terraform variables)
+  secret {
+    name  = "google-client-id"
+    value = var.google_client_id
+  }
+
+  secret {
+    name  = "google-client-secret"
+    value = var.google_client_secret
+  }
+
+  # Email configuration secrets
+  secret {
+    name  = "email-from"
+    value = var.email_from
+  }
+
+  secret {
+    name  = "smtp-password"
+    value = var.smtp_password
+  }
+
 }
