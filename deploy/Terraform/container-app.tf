@@ -19,7 +19,10 @@ resource "null_resource" "publish_docker_image" {
 
   provisioner "local-exec" {
     working_dir = "../.."
-    command = "docker build --tag eugbyte/evently:latest -f src/Evently.Server/Dockerfile ."
+    command     = "docker compose build evently"
+    environment = {
+      IMAGE = "eugbyte/evently:latest"
+    }
   }
 
   provisioner "local-exec" {
@@ -38,6 +41,9 @@ resource "null_resource" "publish_docker_image" {
     command = "docker push ${local.acrimage}:latest"
   }
 
+  provisioner "local-exec" {
+    command = "docker image prune --force"
+  }
   depends_on = [azurerm_container_registry.acr]
 }
 
