@@ -35,4 +35,4 @@ ARG PORT=8080
 RUN echo $PORT
 
 # cannot separate --urls http https://docs.docker.com/reference/dockerfile/#variable-substitution
-ENTRYPOINT ["dotnet", "Evently.Server.dll", "--urls http://*:$PORT"]
+ENTRYPOINT ["dotnet", "Evently.Server.dll", "--urls https://*:$PORT"]
