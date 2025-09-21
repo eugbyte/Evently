@@ -12,11 +12,21 @@ locals {
 }
 
 # Build and push the image
-resource "docker_image" "evently" {
-  name = "${local.acrimage}:latest"
-  build {
-    context = "../.."
-    dockerfile = "src/Evently.Server/Dockerfile"
+resource "null_resource" "publish_docker_image" {
+  triggers = {
+    always_run = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "docker tag eugbyte/evently ${local.acrimage}:latest"
+  }
+
+  provisioner "local-exec" {
+    command = "docker image ls"
+  }
+
+  provisioner "local-exec" {
+    command = "docker push ${local.acrimage}:latest"
   }
 
   depends_on = [azurerm_container_registry.acr]
