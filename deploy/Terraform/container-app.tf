@@ -18,7 +18,12 @@ resource "null_resource" "publish_docker_image" {
   }
 
   provisioner "local-exec" {
-    command = "docker tag eugbyte/evently ${local.acrimage}:latest"
+    working_dir = "../.."
+    command = "docker build --tag eugbyte/evently:latest -f src/Evently.Server/Dockerfile ."
+  }
+
+  provisioner "local-exec" {
+    command = "docker tag eugbyte/evently:latest ${local.acrimage}:latest"
   }
 
   provisioner "local-exec" {
