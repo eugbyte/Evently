@@ -18,11 +18,18 @@ fmt:
 	jb cleanupcode ./src/Evently.Server/**/*
 	cd src/evently.client && npm run fmt
     
-docker-build-evently:
+docker-build-no-cache:
 	docker build --no-cache --progress=plain --tag eugbyte/evently:latest -f src/Evently.Server/Dockerfile .
 
-clean-docker:
-	docker system prune --volumes --force
+docker-build:
+	docker build --tag eugbyte/evently:latest -f src/Evently.Server/Dockerfile .
+
+docker-clean:
+	docker system prune --all --volumes --force
+
+tf-build:
+	terraform plan -var-file="dev.tfvars"
+	terraform apply -var-file="dev.tfvars" -auto-approve
 	
 clean-tf:
 	rm -rf ./deploy/Terraform/.terraform

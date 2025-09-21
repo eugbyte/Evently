@@ -26,6 +26,10 @@ resource "null_resource" "publish_docker_image" {
   }
 
   provisioner "local-exec" {
+    command = "az acr login --name ${azurerm_container_registry.acr.name}"
+  }
+
+  provisioner "local-exec" {
     command = "docker push ${local.acrimage}:latest"
   }
 
