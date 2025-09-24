@@ -113,7 +113,7 @@ resource "azurerm_container_app" "app" {
       # Database Connection
       env {
         name        = "ConnectionStrings__WebApiDatabase"
-        secret_name = "sql-connection-string"
+        value = local.sql_connection_string
       }
 
       # Storage Account Configuration
@@ -175,10 +175,10 @@ resource "azurerm_container_app" "app" {
   }
 
   # Database connection string (from SQL database resource)
-  secret {
-    name  = "sql-connection-string"
-    value = local.sql_connection_string
-  }
+  # secret {
+  #   name  = "sql-connection-string"
+  #   value = local.sql_connection_string
+  # }
 
   # Storage account connection string
   secret {
