@@ -34,3 +34,6 @@ tf-build:
 clean-tf:
 	rm -rf ./deploy/Terraform/.terraform
 	rm ./deploy/Terraform/.terraform.lock.hcl
+
+debug-container-app:
+	az containerapp logs show --name ca-evently-prod-sea --resource-group rg-evently-dev-sea --follow

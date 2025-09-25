@@ -66,6 +66,10 @@ resource "azurerm_role_assignment" "acr_pull" {
   scope                = azurerm_container_registry.acr.id
 }
 
+locals {
+  timestamp = formatdate("YYYYMMDDhhmmss", timestamp())
+}
+
 resource "azurerm_container_app" "app" {
   name                         = "ca-evently-prod-sea"
   container_app_environment_id = azurerm_container_app_environment.env.id
@@ -99,6 +103,8 @@ resource "azurerm_container_app" "app" {
   }
 
   template {
+    revision_suffix = "rev-${local.timestamp}"
+
     # Minimum scaling for cost optimization
     min_replicas = 0 # Scale to zero when no traffic (cheapest option)
     max_replicas = 1 # Limit maximum instances
@@ -112,7 +118,7 @@ resource "azurerm_container_app" "app" {
 
       # Database Connection
       env {
-        name        = "ConnectionStrings__WebApiDatabase"
+        name  = "ConnectionStrings__WebApiDatabase"
         value = local.sql_connection_string
       }
 

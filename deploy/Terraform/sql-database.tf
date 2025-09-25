@@ -16,6 +16,13 @@ resource "azurerm_mssql_database" "db" {
   server_id = azurerm_mssql_server.sql_server.id
 }
 
+resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
+  name             = "AllowAzureServices"
+  server_id        = azurerm_mssql_server.sql_server.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
+}
+
 # Construct the SQL connection string
 # https://blog.simontimms.com/2021/07/26/build_sql_connection_string/  
 locals {
