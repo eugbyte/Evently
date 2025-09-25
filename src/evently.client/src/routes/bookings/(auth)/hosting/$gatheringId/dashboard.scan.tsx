@@ -35,7 +35,7 @@ function RouteComponent() {
 				await sleep(1000);
 			} catch (e) {
 				console.error(e);
-				setToast(new ToastContent(true, "Invalid QR code", ToastStatus.Error));
+				setToast(new ToastContent(true, "Invalid code", ToastStatus.Error));
 				await sleep(1000);
 			}
 			setToast(new ToastContent(false));
@@ -59,6 +59,7 @@ function RouteComponent() {
 			await handleSubmit();
 		} catch (error) {
 			console.error(error);
+			setPending(false);
 		}
 	};
 

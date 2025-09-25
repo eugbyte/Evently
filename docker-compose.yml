@@ -43,12 +43,14 @@
         - BUILD_CONFIGURATION=Release
     ports:
       - "4000:8080"
+    # order of precedence for env variables
+    # https://docs.docker.com/compose/how-tos/environment-variables/envvars-precedence/
     environment:
       ConnectionStrings__WebApiDatabase: "Server=sqlserver,1433;Initial Catalog=evently_docker;User Id=sa;Password=YourSTRONG!Passw0rd;TrustServerCertificate=true;"
       Logging__LogLevel__Default: "Information"
       Logging__LogLevel__Microsoft.AspNetCore: "Warning"
       StorageAccount__AccountName: "evently-dev-images"
-      StorageAccount__AzureStorageConnectionString: "DefaultEndpointsProtocol=https;AccountName=saeventlydevsea;AccountKey=HEOqV5ViGakHjPwOxWkQFd0iVjyvwPg6MWM7Y2XG/lexPBNsWjolUY5FJgugW69RxmZJcrGb+DyZ+AStJtV5gg==;EndpointSuffix=core.windows.net"
+      StorageAccount__AzureStorageConnectionString: "DefaultEndpointsProtocol=http;AccountName=account1;AccountKey=key1;BlobEndpoint=http://account1.blob.localhost:10000;QueueEndpoint=http://account1.queue.localhost:10001;TableEndpoint=http://account1.table.localhost:10002;"
       Authentication__Google__ClientId: "533425050385-fecekp0gl7cc5nt76o0ohgaik7c9l9l1.apps.googleusercontent.com"
       Authentication__Google__ClientSecret: "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"
       EmailSettings__ActualFrom: "hippotechcode@gmail.com"

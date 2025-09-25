@@ -436,3 +436,27 @@ src/emailpaywall.client/.svelte-kit
 .rider.*
 **/obj/
 
+# Terraform
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfvars
+**/*.tfvars.json
+**/.terraform/
+**/terraform.tfstate.d/
+**/*.tfplan
+**/*.tfplan.*
+**/crash.log
+**/crash.*.log
+**/.terraformrc
+**/terraform.rc
+**/*.auto.tfvars
+**/*.auto.tfvars.json
+**/override.tf
+**/override.tf.json
+**/*_override.tf
+**/*_override.tf.json
+**/.terraform.tfstate.lock.info
+
+# Include example tfvars files
+!**/*.tfvars.example
+!**/terraform.tfvars.example
