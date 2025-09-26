@@ -36,7 +36,7 @@ public sealed class GatheringsController(
 		string? name,
 		DateTimeOffset? startDateBefore, DateTimeOffset? startDateAfter, DateTimeOffset? endDateBefore, DateTimeOffset? endDateAfter,
 		bool? isCancelled,
-		long[]? categoryIds,
+		[FromQuery(Name = "categoryIds[]")] long[]? categoryIds,
 		int? offset, int? limit) {
 		logger.LogInformation("categoryIds: {}", string.Join(",", values: categoryIds ?? []));
 		PageResult<Gathering> result = await gatheringService.GetGatherings(attendeeId,

@@ -19,13 +19,8 @@ export interface GetGatheringsParams {
 }
 
 export async function getGatherings(params: GetGatheringsParams): Promise<PageResult<Gathering[]>> {
-	const categoryIds: number[] = params.categoryIds ?? [];
 	const queryParams: Record<string, any> = cloneDeep(params);
-	delete queryParams["categoryIds"];
 
-	for (let i = 0; i < categoryIds.length; i++) {
-		queryParams[`categoryIds[${i}]`] = categoryIds[i];
-	}
 	const response = await axios.get<Gathering[]>("/api/v1/Gatherings", { params: queryParams });
 	const gatherings: Gathering[] = response.data;
 	for (const gathering of gatherings) {

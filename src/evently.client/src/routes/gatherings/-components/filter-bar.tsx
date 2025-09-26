@@ -3,6 +3,7 @@ import { type GetGatheringsParams, toIsoDateString } from "~/lib/services";
 import { Category } from "~/lib/domains/entities";
 import { DateTime } from "luxon";
 import { Icon } from "@iconify/react";
+import React from "react";
 
 interface FilterBarProps {
 	categories: Category[];
