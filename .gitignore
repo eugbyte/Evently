@@ -437,8 +437,6 @@ src/emailpaywall.client/.svelte-kit
 **/obj/
 
 # Terraform
-**/*.tfstate
-**/*.tfstate.*
 **/*.tfvars
 **/*.tfvars.json
 **/.terraform/

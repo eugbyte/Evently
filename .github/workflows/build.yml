@@ -4,11 +4,14 @@
 name: Build evently
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
+# important for azure/login
+permissions:
+  id-token: write
+  contents: read
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,3 +38,32 @@ jobs:
       run: cd src/evently.client && pnpm run test
     - name: Test Docker Image
       run: docker build --tag=expo-connect/latest --file=src/Evently.Server/Dockerfile .
+      
+  validate-tf:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v4
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Validate Azure CLI can be used
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Terraform init
+        run: |
+          cd deploy/Terraform 
+          terraform init
+      - name: Terraform validate
+        run: |
+          cd deploy/Terraform 
+          terraform validate
+
+

@@ -12,7 +12,7 @@ terraform {
 }
 
 locals {
-  environment  = "staging"
+  environment = "staging"
 }
 
 provider "azurerm" {
