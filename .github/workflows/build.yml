@@ -35,3 +35,17 @@ jobs:
       run: cd src/evently.client && pnpm run test
     - name: Test Docker Image
       run: docker build --tag=expo-connect/latest --file=src/Evently.Server/Dockerfile .
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    - name: Validate Azure CLI can be used
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az account show
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v3
