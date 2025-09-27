@@ -42,6 +42,13 @@ jobs:
         run: |
           cd deploy/Terraform 
           terraform plan
+        env:
+          TF_VAR_sql_admin_username: ${{ secrets.TF_VAR_SQL_ADMIN_USERNAME }}
+          TF_VAR_sql_admin_password: ${{ secrets.TF_VAR_SQL_ADMIN_PASSWORD }}
+          TF_VAR_google_client_id: ${{ secrets.TF_VAR_GOOGLE_CLIENT_ID }}
+          TF_VAR_google_client_secret: ${{ secrets.TF_VAR_GOOGLE_CLIENT_SECRET }}
+          TF_VAR_email_from: ${{ secrets.TF_VAR_EMAIL_FROM }}
+          TF_VAR_smtp_password: ${{ secrets.TF_VAR_SMTP_PASSWORD }}
       # Apply step can be skipped for pull requests
       - name: Terraform apply
         run: cd deploy/Terraform && terraform apply -auto-approve
