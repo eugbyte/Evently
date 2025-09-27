@@ -1,4 +1,4 @@
-﻿name: Build evently
+﻿name: Deploy evently
 
 on:
   push:
