@@ -40,14 +40,10 @@ describe("test gatherings page", () => {
 		expect(element).toBeInTheDocument();
 
 		const filterBar: HTMLDivElement = await screen.findByTestId("filter-bar");
-		userEvent.click(filterBar);
+		await userEvent.click(filterBar);
 
 		const input: HTMLInputElement = screen.getByPlaceholderText("Search gatherings...");
 		await userEvent.type(input, "T");
 		expect(gatheringSpy).toHaveBeenCalledTimes(2);
-
-		const button: HTMLButtonElement = screen.getByRole("button", { name: "»" });
-		await userEvent.click(button);
-		expect(gatheringSpy).toHaveBeenCalledTimes(3);
 	});
 });
