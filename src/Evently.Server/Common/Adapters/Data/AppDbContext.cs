@@ -84,8 +84,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Tech Innovation Summit",
 				Description = "A comprehensive summit exploring the latest in AI and machine learning",
 				Location = "Marina Bay Sands Convention Centre, Singapore",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 5, hour: 9, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 5, hour: 17, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 5, hour: 9, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 5, hour: 17, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = hostUserId,
 			},
 			new Gathering {
@@ -93,8 +93,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Startup Networking Night",
 				Description = "Connect with fellow entrepreneurs and investors",
 				Location = "Clarke Quay Central, Singapore",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 10, hour: 18, minute: 30, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 10, hour: 22, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 10, hour: 18, minute: 30, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 10, hour: 22, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = hostUserId,
 			},
 			new Gathering {
@@ -102,8 +102,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Digital Art Exhibition",
 				Description = "Showcasing contemporary digital art from emerging artists",
 				Location = "National Gallery Singapore",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 15, hour: 10, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 15, hour: 18, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 15, hour: 10, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 15, hour: 18, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = hostUserId,
 			},
 			new Gathering {
@@ -111,8 +111,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Web Development Workshop",
 				Description = "Learn modern web development techniques and best practices",
 				Location = "Singapore Science Centre",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 8, hour: 13, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 8, hour: 17, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 8, hour: 13, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 8, hour: 17, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = guestUserId,
 			},
 			new Gathering {
@@ -120,8 +120,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Business Strategy Seminar",
 				Description = "Advanced strategies for scaling your business",
 				Location = "Raffles City Convention Centre, Singapore",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 20, hour: 14, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 20, hour: 16, minute: 30, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 20, hour: 14, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 20, hour: 16, minute: 30, second: 0, singaporeOffset),
 				OrganiserId = guestUserId,
 			},
 			new Gathering {
@@ -129,8 +129,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Photography Masterclass",
 				Description = "Professional photography techniques and portfolio building",
 				Location = "Gardens by the Bay, Singapore",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 22, hour: 8, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 22, hour: 12, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 22, hour: 8, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 22, hour: 12, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = guestUserId,
 			},
 			new Gathering {
@@ -138,8 +138,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Mobile App Development Bootcamp",
 				Description = "Intensive bootcamp covering iOS and Android development",
 				Location = "NUS School of Computing, Singapore",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 12, hour: 9, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 12, hour: 18, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 12, hour: 9, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 12, hour: 18, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = hostUserId,
 			},
 			new Gathering {
@@ -147,8 +147,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Investment & Finance Forum",
 				Description = "Learn about personal finance and investment strategies",
 				Location = "Suntec Singapore Convention Centre",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 25, hour: 14, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 25, hour: 17, minute: 30, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 25, hour: 14, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 25, hour: 17, minute: 30, second: 0, singaporeOffset),
 				OrganiserId = hostUserId,
 			},
 			new Gathering {
@@ -156,8 +156,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Creative Writing Workshop",
 				Description = "Explore storytelling techniques and creative expression",
 				Location = "Esplanade Theatres, Singapore",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 28, hour: 10, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 28, hour: 15, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 28, hour: 10, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 28, hour: 15, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = guestUserId,
 			},
 			new Gathering {
@@ -165,8 +165,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Cloud Computing Conference",
 				Description = "Latest trends in cloud architecture and DevOps",
 				Location = "Singapore EXPO",
-				Start = new DateTimeOffset(year: 2025, month: 12, day: 30, hour: 9, minute: 30, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2025, month: 12, day: 30, hour: 17, minute: 30, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2026, month: 12, day: 30, hour: 9, minute: 30, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2026, month: 12, day: 30, hour: 17, minute: 30, second: 0, singaporeOffset),
 				OrganiserId = hostUserId,
 			},
 			new Gathering {
@@ -174,8 +174,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "E-commerce Mastery",
 				Description = "Build and scale your online business effectively",
 				Location = "Marina Bay Financial Centre, Singapore",
-				Start = new DateTimeOffset(year: 2026, month: 1, day: 3, hour: 13, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2026, month: 1, day: 3, hour: 18, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2027, month: 1, day: 3, hour: 13, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2027, month: 1, day: 3, hour: 18, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = guestUserId,
 			},
 			new Gathering {
@@ -183,8 +183,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Contemporary Dance Performance",
 				Description = "An evening of modern dance and artistic expression",
 				Location = "Victoria Theatre, Singapore",
-				Start = new DateTimeOffset(year: 2026, month: 1, day: 5, hour: 19, minute: 30, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2026, month: 1, day: 5, hour: 22, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2027, month: 1, day: 5, hour: 19, minute: 30, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2027, month: 1, day: 5, hour: 22, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = hostUserId,
 			},
 			new Gathering {
@@ -192,8 +192,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Cybersecurity Awareness Training",
 				Description = "Essential cybersecurity practices for businesses",
 				Location = "Singapore Management University",
-				Start = new DateTimeOffset(year: 2026, month: 1, day: 8, hour: 10, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2026, month: 1, day: 8, hour: 16, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2027, month: 1, day: 8, hour: 10, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2027, month: 1, day: 8, hour: 16, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = guestUserId,
 			},
 			new Gathering {
@@ -201,8 +201,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Leadership Excellence Workshop",
 				Description = "Develop essential leadership skills for modern managers",
 				Location = "Orchard Hotel Singapore",
-				Start = new DateTimeOffset(year: 2026, month: 1, day: 10, hour: 9, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2026, month: 1, day: 10, hour: 17, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2027, month: 1, day: 10, hour: 9, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2027, month: 1, day: 10, hour: 17, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = hostUserId,
 			},
 			new Gathering {
@@ -210,8 +210,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				Name = "Film & Media Production Showcase",
 				Description = "Independent filmmakers present their latest works",
 				Location = "Singapore International Film Festival Venue",
-				Start = new DateTimeOffset(year: 2026, month: 1, day: 12, hour: 18, minute: 0, second: 0, singaporeOffset),
-				End = new DateTimeOffset(year: 2026, month: 1, day: 12, hour: 23, minute: 0, second: 0, singaporeOffset),
+				Start = new DateTimeOffset(year: 2027, month: 1, day: 12, hour: 18, minute: 0, second: 0, singaporeOffset),
+				End = new DateTimeOffset(year: 2027, month: 1, day: 12, hour: 23, minute: 0, second: 0, singaporeOffset),
 				OrganiserId = guestUserId,
 			}
 		);
@@ -237,7 +237,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
 		// Seed Bookings with fixed DateTimeOffset values
 		// Fixed DateTimeOffset for seeding (static value)
-		DateTimeOffset fixedCreationTime = new(year: 2024, month: 1, day: 1, hour: 0, minute: 0, second: 0, TimeSpan.Zero);
+		DateTimeOffset fixedCreationTime = new(year: 2025, month: 1, day: 1, hour: 0, minute: 0, second: 0, TimeSpan.Zero);
 
 		modelBuilder.Entity<Booking>().HasData(
 			new Booking {
