@@ -36,3 +36,4 @@ jobs:
     - name: Test Docker Image
       run: docker build --tag=expo-connect/latest --file=src/Evently.Server/Dockerfile .
 
+
