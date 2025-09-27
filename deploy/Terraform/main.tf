@@ -13,10 +13,7 @@ terraform {
 
 locals {
   environment  = "staging"
-  project_name = "evently"
 }
-
-provider "docker" {}
 
 provider "azurerm" {
   subscription_id = "e99ca647-4d2d-465f-b0a2-0b97d93c9024"

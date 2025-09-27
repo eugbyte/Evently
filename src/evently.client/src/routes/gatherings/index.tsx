@@ -42,7 +42,8 @@ export function GatheringsPage(): JSX.Element {
 	const gatherings: Gathering[] = data == null ? [] : data.data;
 	const totalCount: number = data == null ? 0 : data.totalCount;
 
-	const maxPage = Math.ceil(totalCount / pageSize);
+	let maxPage = Math.ceil(totalCount / pageSize);
+	maxPage = Math.max(1, maxPage);
 	const onPrevPage = () => {
 		let prevPage = page - 1;
 		prevPage = Math.max(1, prevPage);
