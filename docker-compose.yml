@@ -51,10 +51,10 @@
       Logging__LogLevel__Microsoft.AspNetCore: "Warning"
       StorageAccount__AccountName: "evently-dev-images"
       StorageAccount__AzureStorageConnectionString: "DefaultEndpointsProtocol=http;AccountName=account1;AccountKey=key1;BlobEndpoint=http://account1.blob.localhost:10000;QueueEndpoint=http://account1.queue.localhost:10001;TableEndpoint=http://account1.table.localhost:10002;"
-      Authentication__Google__ClientId: "533425050385-fecekp0gl7cc5nt76o0ohgaik7c9l9l1.apps.googleusercontent.com"
-      Authentication__Google__ClientSecret: "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"
-      EmailSettings__ActualFrom: "hippotechcode@gmail.com"
-      EmailSettings__SmtpPassword: "snln ewqe nfyw oyfu"
+      Authentication__Google__ClientId: "<your-google-client-id>"
+      Authentication__Google__ClientSecret: "<your-google-client-secret>"
+      EmailSettings__ActualFrom: "<your-email@example.com>"
+      EmailSettings__SmtpPassword: "<your-app-password>"
       AllowedHosts: "*"
 
 volumes:
