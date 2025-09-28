@@ -1,8 +1,8 @@
 dev:
-	dotnet run --project ./src/Evently.Server/Evently.Server.csproj --launch-profile https
+	dotnet run --project=src/Evently.Server/Evently.Server.csproj --launch-profile https
 
 test:
-	dotnet test ./tests/Evently.Server.Test/VisualPatron.Server.Test.csproj
+	dotnet test ./tests/Evently.Server.Test/Evently.Server.Test.csproj
 	
 add-migration:
 	dotnet ef migrations add UpdateSeededDates --project=src/Evently.Server --context=AppDbContext --output-dir=Common/Adapters/Data/Migrations

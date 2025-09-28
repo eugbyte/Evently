@@ -21,6 +21,24 @@ Experience Evently in action: [Website](https://ca-evently-prod-sea.graybush-4e3
 ### 🐳 Docker (Recommended)
 Get up and running in minutes with Docker:
 
+Update your `appsettings.json` with your email and Google OAuth Client credentials:
+
+   ```json
+   {
+     "Authentication": {
+       "Google": {
+         "ClientId": "your-google-client-id",
+         "ClientSecret": "your-google-client-secret"
+       }
+     },
+     "EmailSettings": {
+       "ActualFrom": "your-email@example.com",
+       "SmtpPassword": "your-app-password"
+     }
+   }
+   ```
+Then, run the container:
+
 ```bash
 # Build and run with Docker Compose
 docker-compose up --build
@@ -38,24 +56,25 @@ docker-compose up --build
 - **Architecture**: Web API with MVC pattern
 
 ### 🎨 Frontend
-- **Framework**: React 19.1.1
-- **Language**: TypeScript 5.8.3
-- **Routing**: TanStack Router v1.131.7
-- **State Management**: TanStack React Query v5.84.2
-- **Styling**: Tailwind CSS 4.1.11 with DaisyUI 5.0.50
-- **Build Tool**: Vite 7.1.0
+- **Framework**: React 19
+- **Language**: TypeScript 5
+- **Routing**: TanStack Router v1
+- **State Management**: TanStack React Query v5
+- **Styling**: Tailwind CSS 4 with DaisyUI 5
+- **Build Tool**: Vite 7
 
 ### 🏗️ Infrastructure & DevOps
 - **CI/CD**: GitHub Actions
 - **Cloud**: Azure
 - **IAC**: Terraform
 
-## 🚀 Getting Started
+## 🏁 Getting Started
 
 ### Prerequisites
 - .NET 9.0 SDK
 - Node.js (with npm/pnpm)
 - Docker (optional)
+- pnpm
 
 ### Installation
 
@@ -70,16 +89,16 @@ docker-compose up --build
    dotnet restore
 
    # Frontend dependencies
-   npm install
-   # or
-   pnpm install
+   cd src/evently.client && pnpm install
    ```
 
 3. **Development Setup**
    ```bash
-   # Use the Makefile for common tasks
-   make build
-   make run
+   # In one terminal
+   make dev
+   
+   # In another terminal
+   cd src/evently.client && pnpm run dev
    ```
 
 ## 🧪 Testing
@@ -95,17 +114,15 @@ Run tests:
 dotnet test tests/Evently.Server.Test/
 
 # Frontend tests
-npm test
-# or
-pnpm test
+cd src/evently.client && pnpm test
 ```
 
 
 ## 🔧 Development
 ### Code Quality
 The project maintains high code quality standards with:
-- **ESLint 9.32.0**: JavaScript/TypeScript linting
-- **Prettier 3.6.2**: Code formatting
+- **ESLint**: JavaScript/TypeScript linting
+- **Prettier**: Code formatting
 - **EditorConfig**: Consistent coding styles
 - **TypeScript**: Strong typing for frontend
 
@@ -115,13 +132,29 @@ The project maintains high code quality standards with:
 - **Docker Compose**: Development environment orchestration
 
 ### 📁 Project Structure
-The project follows a **Feature Folder Structure** or **Vertical Slice Architecture** pattern, organizing code by business features rather than technical layers. This approach promotes better maintainability, team collaboration, and feature isolation.
+The project follows a **Feature Folder Structure** or **Vertical Slice Architecture** pattern, 
+organizing code by business features rather than technical layers. This approach encourages modularity and separation of concerns.
 
 ``` 
 evently/
 ├── src/                          # Source code
 │   ├── evently.client/           # React frontend application
+│   │   └── src/
+│   │       ├── routes/           # Route-based feature organization
+│   │       │   ├── login/        # Authentication features
+│   │       │   ├── bookings/     # Booking management features
+│   │       │   ├── gatherings/   # Event/gathering management features
+│   │       │   ├── healthcheck/  # System health monitoring
+│   │       │   └── ...           
+│   │       └── lib/              # Shared utilities and components
 │   └── Evently.Server/           # .NET backend application
+│       └── Common/               # Shared utilities and infrastructure
+│       └── Features/             # Feature-based organization
+│           ├── Accounts/         # User authentication & authorization
+│           ├── Bookings/         # Booking system features
+│           ├── Gatherings/       # Event management features
+│           ├── Files/            # Blob Storage features
+│           └── ...           
 ├── tests/                        # Test projects
 │   └── Evently.Server.Test/      # Backend unit tests
 ├── deploy/                       # Infrastructure and deployment
@@ -131,6 +164,5 @@ evently/
 │       ├── build.yml            # CI pipeline
 │       └── deploy.yml           # Deployment pipeline
 ├── docker-compose.yml           # Docker services configuration
-├── Makefile                     # Build automation
-└── package.json                # Frontend dependencies
+└── Makefile                # Build automation
 ```
