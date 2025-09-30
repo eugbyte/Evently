@@ -21,22 +21,16 @@ Experience Evently in action: [Website](https://ca-evently-prod-sea.graybush-4e3
 ### 🐳 Docker (Recommended)
 Get up and running in minutes with Docker:
 
-Update your `appsettings.json` with your email and Google OAuth Client credentials:
+Update your `docker-compose.yml` with your email and Google OAuth Client credentials:
+```yaml
+environment:
+  # ... other environment variables ...
+  Authentication__Google__ClientId: "your-google-client-id"
+  Authentication__Google__ClientSecret: "your-google-client-secret"
+  EmailSettings__ActualFrom: "your-email@example.com"
+  EmailSettings__SmtpPassword: "your-app-password"
+```
 
-   ```json
-   {
-     "Authentication": {
-       "Google": {
-         "ClientId": "your-google-client-id",
-         "ClientSecret": "your-google-client-secret"
-       }
-     },
-     "EmailSettings": {
-       "ActualFrom": "your-email@example.com",
-       "SmtpPassword": "your-app-password"
-     }
-   }
-   ```
 Then, run the container:
 
 ```bash

@@ -1,6 +1,7 @@
 import { redirect } from "@tanstack/react-router";
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import { Account } from "~/lib/domains/entities";
+import { sleep } from "~/lib/services/util-service.ts";
 
 export async function login(redirectUrl: string) {
 	// must redirect instead of making a REST request (https://stackoverflow.com/a/48925986/6514532)
@@ -16,8 +17,14 @@ export async function logout(redirectUrl: string): Promise<void> {
 
 export async function getAccount(): Promise<Account | null> {
 	try {
-		const response = await axios.get<Account>("/api/v1/Auth/external/account");
-		return response.data;
+		const result: void | AxiosResponse<Account> = await Promise.race([
+			axios.get<Account>("/api/v1/Auth/external/account"),
+			sleep(1500)
+		]);
+		if (result == null) {
+			throw new Error("timeout fetching account - might be due to cold start.");
+		}
+		return result.data;
 	} catch (e) {
 		const error = e as Error;
 		console.warn(error.message);
