@@ -16,7 +16,6 @@ resource "azurerm_mssql_database" "db" {
   server_id                   = azurerm_mssql_server.sql_server.id
   sku_name                    = "Basic" # Cheapest option: 5 DTUs
   max_size_gb                 = 2       # Minimum size for Basic tier
-  auto_pause_delay_in_minutes = 60      # Auto-pause after 1 hour of inactivity
 }
 
 resource "azurerm_mssql_firewall_rule" "allow_azure_services" {

@@ -21,7 +21,8 @@ Experience Evently in action: [Website](https://ca-evently-prod-sea.graybush-4e3
 ### 🐳 Docker (Recommended)
 Get up and running in minutes with Docker:
 
-Update your `docker-compose.yml` with your email and Google OAuth Client credentials:
+Update your `docker-compose.yml` with your email and Google OAuth Client credentials. If omitted,
+the application can still run, just that the authentication and email features won't work:
 ```yaml
 environment:
   # ... other environment variables ...
