@@ -1,7 +1,7 @@
 import { redirect } from "@tanstack/react-router";
 import axios, { type AxiosResponse } from "axios";
 import { Account } from "~/lib/domains/entities";
-import { sleep } from "~/lib/services/util-service.ts";
+import { sleep } from "~/lib/services/util-service";
 
 export async function login(redirectUrl: string) {
 	// must redirect instead of making a REST request (https://stackoverflow.com/a/48925986/6514532)
