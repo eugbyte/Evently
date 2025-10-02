@@ -17,6 +17,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		base.OnModelCreating(modelBuilder);
 
+		// for unit testing, sqlite is used
 		if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite") {
 			ConfigureSqlite(modelBuilder);
 		}
