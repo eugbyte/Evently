@@ -275,8 +275,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 		// see the limitations here: https://docs.microsoft.com/en-us/ef/core/providers/sqlite/limitations#query-limitations.
 		// Based on: https://github.com/aspnet/EntityFrameworkCore/issues/10784#issuecomment-415769754.
 		foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes()) {
-			IEnumerable<PropertyInfo> properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(DateTimeOffset)
-			                                                                                     || p.PropertyType == typeof(DateTimeOffset?));
+			IEnumerable<PropertyInfo> properties = entityType.ClrType
+				.GetProperties()
+				.Where(p => p.PropertyType == typeof(DateTimeOffset)
+				            || p.PropertyType == typeof(DateTimeOffset?));
 			foreach (PropertyInfo property in properties) {
 				modelBuilder
 					.Entity(entityType.Name)
