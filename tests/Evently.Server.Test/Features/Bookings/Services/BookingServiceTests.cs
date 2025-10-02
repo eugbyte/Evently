@@ -105,7 +105,7 @@ public class BookingServiceTests : IDisposable {
 	[Fact]
 	public async Task UpdateBooking_WithNonExistentBookingId_ShouldThrowKeyNotFoundException() {
 		// Arrange
-		string nonExistentBookingId = "book_nonexistent";
+		const string nonExistentBookingId = "book_nonexistent";
 		BookingReqDto updateRequest = new(
 			nonExistentBookingId,
 			GatheringId: 1,

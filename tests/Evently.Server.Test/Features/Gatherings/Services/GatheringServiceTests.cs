@@ -128,7 +128,7 @@ public class GatheringServiceTests : IDisposable {
 		Assert.Null(result);
 	}
 
-	[Fact(Skip = "This test is temporarily disabled because of issue: https://github.com/npgsql/efcore.pg/issues/1649")]
+	[Fact]
 	public async Task GetGatherings_WithNameFilter_ShouldReturnFilteredResults() {
 		// Arrange
 		List<Gathering> gatherings = [

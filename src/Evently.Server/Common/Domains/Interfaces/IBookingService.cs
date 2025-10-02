@@ -11,6 +11,5 @@ public interface IBookingService {
 		bool? isCancelled, int? offset, int? limit);
 	Task<Booking> CreateBooking(BookingReqDto bookingReqDto);
 	Task<Booking> UpdateBooking(string bookingId, BookingReqDto bookingReqDto);
-	Task<bool> Exists(string bookingId);
 	Task<string> RenderTicket(string bookingId);
 }

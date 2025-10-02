@@ -1,5 +1,4 @@
-﻿using Evently.Server.Common.Adapters.Data;
-using Evently.Server.Common.Domains.Entities;
+﻿using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Exceptions;
 using Evently.Server.Common.Domains.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace Evently.Server.Features.Accounts.Services;
 
 // Based on https://tinyurl.com/4u4r7ywy
-public sealed partial class AccountService(UserManager<Account> userManager, AppDbContext db) : IAccountsService {
+public sealed partial class AccountService(UserManager<Account> userManager) : IAccountsService {
 	public async Task<Account> ExternalLogin(ClaimsPrincipal claimsPrincipal, string loginProvider) {
 		string providerKey = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
 		UserLoginInfo info = new(loginProvider, providerKey, loginProvider);
@@ -62,10 +61,6 @@ public sealed partial class AccountService(UserManager<Account> userManager, App
 		}
 
 		return newUser;
-	}
-
-	public async Task<Account?> GetAccount(string memberId) {
-		return await userManager.FindByIdAsync(memberId);
 	}
 
 	[GeneratedRegex("[^a-zA-Z0-9]")]

@@ -58,7 +58,7 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 		try {
 			await blobClient.DownloadToAsync(ms);
 		} catch (Exception ex) {
-			logger.LogError(ex.Message);
+			logger.LogError("error getting file: {}", ex.Message);
 		}
 
 		byte[] bytes = ms.ToArray();

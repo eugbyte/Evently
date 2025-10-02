@@ -64,10 +64,6 @@ public sealed class BookingService(
 		};
 	}
 
-	public async Task<bool> Exists(string bookingId) {
-		return await db.Bookings.AnyAsync(b => b.BookingId == bookingId);
-	}
-
 	public async Task<Booking> CreateBooking(BookingReqDto bookingReqDto) {
 		Booking booking = bookingReqDto.ToBooking();
 		ValidationResult validationResult = await validator.ValidateAsync(booking);
@@ -129,5 +125,9 @@ public sealed class BookingService(
 		};
 
 		return await mediaRenderer.RenderComponentHtml<Ticket>(props);
+	}
+
+	public async Task<bool> Exists(string bookingId) {
+		return await db.Bookings.AnyAsync(b => b.BookingId == bookingId);
 	}
 }

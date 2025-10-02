@@ -21,4 +21,11 @@ public static partial class LoggerExtension {
 		Message = "Email sent successfully to {email}")]
 	public static partial void LogSuccessEmail(
 		this ILogger logger, string? email);
+
+	[LoggerMessage(
+		EventId = 4,
+		Level = LogLevel.Error,
+		Message = "Error occured at {context}: {email}")]
+	public static partial void LogErrorContext(
+		this ILogger logger, string context, string email);
 }

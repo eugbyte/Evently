@@ -26,26 +26,6 @@ public static class MapperExtension {
 		return gathering;
 	}
 
-	public static GatheringReqDto ToGatheringDto(this Gathering gathering) {
-		List<GatheringCategoryDetailDto> gatheringCategoryDetails = gathering.GatheringCategoryDetails
-			.Select(detail => new GatheringCategoryDetailDto(detail.GatheringId, detail.CategoryId))
-			.ToList();
-		GatheringReqDto reqDto = new(
-			gathering.GatheringId,
-			gathering.Name,
-			gathering.Description,
-			gathering.Start,
-			gathering.End,
-			gathering.CancellationDateTime,
-			gathering.Location,
-			gathering.OrganiserId,
-			gathering.CoverSrc,
-			gatheringCategoryDetails
-		);
-		return reqDto;
-	}
-
-
 	public static Booking ToBooking(this BookingReqDto bookingReqDto) {
 		return new Booking {
 			BookingId = bookingReqDto.BookingId,
