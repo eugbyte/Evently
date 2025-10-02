@@ -1,6 +1,9 @@
 using Evently.Server.Common.Domains.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Reflection;
 
 namespace Evently.Server.Common.Adapters.Data;
 
@@ -13,6 +16,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		base.OnModelCreating(modelBuilder);
+
+		// for unit testing, sqlite is used
+		if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite") {
+			ConfigureSqlite(modelBuilder);
+		}
 
 		// Postgres identity configuration
 		modelBuilder.Entity<Gathering>().Property(g => g.GatheringId)
@@ -259,5 +267,24 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 				CancellationDateTime = null,
 			}
 		);
+	}
+
+	// https://stackoverflow.com/a/76152994/6514532
+	private static void ConfigureSqlite(ModelBuilder modelBuilder) {
+		// SQLite does not have proper support for DateTimeOffset via Entity Framework Core,
+		// see the limitations here: https://docs.microsoft.com/en-us/ef/core/providers/sqlite/limitations#query-limitations.
+		// Based on: https://github.com/aspnet/EntityFrameworkCore/issues/10784#issuecomment-415769754.
+		foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes()) {
+			IEnumerable<PropertyInfo> properties = entityType.ClrType
+				.GetProperties()
+				.Where(p => p.PropertyType == typeof(DateTimeOffset)
+				            || p.PropertyType == typeof(DateTimeOffset?));
+			foreach (PropertyInfo property in properties) {
+				modelBuilder
+					.Entity(entityType.Name)
+					.Property(property.Name)
+					.HasConversion(new DateTimeOffsetToBinaryConverter());
+			}
+		}
 	}
 }

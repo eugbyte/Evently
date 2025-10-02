@@ -1,4 +1,6 @@
-﻿namespace Evently.Server.Common.Domains.Models;
+﻿using JetBrains.Annotations;
 
-// [{"categoryId":1,"gatheringId":22},{"categoryId":2,"gatheringId":22}]
+namespace Evently.Server.Common.Domains.Models;
+
+[UsedImplicitly]
 public sealed record GatheringCategoryDetailDto(long GatheringId, long CategoryId);

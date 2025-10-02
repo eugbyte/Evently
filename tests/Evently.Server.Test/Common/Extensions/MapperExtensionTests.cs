@@ -76,8 +76,8 @@ public class MapperExtensionTests {
 	[Fact]
 	public void TestMapToBookingDto() {
 		// Arrange (mock values)
-		string attendeeId = "attendee-mock";
-		long gatheringId = 7L;
+		const string attendeeId = "attendee-mock";
+		const long gatheringId = 7L;
 
 		DateTimeOffset creation = DateTimeOffset.UtcNow.AddDays(2);
 		DateTimeOffset checkIn = creation.AddHours(1);

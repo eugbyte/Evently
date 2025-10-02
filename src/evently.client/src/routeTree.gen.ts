@@ -99,7 +99,6 @@ export interface FileRoutesByFullPath {
 	"/bookings/hosting/$gatheringId/dashboard/scan": typeof BookingsauthHostingGatheringIdDashboardScanRoute;
 	"/bookings/hosting/$gatheringId/dashboard": typeof BookingsauthHostingGatheringIdDashboardIndexRoute;
 }
-
 export interface FileRoutesByTo {
 	"/": typeof IndexRoute;
 	"/bookings": typeof BookingsauthRouteRouteWithChildren;
@@ -114,7 +113,6 @@ export interface FileRoutesByTo {
 	"/bookings/hosting/$gatheringId/dashboard/scan": typeof BookingsauthHostingGatheringIdDashboardScanRoute;
 	"/bookings/hosting/$gatheringId/dashboard": typeof BookingsauthHostingGatheringIdDashboardIndexRoute;
 }
-
 export interface FileRoutesById {
 	__root__: typeof rootRouteImport;
 	"/": typeof IndexRoute;
@@ -130,7 +128,6 @@ export interface FileRoutesById {
 	"/bookings/(auth)/hosting/$gatheringId/dashboard/scan": typeof BookingsauthHostingGatheringIdDashboardScanRoute;
 	"/bookings/(auth)/hosting/$gatheringId/dashboard/": typeof BookingsauthHostingGatheringIdDashboardIndexRoute;
 }
-
 export interface FileRouteTypes {
 	fileRoutesByFullPath: FileRoutesByFullPath;
 	fullPaths:
@@ -176,7 +173,6 @@ export interface FileRouteTypes {
 		| "/bookings/(auth)/hosting/$gatheringId/dashboard/";
 	fileRoutesById: FileRoutesById;
 }
-
 export interface RootRouteChildren {
 	IndexRoute: typeof IndexRoute;
 	BookingsauthRouteRoute: typeof BookingsauthRouteRouteWithChildren;

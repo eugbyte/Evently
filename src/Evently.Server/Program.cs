@@ -21,7 +21,6 @@ using System.Text.Json.Serialization;
 using System.Threading.Channels;
 using AccountService=Evently.Server.Features.Accounts.Services.AccountService;
 using BlazorHtmlRenderer=Microsoft.AspNetCore.Components.Web.HtmlRenderer;
-using BookingId=string;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager config = builder.Configuration;
@@ -65,9 +64,9 @@ builder.Services.AddScoped<BlazorHtmlRenderer>();
 builder.Services.AddScoped<IMediaRenderer, MediaRenderer>();
 
 // singleton background service have indirect dependencies on the channel, emailService and mediaRenderer
-Channel<BookingId> channel = Channel.CreateUnbounded<BookingId>();
-builder.Services.AddSingleton(channel.Reader);
-builder.Services.AddSingleton(channel.Writer);
+Channel<string> bookingIdChannel = Channel.CreateUnbounded<string>();
+builder.Services.AddSingleton(bookingIdChannel.Reader);
+builder.Services.AddSingleton(bookingIdChannel.Writer);
 builder.Services.AddSingleton<IEmailerAdapter, EmailAdapter>();
 builder.Services.AddHostedService<EmailBackgroundService>();
 
