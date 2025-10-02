@@ -18,7 +18,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 		base.OnModelCreating(modelBuilder);
 
 		if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite") {
-			SqliteConfigure(modelBuilder);
+			ConfigureSqlite(modelBuilder);
 		}
 
 		// Postgres identity configuration
@@ -267,14 +267,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 			}
 		);
 	}
-	
-	private static void SqliteConfigure(ModelBuilder modelBuilder) {
-		// SQLite does not have proper support for DateTimeOffset via Entity Framework Core, see the limitations
-		// here: https://docs.microsoft.com/en-us/ef/core/providers/sqlite/limitations#query-limitations
-		// To work around this, when the Sqlite database provider is used, all model properties of type DateTimeOffset
-		// use the DateTimeOffsetToBinaryConverter
-		// Based on: https://github.com/aspnet/EntityFrameworkCore/issues/10784#issuecomment-415769754
-		// This only supports millisecond precision, but should be sufficient for most use cases.
+
+	// https://stackoverflow.com/a/76152994/6514532
+	private static void ConfigureSqlite(ModelBuilder modelBuilder) {
+		// SQLite does not have proper support for DateTimeOffset via Entity Framework Core,
+		// see the limitations here: https://docs.microsoft.com/en-us/ef/core/providers/sqlite/limitations#query-limitations.
+		// Based on: https://github.com/aspnet/EntityFrameworkCore/issues/10784#issuecomment-415769754.
 		foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes()) {
 			IEnumerable<PropertyInfo> properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(DateTimeOffset)
 			                                                                                     || p.PropertyType == typeof(DateTimeOffset?));
