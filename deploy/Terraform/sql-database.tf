@@ -14,8 +14,8 @@ resource "azurerm_mssql_server" "sql_server" {
 resource "azurerm_mssql_database" "db" {
   name                        = "evently"
   server_id                   = azurerm_mssql_server.sql_server.id
-  sku_name = "Basic" # Cheapest option: 5 DTUs
-  max_size_gb = 2       # Minimum size for Basic tier
+  sku_name                    = "Basic" # Cheapest option: 5 DTUs
+  max_size_gb                 = 2       # Minimum size for Basic tier
   auto_pause_delay_in_minutes = 60      # auto shut down after 60 mins, will save cost but incur cold start
 }
 

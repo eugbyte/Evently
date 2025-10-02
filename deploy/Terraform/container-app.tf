@@ -3,7 +3,7 @@ resource "azurerm_container_registry" "acr" {
   name                = "acreventlyprodsea"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  sku = "Basic" # Cheapest option
+  sku                 = "Basic" # Cheapest option
   admin_enabled       = true
 }
 
@@ -110,7 +110,7 @@ resource "azurerm_container_app" "app" {
     max_replicas = 1 # Limit maximum instances
 
     container {
-      name   = "eventlyserver"
+      name  = "eventlyserver"
       image = "${local.acrimage}:latest"
       # Minimum possible resource allocation
       cpu    = 0.25
