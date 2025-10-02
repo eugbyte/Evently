@@ -133,7 +133,7 @@ public class GatheringServiceTests : IDisposable {
 		// Arrange
 		List<Gathering> gatherings = [
 			new() {
-				Name = "Tech Conference",
+				Name = "XYZ Conference",
 				Description = "Description 1",
 				Start = DateTimeOffset.UtcNow.AddDays(1),
 				End = DateTimeOffset.UtcNow.AddDays(1).AddHours(2),
@@ -162,7 +162,7 @@ public class GatheringServiceTests : IDisposable {
 		// Act
 		PageResult<Gathering> result = await _gatheringService.GetGatherings(attendeeId: null,
 			organiserId: null,
-			"Tech",
+			"XYZ",
 			startDateBefore: null,
 			startDateAfter: null,
 			endDateBefore: null,
@@ -175,7 +175,7 @@ public class GatheringServiceTests : IDisposable {
 		// Assert
 		Assert.NotNull(result);
 		Assert.Equal(expected: 1, result.TotalCount);
-		Assert.Equal("Tech Conference", result.Items.First().Name);
+		Assert.Equal("XYZ Conference", result.Items.First().Name);
 	}
 
 	[Fact]
