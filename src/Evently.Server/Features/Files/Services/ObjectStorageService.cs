@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Azure.AI.ContentSafety;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Evently.Server.Common.Domains.Interfaces;
@@ -11,7 +12,10 @@ namespace Evently.Server.Features.Files.Services;
 public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<ObjectStorageService> logger) : IObjectStorageService {
 	private readonly BlobServiceClient _blobServiceClient =
 		new(settings.Value.StorageAccount.AzureStorageConnectionString);
-
+	private readonly ContentSafetyClient _client = new(
+		endpoint: new Uri(settings.Value.AzureAiFoundry.ContentSafetyKey),
+		credential: new AzureKeyCredential(settings.Value.AzureAiFoundry.ContentSafetyEndpoint));
+	
 	public async Task<Uri> UploadFile(string containerName, string fileName, BinaryData binaryData,
 		string mimeType = "application/octet-stream") {
 		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
@@ -64,5 +68,23 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 		byte[] bytes = ms.ToArray();
 		BinaryData data = BinaryData.FromBytes(bytes);
 		return data;
+	}
+
+	public async Task<bool> IsContentSafe(BinaryData binaryData) {
+		ContentSafetyImageData image = new(binaryData);
+		AnalyzeImageOptions request = new(image);
+		Response<AnalyzeImageResult> response;
+		try {
+			response = await _client.AnalyzeImageAsync(request);
+		} catch (RequestFailedException ex) {
+			Console.WriteLine("Analyze image failed.\nStatus code: {0}, Error code: {1}, Error message: {2}", ex.Status, ex.ErrorCode, ex.Message);
+			throw;
+		}
+		
+		AnalyzeImageResult value = response.Value;
+		if (value.CategoriesAnalysis.Count == 0) {
+			return false;
+		}
+		return value.CategoriesAnalysis[0].Severity == 0;
 	}
 }

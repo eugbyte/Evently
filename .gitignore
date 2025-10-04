@@ -460,3 +460,5 @@ src/emailpaywall.client/.svelte-kit
 # Include example tfvars files
 !**/*.tfvars.example
 !**/terraform.tfvars.example
+
+**/appsettings.Development.json
