@@ -4,6 +4,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
+using Evently.Server.Common.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace Evently.Server.Features.Files.Services;
@@ -77,7 +78,7 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 		try {
 			response = await _contentSafetyClient.AnalyzeImageAsync(request);
 		} catch (RequestFailedException ex) {
-			Console.WriteLine("Analyze image failed.\nStatus code: {0}, Error code: {1}, Error message: {2}", ex.Status, ex.ErrorCode, ex.Message);
+			logger.LogContentModerationError(ex.Status.ToString(), ex.ErrorCode ?? "", ex.Message);
 			throw;
 		}
 
@@ -86,6 +87,6 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 			             .Select(v => v.Severity)
 			             .Aggregate((a, b) => a + b)
 		             ?? 0;
-		return result.CategoriesAnalysis.Count != 0 && score == 0;
+		return score == 0;
 	}
 }

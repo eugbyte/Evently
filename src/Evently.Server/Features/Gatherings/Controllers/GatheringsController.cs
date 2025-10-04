@@ -68,8 +68,8 @@ public sealed class GatheringsController(
 		}
 
 		if (coverImg != null) {
-			Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg: coverImg ?? throw new ArgumentNullException(nameof(coverImg)));
-			gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };
+			string uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg);
+			gatheringReqDto = gatheringReqDto with { CoverSrc = uri };
 		}
 
 		Gathering gathering = await gatheringService.CreateGathering(gatheringReqDto);
@@ -88,9 +88,8 @@ public sealed class GatheringsController(
 		}
 
 		if (coverImg != null) {
-			Uri uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg);
-			gathering.CoverSrc = uri.AbsoluteUri;
-			gatheringReqDto = gatheringReqDto with { CoverSrc = uri.AbsoluteUri };
+			string uri = await UploadCoverImage(gatheringReqDto.GatheringId, coverImg);
+			gatheringReqDto = gatheringReqDto with { CoverSrc = uri };
 		}
 
 		gathering = await gatheringService.UpdateGathering(gatheringId, gatheringReqDto);
@@ -112,16 +111,17 @@ public sealed class GatheringsController(
 		return NoContent();
 	}
 
-	private async Task<Uri> UploadCoverImage(long gatheringId, IFormFile coverImg) {
+	private async Task<string> UploadCoverImage(long gatheringId, IFormFile coverImg) {
 		string fileName = $"gatherings/{gatheringId}/cover-image{Path.GetExtension(coverImg.FileName)}";
 		BinaryData binaryData = await coverImg.ToBinaryData();
 		bool isContentSafe = await objectStorageService.PassesContentModeration(binaryData);
 		if (!isContentSafe) {
-			return new Uri(string.Empty, UriKind.RelativeOrAbsolute);
+			return string.Empty;
 		}
-		return await objectStorageService.UploadFile(_containerName,
+		Uri uri = await objectStorageService.UploadFile(_containerName,
 			fileName,
 			binaryData,
 			mimeType: MimeTypes.GetMimeType(coverImg.FileName));
+		return uri.AbsoluteUri;
 	}
 }

@@ -18,7 +18,6 @@ export function Card({ gathering, accountId }: CardProps): JSX.Element {
 		(detail) => detail.category
 	);
 
-	// ignore img-src for now
 	if (imgSrc == null || imgSrc.length === 0) {
 		const hash: number = hashString(gathering.name);
 		imgSrc = hash % 2 === 0 ? Placeholder1 : Placeholder2;

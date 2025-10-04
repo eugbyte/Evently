@@ -35,3 +35,14 @@ variable "smtp_password" {
   type        = string
   sensitive   = true
 }
+
+variable "content_safety_key" {
+  description = "Azure AI foundry content safety key"
+  type        = string
+  sensitive   = true
+}
+
+variable "content_safety_api" {
+  description = "Azure AI foundry content safety api endpoint"
+  type        = string
+}
