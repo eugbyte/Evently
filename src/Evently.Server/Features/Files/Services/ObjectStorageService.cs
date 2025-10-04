@@ -13,9 +13,9 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 	private readonly BlobServiceClient _blobServiceClient =
 		new(settings.Value.StorageAccount.AzureStorageConnectionString);
 	private readonly ContentSafetyClient _contentSafetyClient = new(
-		endpoint: new Uri(settings.Value.AzureAiFoundry.ContentSafetyKey),
-		credential: new AzureKeyCredential(settings.Value.AzureAiFoundry.ContentSafetyEndpoint));
-	
+		endpoint: new Uri(settings.Value.AzureAiFoundry.ContentSafetyEndpoint),
+		credential: new AzureKeyCredential(settings.Value.AzureAiFoundry.ContentSafetyKey));
+
 	public async Task<Uri> UploadFile(string containerName, string fileName, BinaryData binaryData,
 		string mimeType = "application/octet-stream") {
 		BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
@@ -70,7 +70,7 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 		return data;
 	}
 
-	public async Task<bool> IsContentSafe(BinaryData binaryData) {
+	public async Task<bool> PassesContentModeration(BinaryData binaryData) {
 		ContentSafetyImageData image = new(binaryData);
 		AnalyzeImageOptions request = new(image);
 		Response<AnalyzeImageResult> response;
@@ -80,11 +80,12 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 			Console.WriteLine("Analyze image failed.\nStatus code: {0}, Error code: {1}, Error message: {2}", ex.Status, ex.ErrorCode, ex.Message);
 			throw;
 		}
-		
-		AnalyzeImageResult value = response.Value;
-		if (value.CategoriesAnalysis.Count == 0) {
-			return false;
-		}
-		return value.CategoriesAnalysis[0].Severity == 0;
+
+		AnalyzeImageResult result = response.Value;
+		int? score = result.CategoriesAnalysis
+			             .Select(v => v.Severity)
+			             .Aggregate((a, b) => a + b)
+		             ?? 0;
+		return result.CategoriesAnalysis.Count != 0 && score == 0;
 	}
 }

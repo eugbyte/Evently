@@ -10,5 +10,5 @@ public interface IObjectStorageService {
 	Task<Uri> GetFileUri(string containerName, string fileName);
 	Task<BinaryData> GetFile(string containerName, string fileName);
 	Task<bool> IsFileExists(string containerName, string fileName);
-	Task<bool> IsContentSafe(BinaryData binaryData);
+	Task<bool> PassesContentModeration(BinaryData binaryData);
 }

@@ -115,6 +115,10 @@ public sealed class GatheringsController(
 	private async Task<Uri> UploadCoverImage(long gatheringId, IFormFile coverImg) {
 		string fileName = $"gatherings/{gatheringId}/cover-image{Path.GetExtension(coverImg.FileName)}";
 		BinaryData binaryData = await coverImg.ToBinaryData();
+		bool isContentSafe = await objectStorageService.PassesContentModeration(binaryData);
+		if (!isContentSafe) {
+			return new Uri(string.Empty, UriKind.RelativeOrAbsolute);
+		}
 		return await objectStorageService.UploadFile(_containerName,
 			fileName,
 			binaryData,

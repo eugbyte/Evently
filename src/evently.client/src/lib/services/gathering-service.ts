@@ -75,7 +75,11 @@ function toFormData(gatheringDto: GatheringReqDto, coverImg?: File | null): Form
 			formData.set(key, value);
 		}
 	}
+
 	formData.delete("gatheringCategoryDetails");
+	if (gatheringDto.gatheringCategoryDetails.length === 0) {
+		formData.set("gatheringCategoryDetails", "[]");
+	}
 
 	for (let i = 0; i < gatheringDto.gatheringCategoryDetails.length; i++) {
 		const detail: GatheringCategoryDetailReqDto = gatheringDto.gatheringCategoryDetails[i];
