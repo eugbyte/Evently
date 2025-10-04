@@ -4,10 +4,13 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.45.0"
     }
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "3.0.2"
-    }
+  }
+
+  backend "azurerm" {
+    resource_group_name  = "rg-sharedinfra-sea" # Resource group for the storage account
+    storage_account_name = "sasharedinfrasea"
+    container_name       = "evently-dev-sea"
+    key                  = "tfstate/terraform.tfstate"
   }
 }
 
