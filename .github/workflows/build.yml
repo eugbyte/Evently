@@ -6,6 +6,8 @@ name: Build evently
 on:
   pull_request:
     branches: [ "main" ]
+  push:
+    branches: [ "main" ]
     
 # important for azure/login
 permissions:
