@@ -9,7 +9,7 @@ resource "azurerm_consumption_budget_subscription" "evently_budget" {
   time_grain = "Monthly"
 
   time_period {
-    start_date = formatdate("YYYY-MM-01T00:00:00Z", plantimestamp())
+    start_date = formatdate("YYYY-MM-01-00:00:00Z", plantimestamp())
   }
 
   notification {
