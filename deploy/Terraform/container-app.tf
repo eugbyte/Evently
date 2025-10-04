@@ -82,6 +82,8 @@ resource "azurerm_container_app" "app" {
     server   = azurerm_container_registry.acr.login_server
     identity = azurerm_user_assigned_identity.uami.id
   }
+  
+  depends_on = [azurerm_role_assignment.acr_pull, azurerm_mssql_database.db]
 
   # needed for container app to access other Microsoft Entra protected resources
   # https://learn.microsoft.com/en-us/azure/container-apps/managed-identity?tabs=portal%2Cdotnet
