@@ -82,7 +82,7 @@ resource "azurerm_container_app" "app" {
     server   = azurerm_container_registry.acr.login_server
     identity = azurerm_user_assigned_identity.uami.id
   }
-  
+
   depends_on = [azurerm_role_assignment.acr_pull, azurerm_mssql_database.db]
 
   # needed for container app to access other Microsoft Entra protected resources
@@ -179,6 +179,16 @@ resource "azurerm_container_app" "app" {
         name  = "ASPNETCORE_ENVIRONMENT"
         value = "Production"
       }
+
+      env {
+        name        = "AzureAIFoundry__ContentSafetyKey"
+        secret_name = "content-safety-key"
+      }
+
+      env {
+        name  = "AzureAIFoundry__ContentSafetyEndpoint"
+        value = var.content_safety_api
+      }
     }
   }
 
@@ -214,6 +224,11 @@ resource "azurerm_container_app" "app" {
   secret {
     name  = "smtp-password"
     value = var.smtp_password
+  }
+
+  secret {
+    name  = "content-safety-key"
+    value = var.content_safety_key
   }
 
 }

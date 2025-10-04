@@ -28,4 +28,12 @@ public static partial class LoggerExtension {
 		Message = "Error occurred at {context}: {errorMsg}")]
 	public static partial void LogErrorContext(
 		this ILogger logger, string context, string errorMsg);
+	
+	[LoggerMessage(
+		EventId = 5,
+		Level = LogLevel.Error,
+		Message = "Analyze image failed. Status code: {statusCode}, Error code: {errorCode}, Error message: {errMsg}")]
+	public static partial void LogContentModerationError(
+		this ILogger logger, string statusCode, string errorCode, string errMsg);
+	//
 }
