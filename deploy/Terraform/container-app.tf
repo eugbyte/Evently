@@ -168,6 +168,16 @@ resource "azurerm_container_app" "app" {
         value = "Warning"
       }
 
+      env {
+        name  = "AzureAIFoundry__ContentSafetyKey"
+        value = azurerm_cognitive_account.content_safety.primary_access_key
+      }
+
+      env {
+        name  = "AzureAIFoundry__ContentSafetyEndpoint"
+        value = azurerm_cognitive_account.content_safety.endpoint
+      }
+
       # General Settings
       env {
         name  = "AllowedHosts"
@@ -178,16 +188,6 @@ resource "azurerm_container_app" "app" {
       env {
         name  = "ASPNETCORE_ENVIRONMENT"
         value = "Production"
-      }
-
-      env {
-        name  = "AzureAIFoundry__ContentSafetyKey"
-        value = azurerm_cognitive_account.content_safety.primary_access_key
-      }
-
-      env {
-        name  = "AzureAIFoundry__ContentSafetyEndpoint"
-        value = azurerm_cognitive_account.content_safety.endpoint
       }
     }
   }
