@@ -18,10 +18,9 @@ export function Card({ gathering, accountId }: CardProps): JSX.Element {
 		(detail) => detail.category
 	);
 
-	if (imgSrc == null || imgSrc.length === 0) {
-		const hash: number = hashString(gathering.name);
-		imgSrc = hash % 2 === 0 ? Placeholder1 : Placeholder2;
-	}
+	// ignore img-src for now
+	const hash: number = hashString(gathering.name);
+	imgSrc = hash % 2 === 0 ? Placeholder1 : Placeholder2;
 
 	if (title.length > 30) {
 		title = title.substring(0, 30) + "...";
