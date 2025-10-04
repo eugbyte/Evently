@@ -452,6 +452,7 @@ src/emailpaywall.client/.svelte-kit
 **/override.tf
 **/override.tf.json
 **/*_override.tf
+**/*terraform.tfstate.backup
 **/*_override.tf.json
 **/.terraform.tfstate.lock.info
 
