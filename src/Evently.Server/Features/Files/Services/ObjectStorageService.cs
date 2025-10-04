@@ -12,7 +12,7 @@ namespace Evently.Server.Features.Files.Services;
 public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<ObjectStorageService> logger) : IObjectStorageService {
 	private readonly BlobServiceClient _blobServiceClient =
 		new(settings.Value.StorageAccount.AzureStorageConnectionString);
-	private readonly ContentSafetyClient _client = new(
+	private readonly ContentSafetyClient _contentSafetyClient = new(
 		endpoint: new Uri(settings.Value.AzureAiFoundry.ContentSafetyKey),
 		credential: new AzureKeyCredential(settings.Value.AzureAiFoundry.ContentSafetyEndpoint));
 	
@@ -75,7 +75,7 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 		AnalyzeImageOptions request = new(image);
 		Response<AnalyzeImageResult> response;
 		try {
-			response = await _client.AnalyzeImageAsync(request);
+			response = await _contentSafetyClient.AnalyzeImageAsync(request);
 		} catch (RequestFailedException ex) {
 			Console.WriteLine("Analyze image failed.\nStatus code: {0}, Error code: {1}, Error message: {2}", ex.Status, ex.ErrorCode, ex.Message);
 			throw;
