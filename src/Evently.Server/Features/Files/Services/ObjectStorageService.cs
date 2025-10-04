@@ -83,10 +83,11 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 		}
 
 		AnalyzeImageResult result = response.Value;
-		int? score = result.CategoriesAnalysis
+		int score = result.CategoriesAnalysis
 			             .Select(v => v.Severity)
+			             .DefaultIfEmpty(0)
 			             .Aggregate((a, b) => a + b)
-		             ?? 0;
+			             .GetValueOrDefault(0);
 		return score == 0;
 	}
 }
