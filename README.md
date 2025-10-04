@@ -19,7 +19,7 @@ management processes.
 ### 🌐 Live Demo
 
 Experience Evently in
-action: [Website](https://ca-evently-prod-sea.graybush-4e3751bc.southeastasia.azurecontainerapps.io/)
+action: [Website](https://ca-evently-prod-sea.icysea-555372a4.southeastasia.azurecontainerapps.io/)
 
 ### 🐳 Docker (Recommended)
 
