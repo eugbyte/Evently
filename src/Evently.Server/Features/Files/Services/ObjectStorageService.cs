@@ -10,12 +10,26 @@ using Microsoft.Extensions.Options;
 namespace Evently.Server.Features.Files.Services;
 
 // Based on https://tinyurl.com/5pam66xn
-public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<ObjectStorageService> logger) : IObjectStorageService {
-	private readonly BlobServiceClient _blobServiceClient =
-		new(settings.Value.StorageAccount.AzureStorageConnectionString);
-	private readonly ContentSafetyClient _contentSafetyClient = new(
-		endpoint: new Uri(settings.Value.AzureAiFoundry.ContentSafetyEndpoint),
-		credential: new AzureKeyCredential(settings.Value.AzureAiFoundry.ContentSafetyKey));
+public sealed class ObjectStorageService : IObjectStorageService {
+	private readonly BlobServiceClient _blobServiceClient;
+	private readonly ContentSafetyClient? _contentSafetyClient;
+	private readonly ILogger<ObjectStorageService> _logger;
+
+	private ObjectStorageService(IOptions<Settings> settings, ILogger<ObjectStorageService> logger) {
+		_logger = logger;
+		_blobServiceClient =
+			new BlobServiceClient(settings.Value.StorageAccount.AzureStorageConnectionString);
+
+		try {
+			_contentSafetyClient = new ContentSafetyClient(
+				endpoint: new Uri(settings.Value.AzureAiFoundry.ContentSafetyEndpoint),
+				credential: new AzureKeyCredential(settings.Value.AzureAiFoundry.ContentSafetyKey));
+		} catch (Exception ex) {
+			// silence the error
+			_logger.LogError("error creating content safety client: {}", ex.Message);
+		}
+
+	}
 
 	public async Task<Uri> UploadFile(string containerName, string fileName, BinaryData binaryData,
 		string mimeType = "application/octet-stream") {
@@ -63,7 +77,7 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 		try {
 			await blobClient.DownloadToAsync(ms);
 		} catch (Exception ex) {
-			logger.LogError("error getting file: {}", ex.Message);
+			_logger.LogError("error getting file: {}", ex.Message);
 		}
 
 		byte[] bytes = ms.ToArray();
@@ -72,22 +86,26 @@ public sealed class ObjectStorageService(IOptions<Settings> settings, ILogger<Ob
 	}
 
 	public async Task<bool> PassesContentModeration(BinaryData binaryData) {
+		if (_contentSafetyClient is null) {
+			return false;
+		}
+
 		ContentSafetyImageData image = new(binaryData);
 		AnalyzeImageOptions request = new(image);
 		Response<AnalyzeImageResult> response;
 		try {
 			response = await _contentSafetyClient.AnalyzeImageAsync(request);
 		} catch (RequestFailedException ex) {
-			logger.LogContentModerationError(ex.Status.ToString(), ex.ErrorCode ?? "", ex.Message);
+			_logger.LogContentModerationError(statusCode: ex.Status.ToString(), errorCode: ex.ErrorCode ?? "", ex.Message);
 			throw;
 		}
 
 		AnalyzeImageResult result = response.Value;
 		int score = result.CategoriesAnalysis
-			             .Select(v => v.Severity)
-			             .DefaultIfEmpty(0)
-			             .Aggregate((a, b) => a + b)
-			             .GetValueOrDefault(0);
+			.Select(v => v.Severity)
+			.DefaultIfEmpty(0)
+			.Aggregate((a, b) => a + b)
+			.GetValueOrDefault(0);
 		return score == 0;
 	}
 }
