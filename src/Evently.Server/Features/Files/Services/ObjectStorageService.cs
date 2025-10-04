@@ -26,7 +26,7 @@ public sealed class ObjectStorageService : IObjectStorageService {
 				credential: new AzureKeyCredential(settings.Value.AzureAiFoundry.ContentSafetyKey));
 		} catch (Exception ex) {
 			// silence the error
-			_logger.LogError("error creating content safety client: {}", ex.Message);
+			_logger.LogError("error creating content safety client: {}. Content moderation skipped.", ex.Message);
 		}
 
 	}
@@ -87,7 +87,7 @@ public sealed class ObjectStorageService : IObjectStorageService {
 
 	public async Task<bool> PassesContentModeration(BinaryData binaryData) {
 		if (_contentSafetyClient is null) {
-			return false;
+			return true;
 		}
 
 		ContentSafetyImageData image = new(binaryData);
