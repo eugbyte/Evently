@@ -4,10 +4,5 @@ resource "azurerm_cognitive_account" "content_safety" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "ContentSafety"
-  sku_name            = "S0"
-
-  tags = {
-    Environment = "production"
-    Purpose     = "content-safety"
-  }
+  sku_name            = "F0"
 }
