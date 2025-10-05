@@ -28,7 +28,6 @@ public sealed class ObjectStorageService : IObjectStorageService {
 			// silence the error
 			_logger.LogError("error creating content safety client: {}. Content moderation skipped.", ex.Message);
 		}
-
 	}
 
 	public async Task<Uri> UploadFile(string containerName, string fileName, BinaryData binaryData,
