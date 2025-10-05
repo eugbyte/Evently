@@ -126,8 +126,4 @@ public sealed class BookingService(
 
 		return await mediaRenderer.RenderComponentHtml<Ticket>(props);
 	}
-
-	public async Task<bool> Exists(string bookingId) {
-		return await db.Bookings.AnyAsync(b => b.BookingId == bookingId);
-	}
 }

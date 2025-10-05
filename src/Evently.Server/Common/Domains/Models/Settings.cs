@@ -35,6 +35,8 @@ public sealed class EmailSettings {
 	public string SmtpPassword { get; init; } = string.Empty;
 }
 
+[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
+// ReSharper disable once InconsistentNaming
 public sealed class AzureAIFoundry {
 	public string ContentSafetyKey { get; init; } = string.Empty;
 	public string ContentSafetyEndpoint { get; init; } = string.Empty;
