@@ -15,7 +15,7 @@ public sealed class ObjectStorageService : IObjectStorageService {
 	private readonly ContentSafetyClient? _contentSafetyClient;
 	private readonly ILogger<ObjectStorageService> _logger;
 
-	private ObjectStorageService(IOptions<Settings> settings, ILogger<ObjectStorageService> logger) {
+	public ObjectStorageService(IOptions<Settings> settings, ILogger<ObjectStorageService> logger) {
 		_logger = logger;
 		_blobServiceClient =
 			new BlobServiceClient(settings.Value.StorageAccount.AzureStorageConnectionString);
