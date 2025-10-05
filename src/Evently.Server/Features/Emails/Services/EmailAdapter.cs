@@ -1,9 +1,9 @@
 using Evently.Server.Common.Domains.Interfaces;
 using Evently.Server.Common.Domains.Models;
+using Evently.Server.Common.Extensions;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using LoggerExtension=Evently.Server.Common.Extensions.LoggerExtension;
 
 namespace Evently.Server.Features.Emails.Services;
 
@@ -17,7 +17,7 @@ public sealed class EmailAdapter(ILogger<EmailAdapter> logger, IOptions<Settings
 		try {
 			await SendEmail(emailMessage);
 		} catch (Exception ex) {
-			LoggerExtension.LogCallbackUrl(logger, ex.Message);
+			logger.LogCallbackUrl(ex.Message);
 		}
 	}
 
