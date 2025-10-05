@@ -101,10 +101,9 @@ public sealed class ObjectStorageService : IObjectStorageService {
 
 		AnalyzeImageResult result = response.Value;
 		int score = result.CategoriesAnalysis
-			.Select(v => v.Severity)
+			.Select(v => v.Severity ?? 0)
 			.DefaultIfEmpty(0)
-			.Aggregate((a, b) => a + b)
-			.GetValueOrDefault(0);
+			.Aggregate((a, b) => a + b);
 		return score == 0;
 	}
 }
