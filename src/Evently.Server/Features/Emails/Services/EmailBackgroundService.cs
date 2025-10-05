@@ -1,7 +1,7 @@
 ﻿using Evently.Server.Common.Domains.Entities;
 using Evently.Server.Common.Domains.Interfaces;
+using Evently.Server.Common.Extensions;
 using System.Threading.Channels;
-using LoggerExtension=Evently.Server.Common.Extensions.LoggerExtension;
 
 namespace Evently.Server.Features.Emails.Services;
 
@@ -26,7 +26,7 @@ public sealed class EmailBackgroundService(
 
 				string html = await bookingService.RenderTicket(bookingId);
 				await emailerAdapter.SendEmailAsync("noreply@evently", account.Email, "Test QR ticket", html);
-				LoggerExtension.LogSuccessEmail(logger, account.Email);
+				logger.LogSuccessEmail(account.Email);
 			} catch (Exception ex) {
 				logger.LogError("email error: {}", ex.Message);
 			}
