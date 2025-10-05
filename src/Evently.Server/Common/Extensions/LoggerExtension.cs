@@ -28,7 +28,7 @@ public static partial class LoggerExtension {
 		Message = "Error occurred at {context}: {errorMsg}")]
 	public static partial void LogErrorContext(
 		this ILogger logger, string context, string errorMsg);
-	
+
 	[LoggerMessage(
 		EventId = 5,
 		Level = LogLevel.Error,

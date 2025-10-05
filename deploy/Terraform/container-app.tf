@@ -168,6 +168,16 @@ resource "azurerm_container_app" "app" {
         value = "Warning"
       }
 
+      env {
+        name  = "AzureAIFoundry__ContentSafetyKey"
+        value = azurerm_cognitive_account.content_safety.primary_access_key
+      }
+
+      env {
+        name  = "AzureAIFoundry__ContentSafetyEndpoint"
+        value = azurerm_cognitive_account.content_safety.endpoint
+      }
+
       # General Settings
       env {
         name  = "AllowedHosts"
@@ -178,16 +188,6 @@ resource "azurerm_container_app" "app" {
       env {
         name  = "ASPNETCORE_ENVIRONMENT"
         value = "Production"
-      }
-
-      env {
-        name        = "AzureAIFoundry__ContentSafetyKey"
-        secret_name = "content-safety-key"
-      }
-
-      env {
-        name  = "AzureAIFoundry__ContentSafetyEndpoint"
-        value = var.content_safety_api
       }
     }
   }
@@ -224,11 +224,6 @@ resource "azurerm_container_app" "app" {
   secret {
     name  = "smtp-password"
     value = var.smtp_password
-  }
-
-  secret {
-    name  = "content-safety-key"
-    value = var.content_safety_key
   }
 
 }
