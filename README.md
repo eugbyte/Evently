@@ -6,13 +6,13 @@ management processes.
 ## 📋 Features
 
 - 🎫 **Event Creation & Management** - Create and manage events with detailed information
+- 🔍 **Advanced Search & Filtering** - Find events easily
 - 👥 **User Authentication** - Google OAuth integration
 - 📱 **QR Code Support** - Generate and scan QR codes for events
 - 🖼️ **Image Management** - Upload and compress event images
 - 📊 **Data Export** - Export event data to CSV
-- 📧 **Email Notifications** - Automated email system
-- 📱 **Progressive Web App** - Mobile-friendly experience
-- 🔍 **Advanced Search & Filtering** - Find events easily
+- 📧 **Email Notifications** - Automated email system to receive tickets
+- 📱 **Progressive Web App** - Mobile-friendly experience, can be installed as mobile app.
 
 ## 🚀 Quick Start
 
