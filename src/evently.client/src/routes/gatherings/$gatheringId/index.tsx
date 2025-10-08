@@ -23,7 +23,7 @@ export const Route = createFileRoute("/gatherings/$gatheringId/")({
 		let booking: Booking | null = null;
 		if (accountId != null && accountId.trim().length > 0) {
 			const { data: bookings } = await getBookings({
-				attendeeId: accountId ?? "-1",
+				attendeeId: accountId,
 				gatheringId,
 				isCancelled: false
 			});
