@@ -21,6 +21,7 @@ export const Route = createFileRoute("/gatherings/$gatheringId/")({
 		const gatheringId: number = parseInt(params.gatheringId);
 		const gathering: Gathering | null = await getGathering(gatheringId);
 		let booking: Booking | null = null;
+		console.log({ accountId });
 		if (accountId != null && accountId.trim().length > 0) {
 			const { data: bookings } = await getBookings({
 				attendeeId: accountId,
