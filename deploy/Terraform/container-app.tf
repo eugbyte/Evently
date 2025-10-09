@@ -108,7 +108,7 @@ resource "azurerm_container_app" "app" {
     revision_suffix = "rev-${local.timestamp}"
 
     # Minimum scaling for cost optimization
-    min_replicas = 0 # Scale to zero when no traffic (cheapest option)
+    min_replicas = 1 # Reduce cold start
     max_replicas = 1 # Limit maximum instances
 
     container {
